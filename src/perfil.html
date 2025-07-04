@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard | Confeitaria</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-primary-1: #fff9ea;
+      --color-primary-2: #ffe8b4;
+      --color-primary-3: #f8d477;
+      --color-primary-4: #ffe100;
+      --color-primary-5: #ffcb45;
+      --color-primary-6: #e9a209;
+
+      --color-neutral-0: #fff;
+      --color-neutral-1: #1d1d1d;
+    }
+
+    * {
+      font-family: 'Poppins', sans-serif !important;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--color-primary-1);
+      display: flex;
+      min-height: 100vh;
+      color: var(--color-neutral-1);
+    }
+
+    /* Sidebar Desktop - Design Flutuante */
+    .desktop-sidebar {
+      width: 300px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(15px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+      display: flex;
+      flex-direction: column;
+      padding: 28px 24px;
+      position: fixed;
+      top: 20px; 
+      bottom: 20px; 
+      left: 20px;
+      border-radius: 24px;
+      overflow-y: auto;
+      z-index: 1000;
+      transition: width 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .desktop-sidebar:hover {
+      box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    }
+
+    .desktop-sidebar.collapsed {
+      width: 90px;
+      padding: 28px 16px;
+    }
+
+    /* Navbar Mobile - Design Flutuante */
+    .mobile-navbar {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(15px);
+      z-index: 1000;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .navbar-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 20px;
+      max-width: 100%;
+    }
+
+    .navbar-menu {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .navbar-item a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      text-decoration: none;
+      color: var(--color-neutral-1);
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .navbar-item.active a {
+      color: var(--color-primary-6);
+    }
+
+    .navbar-item a:hover {
+      background: rgba(0,0,0,0.05);
+      transform: translateY(-2px);
+    }
+
+    .navbar-item.active a:hover {
+      background: rgba(0,0,0,0.05);
+      color: var(--color-primary-6);
+    }
+
+    .navbar-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 24px;
+      height: 4px;
+      background: var(--color-primary-6);
+      border-radius: 2px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .desktop-sidebar {
+        display: none !important;
+      }
+      
+      .mobile-navbar {
+        display: block !important;
+      }
+      
+      main.main {
+        margin-left: 0 !important;
+        padding: 100px 4vw 24px 4vw;
+      }
+    }
+
+    @media (min-width: 769px) {
+      .mobile-navbar {
+        display: none !important;
+      }
+    }
+
+    #sidebar_content {
+      flex-grow: 1;
+    }
+
+    #user {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 30px;
+      transition: opacity 0.3s ease;
+    }
+
+    #sidebar.collapsed #user {
+      opacity: 0;
+      pointer-events: none;
+      height: 0;
+      margin-bottom: 0;
+    }
+
+    #user_avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--color-primary-6);
+    }
+
+    #user_infos {
+      display: flex;
+      flex-direction: column;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--color-primary-6);
+    }
+
+    /* Menus Desktop e Mobile */
+    .side-items {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    /* Desktop menu - com texto */
+    .desktop-menu {
+      display: block;
+    }
+
+    /* Mobile menu - só ícones */
+    .mobile-menu {
+      display: none;
+      gap: 12px;
+    }
+
+    /* Itens do menu */
+    .side-item {
+      margin-bottom: 14px;
+      position: relative;
+    }
+
+    .side-item a {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      text-decoration: none;
+      padding: 18px 20px;
+      border-radius: 16px;
+      color: var(--color-neutral-1);
+      font-weight: 600;
+      transition: all 0.3s ease;
+      user-select: none;
+      white-space: nowrap;
+      background: none;
+    }
+
+    .side-item a:hover {
+      background: none;
+      transform: none;
+    }
+
+    .side-item.active a {
+      color: var(--color-primary-6);
+    }
+
+    .side-item.active a:hover {
+      background: none;
+      color: var(--color-primary-6);
+    }
+
+    /* Ícones do menu mobile só centralizados */
+    .mobile-menu .side-item a {
+      justify-content: center;
+      padding: 8px;
+      width: 44px;
+      height: 44px;
+      font-size: 1.3rem;
+    }
+
+
+
+    /* Espaço para o indicador ativo na sidebar desktop */
+    .desktop-menu .side-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      bottom: 8px;
+      width: 6px;
+      border-radius: 6px;
+      background: var(--color-primary-6);
+      transition: top 0.3s, bottom 0.3s;
+      /* Espaço extra entre barra e ícone */
+      margin-right: 8px;
+    }
+    .desktop-menu .side-item {
+      position: relative;
+    }
+
+
+    .side-item a i {
+      color: inherit;
+      font-size: 1.5rem;
+      min-width: 32px;
+      min-height: 32px;
+      max-width: 32px;
+      max-height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.3s;
+    }
+
+    .side-item a svg {
+      width: 28px;
+      height: 28px;
+      min-width: 28px;
+      min-height: 28px;
+      max-width: 28px;
+      max-height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.3s;
+    }
+
+    /* Botão expandir/reduzir sidebar */
+    #open_btn_container {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+    }
+
+    #open_btn {
+      background: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: var(--color-primary-6);
+    }
+
+    #open_btn:hover {
+      background: var(--color-primary-6);
+      color: white;
+      transform: scale(1.05);
+    }
+
+    #open_btn svg {
+      width: 20px;
+      height: 20px;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    #open_btn:hover svg {
+      transform: scale(1.1);
+    }
+
+    /* Main content */
+    main.main {
+      margin-left: 340px;
+      padding: 30px;
+      flex: 1;
+      overflow-y: auto;
+      min-height: 100vh;
+      background: var(--color-primary-1);
+      color: var(--color-neutral-1);
+      transition: margin-left 0.3s ease;
+    }
+
+    main.main.collapsed {
+      margin-left: 130px;
+    }
+
+    main.main h1 {
+      color: var(--color-primary-6);
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: var(--color-neutral-0);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+      margin-bottom: 20px;
+      color: var(--color-neutral-1);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      font-weight: 700;
+      color: var(--color-primary-6);
+    }
+
+    /* Avaliação estrelas */
+    button.star {
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 2rem;
+      color: #ddd;
+      transition: color 0.2s;
+      user-select: none;
+    }
+    button.star.selected,
+    button.star:hover,
+    button.star:hover ~ button.star {
+      color: gold;
+    }
+
+    /* Responsivo */
+    @media (max-width: 768px) {
+      #sidebar {
+        width: 100vw;
+        height: auto;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        padding: 16px 24px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        border-radius: 0 0 16px 16px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        margin: 0;
+        transition: none;
+      }
+      #sidebar_content {
+        flex-direction: row !important;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+      }
+      .desktop-menu {
+        display: none !important;
+      }
+      .mobile-menu {
+        display: flex !important;
+        flex-direction: row;
+        gap: 24px;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+        margin: 0;
+      }
+      .side-item {
+        margin-bottom: 0;
+        position: relative;
+      }
+      .side-item a {
+        padding: 14px 10px;
+        border-radius: 10px;
+        justify-content: center;
+      }
+      .side-item a svg, .side-item a i {
+        width: 28px;
+        height: 28px;
+        min-width: 28px;
+        min-height: 28px;
+        max-width: 28px;
+        max-height: 28px;
+      }
+      .mobile-menu .side-item.active::after {
+        content: '';
+        position: absolute;
+        left: 16px;
+        right: 16px;
+        bottom: 2px;
+        height: 4px;
+        border-radius: 2px;
+        background: var(--color-primary-6);
+        transition: left 0.3s, right 0.3s;
+        margin-top: 6px;
+      }
+      main.main {
+        margin-left: 0 !important;
+        padding: 80px 4vw 24px 4vw;
+      }
+      #open_btn_container, #open_btn {
+        display: none !important;
+      }
+    }
+
+    #sidebar.collapsed .desktop-menu .side-item a {
+      justify-content: center;
+      gap: 0;
+    }
+    #sidebar.collapsed .desktop-menu .side-item a .item-description {
+      display: none;
+    }
+
+    #sidebar.collapsed #open_btn_container {
+      border-top: 1px solid #ddd;
+      margin-top: auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px 0;
+    }
+    
+    #sidebar.collapsed #open_btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      background: white;
+      color: var(--color-primary-6);
+      border: none;
+      transition: all 0.3s ease;
+    }
+
+    #sidebar.collapsed #open_btn:hover {
+      background: var(--color-primary-6);
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .product-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      width: 240px;
+      min-width: 200px;
+      max-width: 100%;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: box-shadow 0.2s;
+      aspect-ratio: 5/4;
+    }
+    @media (max-width: 768px) {
+      .product-card {
+        width: 100%;
+        max-width: 340px;
+        aspect-ratio: 1/1;
+        min-width: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav id="sidebar" class="desktop-sidebar">
+    <div id="sidebar_content">
+      <div id="user">
+        <img src="src/images/avatar.jpg" id="user_avatar" alt="Avatar" />
+        <p id="user_infos">
+          <span class="item-description">Fulano de Tal</span>
+          <span class="item-description">Cliente VIP</span>
+        </p>
+      </div>
+
+      <!-- Menu Desktop: ícone + texto -->
+      <ul id="side_items_desktop" class="side-items desktop-menu">
+        <li class="side-item active" data-section="home">
+          <a href="#">
+            <span style="display: flex; align-items: center;">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" /><path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" /></svg>
+            </span>
+            <span class="item-description">Início</span>
+          </a>
+        </li>
+        <li class="side-item" data-section="meus-pedidos">
+          <a href="#">
+            <span style="display: flex; align-items: center;">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path fill-rule="evenodd" d="M7.5 6v.75H5.513c-.96 0-1.764.724-1.865 1.679l-1.263 12A1.875 1.875 0 0 0 4.25 22.5h15.5a1.875 1.875 0 0 0 1.865-2.071l-1.263-12a1.875 1.875 0 0 0-1.865-1.679H16.5V6a4.5 4.5 0 1 0-9 0ZM12 3a3 3 0 0 0-3 3v.75h6V6a3 3 0 0 0-3-3Zm-3 8.25a3 3 0 1 0 6 0v-.75a.75.75 0 0 1 1.5 0v.75a4.5 4.5 0 1 1-9 0v-.75a.75.75 0 0 1 1.5 0v.75Z" clip-rule="evenodd" /></svg>
+            </span>
+            <span class="item-description">Pedidos</span>
+          </a>
+        </li>
+
+        <li class="side-item" data-section="meu-perfil">
+          <a href="#">
+            <span style="display: flex; align-items: center;">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" clip-rule="evenodd" /></svg>
+            </span>
+            <span class="item-description">Meu Perfil</span>
+          </a>
+        </li>
+        <li class="side-item" data-section="fale-conosco">
+          <a href="#">
+            <span style="display: flex; align-items: center;">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm11.378-3.917c-.89-.777-2.366-.777-3.255 0a.75.75 0 0 1-.988-1.129c1.454-1.272 3.776-1.272 5.23 0 1.513 1.324 1.513 3.518 0 4.842a3.75 3.75 0 0 1-.837.552c-.676.328-1.028.774-1.028 1.152v.75a.75.75 0 0 1-1.5 0v-.75c0-1.279 1.06-2.107 1.875-2.502.182-.088.351-.199.503-.331.83-.727.83-1.857 0-2.584ZM12 18a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" /></svg>
+            </span>
+            <span class="item-description">Ajuda</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div id="open_btn_container">
+      <button id="open_btn" title="Toggle Sidebar" aria-label="Toggle sidebar">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path fill-rule="evenodd" d="M7.72 12.53a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 1 1 1.06 1.06L9.31 12l6.97 6.97a.75.75 0 1 1-1.06 1.06l-7.5-7.5Z" clip-rule="evenodd" /></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Navbar Mobile -->
+  <nav id="navbar-mobile" class="mobile-navbar">
+    <div class="navbar-container">
+      <ul class="navbar-menu">
+        <li class="navbar-item active" data-section="home">
+          <a href="#" title="Início">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" /><path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" /></svg>
+          </a>
+        </li>
+        <li class="navbar-item" data-section="meus-pedidos">
+          <a href="#" title="Pedidos">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path fill-rule="evenodd" d="M7.5 6v.75H5.513c-.96 0-1.764.724-1.865 1.679l-1.263 12A1.875 1.875 0 0 0 4.25 22.5h15.5a1.875 1.875 0 0 0 1.865-2.071l-1.263-12a1.875 1.875 0 0 0-1.865-1.679H16.5V6a4.5 4.5 0 1 0-9 0ZM12 3a3 3 0 0 0-3 3v.75h6V6a3 3 0 0 0-3-3Zm-3 8.25a3 3 0 1 0 6 0v-.75a.75.75 0 0 1 1.5 0v.75a4.5 4.5 0 1 1-9 0v-.75a.75.75 0 0 1 1.5 0v.75Z" clip-rule="evenodd" /></svg>
+          </a>
+        </li>
+        <li class="navbar-item" data-section="meu-perfil">
+          <a href="#" title="Meu Perfil">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" clip-rule="evenodd" /></svg>
+          </a>
+        </li>
+        <li class="navbar-item" data-section="fale-conosco">
+          <a href="#" title="Ajuda">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm11.378-3.917c-.89-.777-2.366-.777-3.255 0a.75.75 0 0 1-.988-1.129c1.454-1.272 3.776-1.272 5.23 0 1.513 1.324 1.513 3.518 0 4.842a3.75 3.75 0 0 1-.837.552c-.676.328-1.028.774-1.028 1.152v.75a.75.75 0 0 1-1.5 0v-.75c0-1.279 1.06-2.107 1.875-2.502.182-.088.351-.199.503-.331.83-.727.83-1.857 0-2.584ZM12 18a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" /></svg>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+
+
+  <main class="main" id="main-content">
+    <!-- Conteúdo dinâmico carregado aqui -->
+  </main>
+
+  <script>
+    const mainContent = document.getElementById('main-content');
+    const sidebar = document.getElementById('sidebar');
+    const openBtn = document.getElementById('open_btn');
+    
+    // Elementos da navbar mobile
+    const mobileNavbar = document.getElementById('navbar-mobile');
+
+    const sidebarItemsDesktop = document.querySelectorAll('#side_items_desktop .side-item');
+    const sidebarItemsMobile = document.querySelectorAll('.navbar-item');
+
+    // Dados simulados para exibir no dashboard (poderia vir de API)
+    const clienteNome = "Fulano de Tal";
+    const fidelidadePedidos = 7;
+    const fidelidadeParaMimo = 3;
+    const ultimoPedido = {
+      status: "Em preparo",
+      itens: "1 Bolo de Chocolate, 6 Brigadeiros Gourmet",
+      total: "R$ 58,00"
+    };
+    const cupomAtivo = "20%OFF";
+    const destaqueSemana = {
+      titulo: "Bolo Red Velvet",
+      descricao: "com 20% de desconto até sexta-feira!"
+    };
+
+    // Produtos de exemplo
+    const cartProducts = [
+      {
+        id: 1,
+        name: 'Bolo de Chocolate',
+        desc: 'Massa fofinha, recheio cremoso e cobertura de chocolate belga.',
+        price: 45.00,
+        img: 'src/images/dish.png',
+        qty: 1
+      },
+      {
+        id: 2,
+        name: 'Torta de Limão',
+        desc: 'Base crocante, creme de limão e merengue maçaricado.',
+        price: 38.00,
+        img: 'src/images/dish2.png',
+        qty: 1
+      },
+      {
+        id: 3,
+        name: 'Brigadeiro Gourmet',
+        desc: 'Caixa com 6 unidades de brigadeiro feito com chocolate premium.',
+        price: 18.00,
+        img: 'src/images/dish3.png',
+        qty: 1
+      },
+      {
+        id: 4,
+        name: 'Cheesecake de Frutas Vermelhas',
+        desc: 'Cremoso, com calda artesanal de frutas vermelhas.',
+        price: 42.00,
+        img: 'src/images/dish4.png',
+        qty: 1
+      }
+    ];
+    let cart = JSON.parse(JSON.stringify(cartProducts));
+    let discountValue = 0;
+    const deliveryFee = 10.00;
+
+    // Função para renderizar conteúdo
+    function renderContent(section) {
+      switch (section) {
+        case 'home':
+          mainContent.innerHTML = `
+            <h1>Olá, ${clienteNome}! Que bom ter você aqui! 🍰</h1>
+            <div class="card">
+              <h3>Destaques da Semana</h3>
+              <p><strong>${destaqueSemana.titulo}</strong> - ${destaqueSemana.descricao}</p>
+            </div>
+            <div class="card">
+              <h3>Avalie seu último pedido</h3>
+              <p>Como foi sua experiência com a entrega e os doces?</p>
+              <div id="stars-container" style="font-size: 2rem; user-select:none;">
+                <button class="star" data-value="1">&#9733;</button>
+                <button class="star" data-value="2">&#9733;</button>
+                <button class="star" data-value="3">&#9733;</button>
+                <button class="star" data-value="4">&#9733;</button>
+                <button class="star" data-value="5">&#9733;</button>
+              </div>
+              <p id="rating-msg" style="color: var(--color-primary-6); font-weight: 600; margin-top: 8px;"></p>
+            </div>
+            <div class="card">
+              <h3>Cupom Ativo 🎁</h3>
+              <p>Use o código <strong>${cupomAtivo}</strong> para desconto especial em sua próxima compra!</p>
+            </div>
+            <div class="card">
+              <h3>Resumo de Fidelidade</h3>
+              <p>Você já pediu <strong>${fidelidadePedidos}</strong> vezes conosco.<br/>
+              Faltam <strong>${fidelidadeParaMimo}</strong> pedidos para ganhar um mimo especial!</p>
+            </div>
+          `;
+          setupStarRating();
+          break;
+
+        case 'meus-pedidos':
+          mainContent.innerHTML = `
+            <h1>Meus Pedidos</h1>
+            <div class="card">
+              <h3>Último Pedido</h3>
+              <p>Status: <strong>${ultimoPedido.status}</strong></p>
+              <p>Itens: ${ultimoPedido.itens}</p>
+              <p>Total: ${ultimoPedido.total}</p>
+            </div>
+            <div class="card">
+              <h3>Pedidos Anteriores</h3>
+              <p>Ainda não há pedidos anteriores cadastrados.</p>
+            </div>
+          `;
+          break;
+
+        case 'novo-pedido':
+          mainContent.innerHTML = `
+            <h1>Novo Pedido</h1>
+            <div style="display: grid; grid-template-columns: 1fr 350px; gap: 30px; align-items: start;">
+              <!-- Lista de Produtos -->
+              <div>
+                <h3 style="margin-bottom: 20px; color: var(--color-primary-6);">Produtos Disponíveis</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                  ${cartProducts.map(prod => `
+                    <div class="product-card" style="background: #fff; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); padding: 20px; display: flex; flex-direction: column; align-items: center; transition: box-shadow 0.2s;">
+                      <img src="${prod.img}" alt="${prod.name}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 12px; margin-bottom: 16px;">
+                      <h4 style="font-weight: 600; margin-bottom: 8px; text-align: center;">${prod.name}</h4>
+                      <p style="color: #666; font-size: 0.9rem; text-align: center; margin-bottom: 12px; line-height: 1.4;">${prod.desc}</p>
+                      <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 16px;">
+                        <span style="font-weight: 600; color: var(--color-primary-6); font-size: 1.1rem;">R$ ${prod.price.toFixed(2)}</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                          <button onclick="updateCartQty(${prod.id}, -1)" style="background: var(--color-primary-5); border: none; border-radius: 50%; width: 32px; height: 32px; color: white; font-weight: bold; cursor: pointer;">-</button>
+                          <span style="min-width: 20px; text-align: center; font-weight: 600;">${cart.find(item => item.id === prod.id)?.qty || 0}</span>
+                          <button onclick="updateCartQty(${prod.id}, 1)" style="background: var(--color-primary-6); border: none; border-radius: 50%; width: 32px; height: 32px; color: white; font-weight: bold; cursor: pointer;">+</button>
+                        </div>
+                      </div>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+
+              <!-- Carrinho -->
+              <div style="background: #fff; border-radius: 16px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); position: sticky; top: 20px;">
+                <h3 style="margin-bottom: 20px; color: var(--color-primary-6);">Seu Carrinho</h3>
+                
+                <!-- Itens do carrinho -->
+                <div style="margin-bottom: 24px;">
+                  <table style="width: 100%; border-collapse: collapse;">
+                    <tbody id="cart-items">
+                      <!-- Itens serão renderizados aqui -->
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Cupom de desconto -->
+                <div style="margin-bottom: 20px; padding: 16px; background: #f8f9fa; border-radius: 8px;">
+                  <div style="display: flex; gap: 8px;">
+                    <input type="text" id="discount-code" placeholder="Código de desconto" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.9rem;">
+                    <button id="apply-discount" style="background: var(--color-primary-6); color: white; border: none; border-radius: 4px; padding: 8px 12px; font-size: 0.9rem; cursor: pointer;">Aplicar</button>
+                  </div>
+                  <small style="color: #666; margin-top: 4px; display: block;">Use "DOCE10" para 10% de desconto</small>
+                </div>
+
+                <!-- Resumo -->
+                <div style="border-top: 1px solid #eee; padding-top: 16px;">
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">R$ 0,00</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #28a745;">
+                    <span>Desconto:</span>
+                    <span id="discount">- R$ 0,00</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
+                    <span>Entrega:</span>
+                    <span id="delivery">R$ ${deliveryFee.toFixed(2)}</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 1.1rem; border-top: 1px solid #eee; padding-top: 12px;">
+                    <span>Total:</span>
+                    <span id="total">R$ 0,00</span>
+                  </div>
+                </div>
+
+                <button style="width: 100%; background: var(--color-primary-6); color: white; border: none; border-radius: 8px; padding: 16px; font-weight: 600; font-size: 1.1rem; cursor: pointer; margin-top: 20px;">Finalizar Pedido</button>
+              </div>
+            </div>
+
+            <style>
+              .cart-product-info {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+              }
+              .cart-product-img {
+                width: 50px;
+                height: 50px;
+                object-fit: cover;
+                border-radius: 8px;
+              }
+              .cart-product-title {
+                font-weight: 600;
+                margin-bottom: 4px;
+              }
+              .cart-product-desc {
+                font-size: 0.9rem;
+                color: #666;
+              }
+              .cart-qty-controls {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+              }
+              .cart-qty-btn {
+                background: var(--color-primary-5);
+                border: none;
+                border-radius: 50%;
+                width: 28px;
+                height: 28px;
+                color: white;
+                font-weight: bold;
+                cursor: pointer;
+              }
+              .cart-remove-btn {
+                background: #dc3545;
+                border: none;
+                border-radius: 4px;
+                color: white;
+                padding: 4px 8px;
+                cursor: pointer;
+                font-size: 0.9rem;
+              }
+              @media (max-width: 768px) {
+                .novo-pedido-container {
+                  grid-template-columns: 1fr;
+                }
+                .product-card {
+                  max-width: 100%;
+                }
+              }
+            </style>
+          `;
+          renderCartItems();
+          setupCartEvents();
+          break;
+
+        case 'acompanhar-entrega':
+          mainContent.innerHTML = `
+            <h1>Acompanhar Entrega</h1>
+            <div class="delivery-status-block" style="max-width: 350px; margin: 32px auto 100px auto; background: #fff; border-radius: 24px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); padding: 32px 24px; text-align: center;">
+              <h2 style="font-size: 2rem; font-weight: 700; color: #23272f; margin-bottom: 6px;">On the way</h2>
+              <p style="color: #5a6170; font-size: 1.1rem; margin-bottom: 28px;">Your cargo is on delivery.</p>
+              <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 28px;">
+                <div style="background: #23272f; border-radius: 40px; height: 80px; width: 100%; max-width: 340px; display: flex; align-items: center; padding: 0 12px;">
+                  <div style="position: relative; z-index: 2; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
+                    <div style="background: #eaff2a; border-radius: 50%; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center;">
+                      <i class="fa-solid fa-box" style="font-size: 1.7rem; color: #23272f;"></i>
+                    </div>
+                  </div>
+                  <div style="flex: 1; height: 12px; background: #eaff2a; margin: 0 0 -2px 0; position: relative; z-index: 1;"></div>
+                  <div style="position: relative; z-index: 2; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
+                    <div style="background: #eaff2a; border-radius: 50%; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center;">
+                      <i class="fa-solid fa-truck" style="font-size: 1.7rem; color: #23272f;"></i>
+                    </div>
+                  </div>
+                  <div style="flex: 1; height: 12px; background: #bfc2b7; margin: 0 0 -2px 0; position: relative; z-index: 1;"></div>
+                  <div style="position: relative; z-index: 2; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; opacity: 0.5;">
+                    <div style="background: #bfc2b7; border-radius: 50%; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center;">
+                      <i class="fa-solid fa-house" style="font-size: 1.7rem; color: #23272f;"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div style="color: #5a6170; font-size: 1.1rem; margin-bottom: 8px;">Estimated delivery time</div>
+              <div style="font-size: 2.5rem; font-weight: 700; color: #23272f; letter-spacing: 2px;">09 : 20</div>
+            </div>
+          `;
+          break;
+
+        case 'meu-perfil':
+          mainContent.innerHTML = `
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 16px; margin-bottom: 24px;">
+              <div id="profile-pic-wrapper" style="position: relative; width: 110px; height: 110px; display: flex; align-items: center; justify-content: center;">
+                <img id="profile-pic" src="src/images/avatar.jpg" alt="Foto do Usuário" style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 3px solid var(--color-primary-6); background: #fff; display: block; margin: 0 auto;" />
+                <input type="file" id="profile-pic-input" accept="image/*" style="display: none;" />
+                <button id="remove-pic-btn" title="Remover foto" style="position: absolute; top: 0; right: 0; background: #ff5959; color: #fff; border: none; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.10);">
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
+              </div>
+              <span id="edit-photo-text" style="font-weight: 600; color: var(--color-primary-6); cursor: pointer;">Editar foto do perfil</span>
+            </div>
+            <div class="card" id="profile-card" style="text-align: center; max-width: 400px; margin: 0 auto;">
+              <div id="profile-view-mode">
+                <div style='text-align: left; margin-bottom: 12px;'><strong>Nome:</strong> <span id="view-name">Fulano de Tal</span></div>
+                <div style='text-align: left; margin-bottom: 12px;'><strong>E-mail:</strong> <span id="view-email">fulano@email.com</span></div>
+                <div style='text-align: left; margin-bottom: 12px;'><strong>Telefone:</strong> <span id="view-phone">(00) 00000-0000</span></div>
+                <button id="edit-profile-btn" title="Editar dados" style="background: none; border: none; color: var(--color-primary-6); font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; gap: 6px; margin: 0 auto;">
+                  <i class="fa-solid fa-pen-to-square"></i> Editar
+                </button>
+              </div>
+              <form id="profile-form" style="display: none; flex-direction: column; gap: 16px; align-items: center; margin-top: 12px;">
+                <div style='width: 100%; text-align: left;'>
+                  <label for="profile-name" style="font-weight: 500; color: var(--color-primary-6);">Nome</label>
+                  <input id="profile-name" name="name" type="text" value="Fulano de Tal" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; margin-top: 4px;" required />
+                </div>
+                <div style='width: 100%; text-align: left;'>
+                  <label for="profile-email" style="font-weight: 500; color: var(--color-primary-6);">E-mail</label>
+                  <input id="profile-email" name="email" type="email" value="fulano@email.com" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; margin-top: 4px;" required />
+                </div>
+                <div style='width: 100%; text-align: left;'>
+                  <label for="profile-phone" style="font-weight: 500; color: var(--color-primary-6);">Telefone</label>
+                  <input id="profile-phone" name="phone" type="tel" value="(00) 00000-0000" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; margin-top: 4px;" required />
+                </div>
+                <div style='width: 100%; text-align: left;'>
+                  <label for="profile-password" style="font-weight: 500; color: var(--color-primary-6);">Senha</label>
+                  <input id="profile-password" name="password" type="password" value="" placeholder="Digite uma nova senha" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; margin-top: 4px;" />
+                </div>
+                <button type="submit" style="background: var(--color-primary-6); color: #fff; border: none; border-radius: 8px; padding: 10px 24px; font-weight: 600; cursor: pointer; margin-top: 8px;">Salvar Alterações</button>
+              </form>
+            </div>
+          `;
+          setupProfilePicEdit();
+          setupProfileEditToggle();
+          break;
+
+        case 'fale-conosco':
+          mainContent.innerHTML = `
+            <h1>Fale Conosco</h1>
+            <div class="card">
+              <p>Estamos aqui para ajudar! Entre em contato conosco (funcionalidade futura).</p>
+            </div>
+          `;
+          break;
+
+        case 'sair':
+          mainContent.innerHTML = `<h1>Você saiu da sua conta.</h1><p>Até logo!</p>`;
+          break;
+
+        default:
+          mainContent.innerHTML = `<h1>Seja bem-vindo(a)!</h1>`;
+      }
+    }
+
+    // Inicializa conteúdo na home
+    renderContent('home');
+    
+    // Garante que as funções sejam executadas após o DOM estar pronto
+    setTimeout(() => {
+      setupStarRating();
+    }, 100);
+
+    // Ativa/desativa botão sidebar desktop
+    openBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('collapsed');
+      mainContent.classList.toggle('collapsed');
+
+      // Alterna ícone do botão
+      if (sidebar.classList.contains('collapsed')) {
+        openBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 0 1 0-1.06l-7.5 7.5a.75.75 0 1 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 1 1 1.06-1.06l7.5 7.5Z" clip-rule="evenodd" /></svg>';
+      } else {
+        openBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path fill-rule="evenodd" d="M7.72 12.53a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 1 1 1.06 1.06L9.31 12l6.97 6.97a.75.75 0 1 1-1.06 1.06l-7.5-7.5Z" clip-rule="evenodd" /></svg>';
+      }
+    });
+
+
+
+    // Sincroniza clique e troca ativo nos menus desktop e mobile
+    function setActiveSection(section) {
+      sidebarItemsDesktop.forEach(item => {
+        if (item.dataset.section === section) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+      sidebarItemsMobile.forEach(item => {
+        if (item.dataset.section === section) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+      renderContent(section);
+
+
+    }
+
+    sidebarItemsDesktop.forEach(item => {
+      item.addEventListener('click', e => {
+        e.preventDefault();
+        setActiveSection(item.dataset.section);
+      });
+    });
+
+    sidebarItemsMobile.forEach(item => {
+      item.addEventListener('click', e => {
+        e.preventDefault();
+        setActiveSection(item.dataset.section);
+      });
+    });
+
+
+
+    // Sistema de avaliação com estrelas
+    function setupStarRating() {
+      const stars = document.querySelectorAll('#stars-container .star');
+      const ratingMsg = document.getElementById('rating-msg');
+      
+      if (!stars.length || !ratingMsg) return;
+      
+      let rating = 0;
+
+      stars.forEach(star => {
+        star.classList.remove('selected');
+        star.addEventListener('click', () => {
+          rating = parseInt(star.dataset.value);
+          stars.forEach(s => {
+            s.classList.toggle('selected', parseInt(s.dataset.value) <= rating);
+          });
+          ratingMsg.textContent = `Você avaliou ${rating} estrela${rating > 1 ? 's' : ''}. Obrigado!`;
+        });
+      });
+    }
+
+    // Função para editar/remover foto do perfil
+    function setupProfilePicEdit() {
+      const picInput = document.getElementById('profile-pic-input');
+      const editText = document.getElementById('edit-photo-text');
+      const removeBtn = document.getElementById('remove-pic-btn');
+      const picImg = document.getElementById('profile-pic');
+      
+      if (!picInput || !editText || !removeBtn || !picImg) return;
+      
+      const defaultPic = 'src/images/avatar.jpg';
+
+      editText.addEventListener('click', (e) => {
+        e.preventDefault();
+        picInput.click();
+      });
+
+      picInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(ev) {
+            picImg.src = ev.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      removeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        picImg.src = defaultPic;
+        picInput.value = '';
+      });
+    }
+
+    // Função para alternar visualização/edição do perfil
+    function setupProfileEditToggle() {
+      const viewMode = document.getElementById('profile-view-mode');
+      const form = document.getElementById('profile-form');
+      const editBtn = document.getElementById('edit-profile-btn');
+      const nameSpan = document.getElementById('view-name');
+      const emailSpan = document.getElementById('view-email');
+      const phoneSpan = document.getElementById('view-phone');
+      const nameInput = document.getElementById('profile-name');
+      const emailInput = document.getElementById('profile-email');
+      const phoneInput = document.getElementById('profile-phone');
+      const passwordInput = document.getElementById('profile-password');
+
+      if (!viewMode || !form || !editBtn) return;
+
+      editBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        viewMode.style.display = 'none';
+        form.style.display = 'flex';
+      });
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (nameSpan && nameInput) nameSpan.textContent = nameInput.value;
+        if (emailSpan && emailInput) emailSpan.textContent = emailInput.value;
+        if (phoneSpan && phoneInput) phoneSpan.textContent = phoneInput.value;
+        if (passwordInput) passwordInput.value = '';
+        form.style.display = 'none';
+        viewMode.style.display = 'block';
+      });
+    }
+
+    function renderCartItems() {
+      const tbody = document.getElementById('cart-items');
+      if (!tbody) return;
+      
+      tbody.innerHTML = '';
+      cart.forEach((item, idx) => {
+        tbody.innerHTML += `
+          <tr style="background: #fff; border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+            <td>
+              <div class="cart-product-info">
+                <img src="${item.img}" class="cart-product-img" alt="${item.name}" />
+                <div>
+                  <div class="cart-product-title">${item.name}</div>
+                  <div class="cart-product-desc">${item.desc}</div>
+                </div>
+              </div>
+            </td>
+            <td style="text-align: center;">
+              <div class="cart-qty-controls">
+                <button class="cart-qty-btn" onclick="window.updateCartQty(${item.id}, -1)">-</button>
+                <span>${item.qty}</span>
+                <button class="cart-qty-btn" onclick="window.updateCartQty(${item.id}, 1)">+</button>
+              </div>
+            </td>
+            <td style="text-align: right; font-weight: 600; color: #23272f;">R$ ${(item.price * item.qty).toFixed(2)}</td>
+            <td style="text-align: center;">
+              <button class="cart-remove-btn" onclick="window.removeCartItem(${item.id})">🗑️</button>
+            </td>
+          </tr>
+        `;
+      });
+      updateCartSummary();
+    }
+
+    window.updateCartQty = function(id, delta) {
+      cart = cart.map(item => {
+        if (item.id === id) {
+          const newQty = Math.max(1, item.qty + delta);
+          return { ...item, qty: newQty };
+        }
+        return item;
+      });
+      renderCartItems();
+    }
+
+    window.removeCartItem = function(id) {
+      cart = cart.filter(item => item.id !== id);
+      renderCartItems();
+    }
+
+    function updateCartSummary() {
+      const subtotalEl = document.getElementById('subtotal');
+      const discountEl = document.getElementById('discount');
+      const deliveryEl = document.getElementById('delivery');
+      const totalEl = document.getElementById('total');
+      
+      if (!subtotalEl || !discountEl || !deliveryEl || !totalEl) return;
+      
+      const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+      const discount = discountValue;
+      const total = subtotal - discount + deliveryFee;
+      
+      subtotalEl.textContent = `R$ ${subtotal.toFixed(2)}`;
+      discountEl.textContent = `- R$ ${discount.toFixed(2)}`;
+      deliveryEl.textContent = `R$ ${deliveryFee.toFixed(2)}`;
+      totalEl.textContent = `R$ ${total.toFixed(2)}`;
+    }
+
+    function setupCartEvents() {
+      const discountBtn = document.getElementById('apply-discount');
+      if (discountBtn) {
+        discountBtn.onclick = function() {
+          const codeInput = document.getElementById('discount-code');
+          if (!codeInput) return;
+          
+          const code = codeInput.value.trim();
+          if (code === 'DOCE10') {
+            discountValue = cart.reduce((sum, item) => sum + item.price * item.qty, 0) * 0.1;
+          } else {
+            discountValue = 0;
+          }
+          updateCartSummary();
+        }
+      }
+    }
+  </script>
+</body>
+</html>

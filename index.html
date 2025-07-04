@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="src/styles/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <title>Landing page</title>
+</head>
+<body>
+    <header>
+        <nav id="navbar">
+            <i id="nav_logo" style="display: flex; align-items: center; gap: 8px;">
+              <span style="display: flex; align-items: center;">
+                <!-- SVG personalizado -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="32" height="32" style="vertical-align: middle;"><path d="m15 1.784-.796.795a1.125 1.125 0 1 0 1.591 0L15 1.784ZM12 1.784l-.796.795a1.125 1.125 0 1 0 1.591 0L12 1.784ZM9 1.784l-.796.795a1.125 1.125 0 1 0 1.591 0L9 1.784ZM9.75 7.547c.498-.021.998-.035 1.5-.042V6.75a.75.75 0 0 1 1.5 0v.755c.502.007 1.002.021 1.5.042V6.75a.75.75 0 0 1 1.5 0v.88l.307.022c1.55.117 2.693 1.427 2.693 2.946v1.018a62.182 62.182 0 0 0-13.5 0v-1.018c0-1.519 1.143-2.829 2.693-2.946l.307-.022v-.88a.75.75 0 0 1 1.5 0v.797ZM12 12.75c-2.472 0-4.9.184-7.274.54-1.454.217-2.476 1.482-2.476 2.916v.384a4.104 4.104 0 0 1 2.585.364 2.605 2.605 0 0 0 2.33 0 4.104 4.104 0 0 1 3.67 0 2.605 2.605 0 0 0 2.33 0 4.104 4.104 0 0 1 3.67 0 2.605 2.605 0 0 0 2.33 0 4.104 4.104 0 0 1 2.585-.364v-.384c0-1.434-1.022-2.7-2.476-2.917A49.138 49.138 0 0 0 12 12.75ZM21.75 18.131a2.604 2.604 0 0 0-1.915.165 4.104 4.104 0 0 1-3.67 0 2.605 2.605 0 0 0-2.33 0 4.104 4.104 0 0 1-3.67 0 2.605 2.605 0 0 0-2.33 0 4.104 4.104 0 0 1-3.67 0 2.604 2.604 0 0 0-1.915-.165v2.494c0 1.035.84 1.875 1.875 1.875h15.75c1.035 0 1.875-.84 1.875-1.875v-2.494Z" /></svg>
+              </span>
+              <span class="dancing-script">Doce Sensações</span>
+            </i>
+
+            <ul id="nav_list">
+                <li class="nav-item active">
+                    <a href="#home">Início</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#menu">Cardápio</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#testimonials">Avaliações</a>
+                </li>
+            </ul>
+
+            <a href="src/login.html" class="btn-default">
+  Peça aqui
+</a>
+
+            <button id="mobile_btn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </nav>
+
+        <div id="mobile_menu">
+            <ul id="mobile_nav_list">
+                <li class="nav-item">
+                    <a href="#home">Início</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#menu">Cardápio</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#testimonials">Avaliações</a>
+                </li>
+            </ul>
+
+            <a href="src/login.html" class="btn-default">Peça aqui</a>
+        </div>
+    </header>
+
+    <main id="content">
+        <section id="home">
+  <div class="shape"></div>
+
+  <div class="content">
+    <div id="cta">
+      <h1 class="title">
+        O sabor que vai até <span>você</span>
+      </h1>
+
+      <p class="description">
+        Na Doce Sensações, cada doce é preparado com carinho, criatividade e ingredientes selecionados para transformar momentos simples em lembranças inesquecíveis.
+      </p>
+
+      <div id="cta_buttons">
+        <a href="#" class="btn-default">Ver cardápio</a>
+
+        <a href="tel:+5562986483753" id="phone_button">
+          <button class="btn-default">
+            <i class="fa-solid fa-phone"></i>
+          </button>
+          (62) 98648-3753
+        </a>
+      </div>
+
+      <div class="social-media-buttons">
+        <a href="https://wa.me/5562986483753">
+          <i class="fa-brands fa-whatsapp"></i>
+        </a>
+        <a href="https://www.instagram.com/docesensacoes2020?igsh=NGw1bThhY3MwMDQz">
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+        <a href="https://www.tiktok.com/@ligiasthephany?_t=ZM-8xeCm26QApp&_r=1">
+          <i class="fa-brands fa-tiktok"></i>
+        </a>
+      </div>
+    </div>
+
+    <div id="banner">
+      <img src="src/images/hero.png" alt="Imagem Confeitaria">
+    </div>
+  </div>
+</section>
+
+<style>
+  #home {
+    position: relative;
+    padding: 40px 20px;
+    background-color: #fff9ea;
+  }
+
+  .content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+  }
+
+  #cta {
+    flex: 1;
+    min-width: 280px;
+  }
+
+  #banner {
+    flex: 1;
+    min-width: 280px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #banner img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .title {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+
+  .description {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+
+  #cta_buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .btn-default {
+    background-color: #f4b400;
+    color: #fff;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.3s;
+  }
+
+  .btn-default:hover {
+    background-color: #d69500;
+  }
+
+  #phone_button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .social-media-buttons {
+    display: flex;
+    gap: 15px;
+    font-size: 1.5rem;
+  }
+
+  .social-media-buttons a {
+    color: #333;
+    transition: color 0.3s;
+  }
+
+  .social-media-buttons a:hover {
+    color: #f4b400;
+  }
+
+  @media (max-width: 768px) {
+    .content {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    #banner {
+      margin-top: 20px;
+    }
+
+    .title {
+      font-size: 2rem;
+    }
+
+    .description {
+      font-size: 1rem;
+    }
+  }
+
+  .dancing-script {
+    font-family: 'Dancing Script', cursive;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+  }
+</style>
+
+        <section id="menu">
+            <h2 class="section-title">Cardápio</h2>
+            <h3 class="section-subtitle">Nossos pratos especiais</h3>
+
+            <div id="dishes">
+                <div class="dish">
+                    <div class="dish-heart">
+                        <i class="fa-solid fa-heart"></i>
+                    </div>
+
+                    <img src="src/images/dish.png" class="dish-image" alt="">
+
+                    <h3 class="dish-title">
+                        Donuts
+                    </h3>
+
+                    <span class="dish-description">
+                        Macio, recheado e coberto com chocolate.
+
+                    </span>
+
+                    <div class="dish-rate">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <span>(500+)</span>
+                    </div>
+
+                    <div class="dish-price">
+                        <h4>R$6,50</h4>
+                        <button class="btn-default">
+                            <i class="fa-solid fa-basket-shopping"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="dish">
+                    <div class="dish-heart">
+                        <i class="fa-solid fa-heart"></i>
+                    </div>
+
+                    <img src="src/images/dish2.png" class="dish-image" alt="">
+
+                    <h3 class="dish-title">
+                        Cupcake
+                    </h3>
+
+                    <span class="dish-description">
+                        Massa fofinha com cobertura cremosa irresistível.
+                    </span>
+
+                    <div class="dish-rate">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <span>(500+)</span>
+                    </div>
+
+                    <div class="dish-price">
+                        <h4>R$5,00</h4>
+                        <button class="btn-default">
+                            <i class="fa-solid fa-basket-shopping"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="dish">
+                    <div class="dish-heart">
+                        <i class="fa-solid fa-heart"></i>
+                    </div>
+
+                    <img src="src/images/dish3.png" class="dish-image" alt="">
+
+                    <h3 class="dish-title">
+                        Cento de Docinhos
+                    </h3>
+
+                    <span class="dish-description">
+                        Variedade deliciosa para festas especiais.
+                    </span>
+
+                    <div class="dish-rate">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <span>(500+)</span>
+                    </div>
+
+                    <div class="dish-price">
+                        <h4>R$100,00</h4>
+                        <button class="btn-default">
+                            <i class="fa-solid fa-basket-shopping"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="dish">
+                    <div class="dish-heart">
+                        <i class="fa-solid fa-heart"></i>
+                    </div>
+
+                    <img src="src/images/dish4.png" class="dish-image" alt="">
+
+                    <h3 class="dish-title">
+                        Brownie
+                    </h3>
+
+                    <span class="dish-description">
+                        Chocolate intenso com casquinha crocante perfeita.
+                    </span>
+
+                    <div class="dish-rate">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <span>(500+)</span>
+                    </div>
+
+                    <div class="dish-price">
+                        <h4>R$10,00</h4>
+                        <button class="btn-default">
+                            <i class="fa-solid fa-basket-shopping"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimonials">
+            <img src="src/images/chef.png" id="testimonial_chef" alt="">
+
+            <div id="testimonials_content">
+                <h2 class="section-title">
+                    Depoimentos
+                </h2>
+                <h3 class="section-subtitle">
+                    O que os clientes falam sobre nós
+                </h3>
+
+                <div id="feedbacks">
+                    <div class="feedback">
+                        <img src="src/images/avatar.png" class="feedback-avatar" alt="">
+
+                        <div class="feedback-content">
+                            <p>
+                                Fulana de Tal
+                                <span>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                </span>
+                            </p>
+                            <p>
+                                "Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                                Repellat voluptatibus cumque dolor ea est quae alias necessitatibus"
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="feedback">
+                        <img src="src/images/avatar.png" class="feedback-avatar" alt="">
+
+                        <div class="feedback-content">
+                            <p>
+                                Fulana de Tal
+                                <span>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                </span>
+                            </p>
+                            <p>
+                                "Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                                Repellat voluptatibus cumque dolor ea est quae alias necessitatibus"
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn-default">
+                    Ver mais avaliações
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <img src="src/images/wave.svg" alt="">
+
+        <div id="footer_items">
+            <span id="copyright">
+                &copy 2025 Ligia Magalhães
+            </span>
+
+            <div class="social-media-buttons">
+                <a href="">
+                    <i class="fa-brands fa-whatsapp"></i>
+                </a>
+
+                <a href="">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <a href="">
+                    <i class="fa-brands fa-facebook"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+    <script src="src/javascript/script.js"></script>
+    <script src="src/javascript/api-connection.js"></script>
+</body>
+</html>
