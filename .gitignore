@@ -13,7 +13,10 @@ yarn-error.log*
 
 # Google Sheets credentials
 google-credentials.json
+# Ignore all JSON files except package.json
 *.json
+!package.json
+!package-lock.json
 
 # Logs
 logs
