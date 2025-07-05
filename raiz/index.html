@@ -2,26 +2,14 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#f4b400">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Doce Sensações">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="description" content="O sabor que vai até você - Confeitaria artesanal">
-    
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="images/icon-192.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="images/icon-192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="images/icon-512.png">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="styles/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://unpkg.com/scrollreveal"></script>
-    <title>Doce Sensações</title>
+    <title>Landing page</title>
 </head>
 <body>
     <header>
@@ -457,35 +445,5 @@
     </footer>
     <script src="javascript/script.js"></script>
     <script src="javascript/api-connection.js"></script>
-    
-    <!-- Service Worker para PWA -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(function(registration) {
-                        console.log('Service Worker registrado com sucesso:', registration.scope);
-                    })
-                    .catch(function(error) {
-                        console.log('Falha ao registrar Service Worker:', error);
-                    });
-            });
-        }
-
-        // Instalar PWA
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            
-            // Mostrar botão de instalar se desejar
-            console.log('PWA pode ser instalado');
-        });
-
-        // Detectar se está rodando como PWA
-        if (window.matchMedia('(display-mode: standalone)').matches) {
-            document.body.classList.add('pwa-mode');
-        }
-    </script>
 </body>
 </html>
