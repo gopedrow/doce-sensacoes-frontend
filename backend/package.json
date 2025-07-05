@@ -9,7 +9,8 @@
     "test": "jest",
     "setup": "node scripts/setup.js",
     "auth": "node scripts/google-auth.js",
-    "test-server": "node config-temp.js"
+    "test-server": "node config-temp.js",
+    "test-sheets": "node test-google-sheets.js"
   },
   "keywords": ["confectionery", "ecommerce", "api", "nodejs", "google-sheets"],
   "author": "Doce Sensações",

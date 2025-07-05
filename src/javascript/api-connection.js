@@ -3,7 +3,7 @@
 // =====================================================
 
 // Configuração da API
-const API_BASE_URL = 'http://localhost:3001/api';
+const API_BASE_URL = 'https://doce-sensacoes-backend-17.onrender.com/api';
 
 // Classe para gerenciar conexões com a API
 class DoceSensacoesAPI {
@@ -251,7 +251,7 @@ function initializeAPI() {
         })
         .catch(error => {
             console.error('❌ Erro ao conectar com o backend:', error);
-            console.log('💡 Certifique-se de que o servidor está rodando em http://localhost:3001');
+            console.log('💡 Verifique se a API está online em https://doce-sensacoes-backend-17.onrender.com');
         });
 }
 

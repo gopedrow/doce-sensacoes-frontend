@@ -1,12 +1,68 @@
 const { google } = require('googleapis');
 require('dotenv').config();
 
-// Configuração da autenticação Google
-const auth = new google.auth.GoogleAuth({
-  credentials: {
+// Função para processar a chave privada corretamente
+function processPrivateKey(privateKey) {
+  if (!privateKey) {
+    throw new Error('GOOGLE_PRIVATE_KEY não está definida');
+  }
+
+  // Remove aspas extras se existirem
+  let processedKey = privateKey.replace(/^["']|["']$/g, '');
+  
+  // Se a chave já contém quebras de linha reais, não precisa processar
+  if (processedKey.includes('\n')) {
+    return processedKey;
+  }
+  
+  // Substitui \\n por quebras de linha reais
+  processedKey = processedKey.replace(/\\n/g, '\n');
+  
+  // Verifica se a chave tem o formato correto
+  if (!processedKey.includes('-----BEGIN PRIVATE KEY-----') || 
+      !processedKey.includes('-----END PRIVATE KEY-----')) {
+    throw new Error('Formato da chave privada inválido');
+  }
+  
+  return processedKey;
+}
+
+// Função para carregar credenciais
+function loadCredentials() {
+  // Primeiro, tenta carregar do arquivo JSON (desenvolvimento local)
+  try {
+    if (require('fs').existsSync('./google-credentials.json')) {
+      const credentials = require('fs').readFileSync('./google-credentials.json', 'utf8');
+      return JSON.parse(credentials);
+    }
+  } catch (error) {
+    console.log('📝 Arquivo google-credentials.json não encontrado, usando variáveis de ambiente');
+  }
+  
+  // Se não encontrar arquivo, usa variáveis de ambiente (produção)
+  if (!process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL || !process.env.GOOGLE_PRIVATE_KEY) {
+    throw new Error('Credenciais não encontradas. Configure GOOGLE_SERVICE_ACCOUNT_EMAIL e GOOGLE_PRIVATE_KEY');
+  }
+  
+  return {
+    type: 'service_account',
+    project_id: 'doce-sensacoes-backend',
+    private_key_id: '1d3699a668c58cc12ddb24842f774ed63cb0230a',
+    private_key: processPrivateKey(process.env.GOOGLE_PRIVATE_KEY),
     client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-    private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-  },
+    client_id: '103598523462427861445',
+    auth_uri: 'https://accounts.google.com/o/oauth2/auth',
+    token_uri: 'https://oauth2.googleapis.com/token',
+    auth_provider_x509_cert_url: 'https://www.googleapis.com/oauth2/v1/certs',
+    client_x509_cert_url: `https://www.googleapis.com/robot/v1/metadata/x509/${encodeURIComponent(process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL)}`,
+    universe_domain: 'googleapis.com'
+  };
+}
+
+// Configuração da autenticação Google
+const credentials = loadCredentials();
+const auth = new google.auth.GoogleAuth({
+  credentials: credentials,
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
 
@@ -43,6 +99,11 @@ const HEADERS = {
 // Função para testar conexão
 async function testConnection() {
   try {
+    // Verificar se o ID da planilha está definido
+    if (!SPREADSHEET_ID) {
+      throw new Error('GOOGLE_SHEETS_ID não está definida');
+    }
+
     const response = await sheets.spreadsheets.get({
       spreadsheetId: SPREADSHEET_ID,
     });
@@ -54,6 +115,23 @@ async function testConnection() {
     return true;
   } catch (error) {
     console.error('❌ Erro ao conectar com Google Sheets:', error.message);
+    
+    // Logs adicionais para debug
+    if (error.message.includes('DECODER routines')) {
+      console.error('💡 Dica: Verifique se a GOOGLE_PRIVATE_KEY está no formato correto');
+      console.error('   - Deve começar com "-----BEGIN PRIVATE KEY-----"');
+      console.error('   - Deve terminar com "-----END PRIVATE KEY-----"');
+      console.error('   - As quebras de linha devem estar como \\n');
+    }
+    
+    if (error.message.includes('invalid_grant') || error.message.includes('unauthorized')) {
+      console.error('💡 Dica: Verifique se o email da Service Account tem acesso à planilha');
+    }
+    
+    if (error.message.includes('notFound')) {
+      console.error('💡 Dica: Verifique se o GOOGLE_SHEETS_ID está correto');
+    }
+    
     return false;
   }
 }
