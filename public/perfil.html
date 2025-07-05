@@ -535,7 +535,7 @@
   <nav id="sidebar" class="desktop-sidebar">
     <div id="sidebar_content">
       <div id="user">
-        <img src="src/images/avatar.jpg" id="user_avatar" alt="Avatar" />
+        <img src="images/avatar.jpg" id="user_avatar" alt="Avatar" />
         <p id="user_infos">
           <span class="item-description">Fulano de Tal</span>
           <span class="item-description">Cliente VIP</span>
@@ -654,7 +654,7 @@
         name: 'Bolo de Chocolate',
         desc: 'Massa fofinha, recheio cremoso e cobertura de chocolate belga.',
         price: 45.00,
-        img: 'src/images/dish.png',
+        img: 'images/dish.png',
         qty: 1
       },
       {
@@ -662,7 +662,7 @@
         name: 'Torta de Limão',
         desc: 'Base crocante, creme de limão e merengue maçaricado.',
         price: 38.00,
-        img: 'src/images/dish2.png',
+        img: 'images/dish2.png',
         qty: 1
       },
       {
@@ -670,7 +670,7 @@
         name: 'Brigadeiro Gourmet',
         desc: 'Caixa com 6 unidades de brigadeiro feito com chocolate premium.',
         price: 18.00,
-        img: 'src/images/dish3.png',
+        img: 'images/dish3.png',
         qty: 1
       },
       {
@@ -678,7 +678,7 @@
         name: 'Cheesecake de Frutas Vermelhas',
         desc: 'Cremoso, com calda artesanal de frutas vermelhas.',
         price: 42.00,
-        img: 'src/images/dish4.png',
+        img: 'images/dish4.png',
         qty: 1
       }
     ];
@@ -904,7 +904,7 @@
           mainContent.innerHTML = `
             <div style="display: flex; flex-direction: column; align-items: center; gap: 16px; margin-bottom: 24px;">
               <div id="profile-pic-wrapper" style="position: relative; width: 110px; height: 110px; display: flex; align-items: center; justify-content: center;">
-                <img id="profile-pic" src="src/images/avatar.jpg" alt="Foto do Usuário" style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 3px solid var(--color-primary-6); background: #fff; display: block; margin: 0 auto;" />
+                <img id="profile-pic" src="images/avatar.jpg" alt="Foto do Usuário" style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 3px solid var(--color-primary-6); background: #fff; display: block; margin: 0 auto;" />
                 <input type="file" id="profile-pic-input" accept="image/*" style="display: none;" />
                 <button id="remove-pic-btn" title="Remover foto" style="position: absolute; top: 0; right: 0; background: #ff5959; color: #fff; border: none; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.10);">
                   <i class="fa-solid fa-xmark"></i>
@@ -1054,7 +1054,7 @@
       
       if (!picInput || !editText || !removeBtn || !picImg) return;
       
-      const defaultPic = 'src/images/avatar.jpg';
+      const defaultPic = 'images/avatar.jpg';
 
       editText.addEventListener('click', (e) => {
         e.preventDefault();

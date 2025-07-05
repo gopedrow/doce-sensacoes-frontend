@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: doce-sensacoes-frontend
+    env: static
+    buildCommand: null
+    staticPublishPath: ./public
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html 

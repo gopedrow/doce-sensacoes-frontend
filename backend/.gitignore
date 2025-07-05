@@ -13,10 +13,6 @@ yarn-error.log*
 
 # Google Sheets credentials
 google-credentials.json
-# Ignore all JSON files except package.json
-*.json
-!package.json
-!package-lock.json
 
 # Logs
 logs
@@ -28,7 +24,7 @@ pids
 *.seed
 *.pid.lock
 
-# Coverage directory used by tools like istanbul
+# Coverage directory
 coverage/
 
 # nyc test coverage
@@ -48,9 +44,6 @@ jspm_packages/
 
 # Yarn Integrity file
 .yarn-integrity
-
-# dotenv environment variables file
-.env
 
 # IDE files
 .vscode/
@@ -73,7 +66,4 @@ build/
 
 # Temporary files
 tmp/
-temp/
-
-# Backend clean folder (separate repo)
-backend-clean/ 
+temp/ 
