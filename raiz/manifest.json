@@ -6,9 +6,10 @@
   "display": "standalone",
   "background_color": "#fff9ea",
   "theme_color": "#f4b400",
-  "orientation": "portrait",
+  "orientation": "portrait-primary",
   "scope": "/",
   "lang": "pt-BR",
+  "categories": ["food", "business"],
   "icons": [
     {
       "src": "images/icon-192.png",
@@ -21,6 +22,14 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "wide"
     }
   ]
 } 
