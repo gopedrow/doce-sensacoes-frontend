@@ -1,7 +1,27 @@
 $(document).ready(function() {
+    // Menu mobile toggle
     $('#mobile_btn').on('click', function () {
         $('#mobile_menu').toggleClass('active');
-        $('#mobile_btn').find('i').toggleClass('fa-x');
+        const icon = $(this).find('i');
+        if ($('#mobile_menu').hasClass('active')) {
+            icon.removeClass('fa-bars').addClass('fa-x');
+        } else {
+            icon.removeClass('fa-x').addClass('fa-bars');
+        }
+    });
+
+    // Fechar menu mobile ao clicar em um link
+    $('#mobile_nav_list .nav-item a').on('click', function() {
+        $('#mobile_menu').removeClass('active');
+        $('#mobile_btn').find('i').removeClass('fa-x').addClass('fa-bars');
+    });
+
+    // Fechar menu mobile ao clicar fora dele
+    $(document).on('click', function(e) {
+        if (!$(e.target).closest('#navbar, #mobile_menu').length) {
+            $('#mobile_menu').removeClass('active');
+            $('#mobile_btn').find('i').removeClass('fa-x').addClass('fa-bars');
+        }
     });
 
     const sections = $('section');
