@@ -4,6 +4,7 @@
 @import url('menu.css');
 @import url('testimonials.css');
 @import url('footer.css');
+@import url('pwa.css');
 
 :root {
     --color-primary-1: #fff9ea;

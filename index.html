@@ -2,14 +2,26 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#f4b400">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Doce Sensações">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="description" content="O sabor que vai até você - Confeitaria artesanal">
+    
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="images/icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="images/icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="images/icon-512.png">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="src/styles/styles.css">
+    <link rel="stylesheet" href="styles/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://unpkg.com/scrollreveal"></script>
-    <title>Landing page</title>
+    <title>Doce Sensações</title>
 </head>
 <body>
     <header>
@@ -34,7 +46,7 @@
                 </li>
             </ul>
 
-            <a href="src/login.html" class="btn-default">
+            <a href="login.html" class="btn-default">
   Peça aqui
 </a>
 
@@ -56,7 +68,7 @@
                 </li>
             </ul>
 
-            <a href="src/login.html" class="btn-default">Peça aqui</a>
+            <a href="login.html" class="btn-default">Peça aqui</a>
         </div>
     </header>
 
@@ -99,7 +111,7 @@
     </div>
 
     <div id="banner">
-      <img src="src/images/hero.png" alt="Imagem Confeitaria">
+      <img src="images/hero.png" alt="Imagem Confeitaria">
     </div>
   </div>
 </section>
@@ -220,6 +232,33 @@
     font-weight: 700;
     font-style: normal;
   }
+   
+  #mobile_btn {
+    color: #1D1D1D; /* Cor corrigida */
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  #mobile_menu {
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    background-color: #fff;
+    position: absolute;
+    top: 60px;
+    right: 16px;
+    padding: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    z-index: 999;
+  }
+
+  #mobile_menu.open {
+    display: flex;
+  }
+
 </style>
 
         <section id="menu">
@@ -232,7 +271,7 @@
                         <i class="fa-solid fa-heart"></i>
                     </div>
 
-                    <img src="src/images/dish.png" class="dish-image" alt="">
+                    <img src="images/dish.png" class="dish-image" alt="">
 
                     <h3 class="dish-title">
                         Donuts
@@ -265,7 +304,7 @@
                         <i class="fa-solid fa-heart"></i>
                     </div>
 
-                    <img src="src/images/dish2.png" class="dish-image" alt="">
+                    <img src="images/dish2.png" class="dish-image" alt="">
 
                     <h3 class="dish-title">
                         Cupcake
@@ -297,7 +336,7 @@
                         <i class="fa-solid fa-heart"></i>
                     </div>
 
-                    <img src="src/images/dish3.png" class="dish-image" alt="">
+                    <img src="images/dish3.png" class="dish-image" alt="">
 
                     <h3 class="dish-title">
                         Cento de Docinhos
@@ -329,7 +368,7 @@
                         <i class="fa-solid fa-heart"></i>
                     </div>
 
-                    <img src="src/images/dish4.png" class="dish-image" alt="">
+                    <img src="images/dish4.png" class="dish-image" alt="">
 
                     <h3 class="dish-title">
                         Brownie
@@ -359,7 +398,7 @@
         </section>
 
         <section id="testimonials">
-            <img src="src/images/chef.png" id="testimonial_chef" alt="">
+            <img src="images/chef.png" id="testimonial_chef" alt="">
 
             <div id="testimonials_content">
                 <h2 class="section-title">
@@ -371,7 +410,7 @@
 
                 <div id="feedbacks">
                     <div class="feedback">
-                        <img src="src/images/avatar.png" class="feedback-avatar" alt="">
+                        <img src="images/avatar.png" class="feedback-avatar" alt="">
 
                         <div class="feedback-content">
                             <p>
@@ -392,7 +431,7 @@
                     </div>
 
                     <div class="feedback">
-                        <img src="src/images/avatar.png" class="feedback-avatar" alt="">
+                        <img src="images/avatar.png" class="feedback-avatar" alt="">
 
                         <div class="feedback-content">
                             <p>
@@ -421,7 +460,7 @@
     </main>
 
     <footer>
-        <img src="src/images/wave.svg" alt="">
+        <img src="images/wave.svg" alt="">
 
         <div id="footer_items">
             <span id="copyright">
@@ -443,7 +482,45 @@
             </div>
         </div>
     </footer>
-    <script src="src/javascript/script.js"></script>
-    <script src="src/javascript/api-connection.js"></script>
+    <script src="javascript/script.js"></script>
+    <script src="javascript/api-connection.js"></script>
+    
+    <!-- Service Worker para PWA -->
+    
+    <script>
+  // Service Worker
+  if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/sw.js')
+              .then(function(registration) {
+                  console.log('Service Worker registrado com sucesso:', registration.scope);
+              })
+              .catch(function(error) {
+                  console.log('Falha ao registrar Service Worker:', error);
+              });
+      });
+
+      // Instalar PWA
+      let deferredPrompt;
+      window.addEventListener('beforeinstallprompt', (e) => {
+          e.preventDefault();
+          deferredPrompt = e;
+          console.log('PWA pode ser instalado');
+      });
+
+      if (window.matchMedia('(display-mode: standalone)').matches) {
+          document.body.classList.add('pwa-mode');
+      }
+  }
+
+  // ✅ Código do botão mobile — agora fora do Service Worker
+  const mobileBtn = document.getElementById("mobile_btn");
+  const mobileMenu = document.getElementById("mobile_menu");
+
+  mobileBtn?.addEventListener("click", () => {
+    mobileMenu?.classList.toggle("open");
+  });
+</script>
+
 </body>
 </html>
