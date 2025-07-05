@@ -7,10 +7,31 @@
         padding-bottom: env(safe-area-inset-bottom);
         padding-left: env(safe-area-inset-left);
         padding-right: env(safe-area-inset-right);
+        /* Fixar proporção em 75% */
+        zoom: 0.75;
+        -webkit-text-size-adjust: 75%;
+        transform: scale(0.75);
+        transform-origin: top left;
+        width: 133.33%; /* 100% / 0.75 = 133.33% */
+        height: 133.33%;
+        overflow-x: hidden;
     }
     
     header {
         padding-top: calc(28px + env(safe-area-inset-top));
+    }
+    
+    /* Ajustar container principal para proporção fixa */
+    #content {
+        width: 100%;
+        max-width: 100vw;
+        margin: 0 auto;
+    }
+    
+    /* Garantir que imagens mantenham proporção */
+    img {
+        max-width: 100%;
+        height: auto;
     }
 }
 
@@ -57,4 +78,31 @@ input, textarea, select {
 
 .pwa-mode main {
     margin-top: 80px;
+}
+
+/* Configurações específicas para proporção fixa em PWA */
+@media (display-mode: standalone) {
+    /* Desabilitar zoom do usuário */
+    html {
+        -webkit-text-size-adjust: 75%;
+        -ms-text-size-adjust: 75%;
+        text-size-adjust: 75%;
+    }
+    
+    /* Prevenir zoom com gestos */
+    body {
+        touch-action: pan-x pan-y;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    
+    /* Permitir seleção apenas em textos importantes */
+    p, h1, h2, h3, h4, h5, h6, span, a {
+        -webkit-user-select: text;
+        -moz-user-select: text;
+        -ms-user-select: text;
+        user-select: text;
+    }
 } 
