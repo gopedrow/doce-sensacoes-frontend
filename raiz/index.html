@@ -487,39 +487,39 @@
     
     <!-- Service Worker para PWA -->
     <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(function(registration) {
-                        console.log('Service Worker registrado com sucesso:', registration.scope);
-                    })
-                    .catch(function(error) {
-                        console.log('Falha ao registrar Service Worker:', error);
-                    });
-            });
-        }
+  // Service Worker
+  if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/sw.js')
+              .then(function(registration) {
+                  console.log('Service Worker registrado com sucesso:', registration.scope);
+              })
+              .catch(function(error) {
+                  console.log('Falha ao registrar Service Worker:', error);
+              });
+      });
 
-        // Instalar PWA
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            
-            // Mostrar botão de instalar se desejar
-            console.log('PWA pode ser instalado');
-        });
+      // Instalar PWA
+      let deferredPrompt;
+      window.addEventListener('beforeinstallprompt', (e) => {
+          e.preventDefault();
+          deferredPrompt = e;
+          console.log('PWA pode ser instalado');
+      });
 
-        // Detectar se está rodando como PWA
-        if (window.matchMedia('(display-mode: standalone)').matches) {
-            document.body.classList.add('pwa-mode');
-        }
+      if (window.matchMedia('(display-mode: standalone)').matches) {
+          document.body.classList.add('pwa-mode');
+      }
+  }
 
+  // ✅ Código do botão mobile — agora fora do Service Worker
   const mobileBtn = document.getElementById("mobile_btn");
   const mobileMenu = document.getElementById("mobile_menu");
 
-  mobileBtn.addEventListener("click", () => {
-    mobileMenu.classList.toggle("open");
+  mobileBtn?.addEventListener("click", () => {
+    mobileMenu?.classList.toggle("open");
   });
-    </script>
+</script>
+
 </body>
 </html>
