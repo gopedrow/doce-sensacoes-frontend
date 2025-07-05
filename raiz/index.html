@@ -232,6 +232,33 @@
     font-weight: 700;
     font-style: normal;
   }
+   
+  #mobile_btn {
+    color: #1D1D1D; /* Cor corrigida */
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  #mobile_menu {
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    background-color: #fff;
+    position: absolute;
+    top: 60px;
+    right: 16px;
+    padding: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    z-index: 999;
+  }
+
+  #mobile_menu.open {
+    display: flex;
+  }
+
 </style>
 
         <section id="menu">
@@ -460,6 +487,7 @@
     
     <!-- Service Worker para PWA -->
     <script>
+        // Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
                 navigator.serviceWorker.register('/sw.js')
@@ -470,22 +498,27 @@
                         console.log('Falha ao registrar Service Worker:', error);
                     });
             });
+
+            // Instalar PWA
+            let deferredPrompt;
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                console.log('PWA pode ser instalado');
+            });
+
+            if (window.matchMedia('(display-mode: standalone)').matches) {
+                document.body.classList.add('pwa-mode');
+            }
         }
 
-        // Instalar PWA
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            
-            // Mostrar botão de instalar se desejar
-            console.log('PWA pode ser instalado');
+        // ✅ Código do botão mobile — agora fora do Service Worker
+        const mobileBtn = document.getElementById("mobile_btn");
+        const mobileMenu = document.getElementById("mobile_menu");
+
+        mobileBtn?.addEventListener("click", () => {
+            mobileMenu?.classList.toggle("open");
         });
-
-        // Detectar se está rodando como PWA
-        if (window.matchMedia('(display-mode: standalone)').matches) {
-            document.body.classList.add('pwa-mode');
-        }
     </script>
 </body>
 </html>
