@@ -517,7 +517,15 @@
         const mobileMenu = document.getElementById("mobile_menu");
 
         mobileBtn?.addEventListener("click", () => {
-            mobileMenu?.classList.toggle("open");
+            mobileMenu?.classList.toggle("active");
+            const icon = mobileBtn.querySelector('i');
+            if (mobileMenu?.classList.contains("active")) {
+                icon?.classList.remove('fa-bars');
+                icon?.classList.add('fa-x');
+            } else {
+                icon?.classList.remove('fa-x');
+                icon?.classList.add('fa-bars');
+            }
         });
     </script>
 </body>
