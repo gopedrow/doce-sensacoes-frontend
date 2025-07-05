@@ -120,7 +120,7 @@ async function loadProducts() {
                         <i class="fa-solid fa-heart"></i>
                     </div>
 
-                    <img src="${product.image_url || 'images/dish.png'}" class="dish-image" alt="${product.name}">
+                    <img src="${product.image_url || 'src/images/dish.png'}" class="dish-image" alt="${product.name}">
 
                     <h3 class="dish-title">
                         ${product.name}
