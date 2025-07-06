@@ -530,5 +530,13 @@
             }
         });
     </script>
+    <script>
+  // Verifica se o site está rodando como PWA (modo standalone)
+  if (window.matchMedia('(display-mode: standalone)').matches) {
+    if (!location.hash || location.hash === '#') {
+      location.hash = 'home';
+    }
+  }
+</script>
 </body>
 </html>
