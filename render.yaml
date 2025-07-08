@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: doce-sensacoes-api
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        value: doce_sensacoes_production_secret_key_2024
+      - key: CORS_ORIGIN
+        value: https://doce-sensacoes.netlify.app
+      - key: GOOGLE_SHEETS_ENABLED
+        value: false
+      - key: HELMET_ENABLED
+        value: true
+      - key: COMPRESSION_ENABLED
+        value: true 
