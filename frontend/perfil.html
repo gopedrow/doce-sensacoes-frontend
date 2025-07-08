@@ -1172,11 +1172,11 @@
       // Remove após 3 segundos
       setTimeout(() => {
         notification.style.transform = 'translateX(100%)';
-        setTimeout(() => {
-          if (notification.parentNode) {
-            notification.remove();
-          }
-        }, 300);
+          setTimeout(() => {
+            if (notification.parentNode) {
+              notification.remove();
+            }
+          }, 300);
       }, 3000);
     }
     
@@ -1500,24 +1500,24 @@
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                   <span style="font-weight: 600; color: var(--color-primary-6);">Status:</span>
                   <span class="tag-status" style="background-color: var(--color-primary-6); color: white; font-size: 12px; padding: 6px 12px; border-radius: 20px; font-weight: 500;">${ultimoPedido.status}</span>
-                </div>
+            </div>
                 <div style="margin-bottom: 10px;">
                   <strong>Itens:</strong> ${ultimoPedido.itens}
-                </div>
+            </div>
                 <div style="font-weight: 600; color: var(--color-primary-6);">
                   <strong>Total:</strong> ${ultimoPedido.total}
+                        </div>
                 </div>
               </div>
-            </div>
-            
+
             <div class="card">
               <h3>📚 Pedidos Anteriores</h3>
               <div style="text-align: center; padding: 40px; color: #666;">
                 <i class="fa-solid fa-history" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
                 <p>Ainda não há pedidos anteriores cadastrados.</p>
                 <p style="font-size: 0.9rem; margin-top: 10px;">Seus pedidos anteriores aparecerão aqui.</p>
-              </div>
-            </div>
+                </div>
+                  </div>
           `;
           break;
 

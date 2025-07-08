@@ -28,8 +28,8 @@ const API_CONFIG = {
   
   // Configurações de requisição
   REQUEST_CONFIG: {
-    headers: {
-      'Content-Type': 'application/json',
+            headers: {
+                'Content-Type': 'application/json',
       'Accept': 'application/json'
     },
     timeout: 10000 // 10 segundos
@@ -59,20 +59,20 @@ async function apiRequest(endpoint, options = {}) {
     console.log(`🌐 Fazendo requisição para: ${url}`);
     
     const response = await fetch(url, config);
-    
-    if (!response.ok) {
+            
+            if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
-    }
+            }
     
     const data = await response.json();
     console.log(`✅ Resposta da API:`, data);
-    
-    return data;
-  } catch (error) {
+            
+            return data;
+        } catch (error) {
     console.error(`❌ Erro na requisição para ${url}:`, error);
-    throw error;
-  }
-}
+            throw error;
+        }
+    }
 
 // Função para testar conexão com a API
 async function testApiConnection() {
@@ -90,20 +90,20 @@ async function testApiConnection() {
 async function loginUser(email, password) {
   try {
     const response = await apiRequest(API_CONFIG.ENDPOINTS.LOGIN, {
-      method: 'POST',
-      body: JSON.stringify({ email, password })
-    });
-    
+            method: 'POST',
+            body: JSON.stringify({ email, password })
+        });
+        
     if (response.success) {
       // Salvar token e dados do usuário
-      localStorage.setItem('auth_token', response.token);
+            localStorage.setItem('auth_token', response.token);
       localStorage.setItem('doce_sensacoes_user', JSON.stringify({
         user: response.user,
         token: response.token,
         expires: Date.now() + (7 * 24 * 60 * 60 * 1000) // 7 dias
       }));
-      
-      return response;
+        
+        return response;
     } else {
       throw new Error(response.message || 'Erro no login');
     }
@@ -115,7 +115,7 @@ async function loginUser(email, password) {
 
 // Função para carregar produtos
 async function loadProducts() {
-  try {
+    try {
     const response = await apiRequest(API_CONFIG.ENDPOINTS.PRODUCTS);
     
     if (response.success) {
@@ -123,8 +123,8 @@ async function loadProducts() {
     } else {
       throw new Error(response.message || 'Erro ao carregar produtos');
     }
-  } catch (error) {
-    console.error('❌ Erro ao carregar produtos:', error);
+    } catch (error) {
+        console.error('❌ Erro ao carregar produtos:', error);
     // Retornar produtos padrão em caso de erro
     return [
       {
@@ -173,7 +173,7 @@ async function getUserProfile() {
     } else {
       throw new Error(response.message || 'Erro ao carregar perfil');
     }
-  } catch (error) {
+    } catch (error) {
     console.error('❌ Erro ao carregar perfil:', error);
     throw error;
   }
