@@ -9,6 +9,8 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
+      - key: PORT
+        value: 10000
       - key: JWT_SECRET
         value: doce_sensacoes_production_secret_key_2024
       - key: CORS_ORIGIN
@@ -18,4 +20,8 @@ services:
       - key: HELMET_ENABLED
         value: true
       - key: COMPRESSION_ENABLED
-        value: true 
+        value: true
+      - key: RATE_LIMIT_WINDOW
+        value: 15
+      - key: RATE_LIMIT_MAX
+        value: 100 
