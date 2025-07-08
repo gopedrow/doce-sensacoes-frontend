@@ -11,6 +11,7 @@ require('dotenv').config();
 // Importar rotas
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products');
+const orderRoutes = require('./routes/orders');
 
 // Importar middlewares
 const { handleValidationErrors } = require('./middleware/validation');
@@ -95,6 +96,7 @@ app.get('/health', async (req, res) => {
 // Rotas da API
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/orders', orderRoutes);
 
 // Middleware de tratamento de erros
 app.use((err, req, res, next) => {
