@@ -45,7 +45,7 @@ app.use(limiter);
 
 // CORS
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || ['http://localhost:5000', 'http://localhost:8080', 'http://localhost:3000', 'http://127.0.0.1:5000', 'http://127.0.0.1:8080', 'http://127.0.0.1:3000'],
+  origin: process.env.CORS_ORIGIN || ['http://localhost:5000', 'http://localhost:8080', 'http://localhost:3000', 'http://127.0.0.1:5000', 'http://127.0.0.1:8080', 'http://127.0.0.1:3000', 'https://doce-sensacoes.netlify.app'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']

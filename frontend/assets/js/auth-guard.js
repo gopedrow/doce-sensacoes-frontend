@@ -3,7 +3,7 @@
 // ========================================
 
 // Configuração da API
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = 'https://doce-sensacoes-api.onrender.com/api';
 
 // Configurações do sistema de autenticação
 const AUTH_CONFIG = {

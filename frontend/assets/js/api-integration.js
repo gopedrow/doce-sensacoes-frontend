@@ -6,7 +6,7 @@
 class APIIntegration {
     constructor() {
         this.config = {
-            BASE_URL: 'http://localhost:3000/api',
+            BASE_URL: 'https://doce-sensacoes-api.onrender.com/api',
             TIMEOUT: 15000,
             RETRY_ATTEMPTS: 3,
             RETRY_DELAY: 1000,

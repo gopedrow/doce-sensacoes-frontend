@@ -6,7 +6,7 @@
 class ConnectivityManager {
     constructor() {
         this.config = {
-            API_BASE_URL: 'http://localhost:3000/api',
+            API_BASE_URL: 'https://doce-sensacoes-api.onrender.com/api',
             FRONTEND_BASE_URL: window.location.origin,
             TIMEOUT: 10000,
             RETRY_ATTEMPTS: 3,
