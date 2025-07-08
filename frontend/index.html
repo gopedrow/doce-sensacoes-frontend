@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#EB2E7D">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Doce Sensações">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="description" content="O sabor que vai até você - Confeitaria artesanal">
+    
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="assets/images/icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/images/icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="assets/images/icon-512.png">
+    
+    <!-- Preload de recursos críticos -->
+    <link rel="preload" href="assets/css/styles.css" as="style">
+    <link rel="preload" href="assets/js/connectivity-manager.js" as="script">
+    <link rel="preload" href="assets/images/hero.png" as="image">
+    
+    <!-- CSS Crítico -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/transitions.css">
+    
+    <!-- Fontes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
+
+    <!-- Scripts críticos -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://unpkg.com/scrollreveal"></script>
+    
+    <title>Doce Sensações</title>
+</head>
+<body>
+    <!-- Indicador de conectividade -->
+    <div id="connectivity-status" class="connectivity-indicator">
+        <span class="status-text">🟢 Online</span>
+    </div>
+
+    <!-- Skip links para acessibilidade -->
+    <a href="#main" class="skip-link">Ir para o conteúdo principal</a>
+    <a href="#navigation" class="skip-link">Ir para a navegação</a>
+    <a href="#footer" class="skip-link">Ir para o rodapé</a>
+
+    <header id="navigation">
+        <nav id="navbar">
+            <i id="nav_logo" style="display: flex; align-items: center; gap: 8px;">
+              <span style="display: flex; align-items: center;">
+                <!-- SVG personalizado -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="32" height="32" style="vertical-align: middle;"><path d="m15 1.784-.796.795a1.125 1.125 0 1 0 1.591 0L15 1.784ZM12 1.784l-.796.795a1.125 1.125 0 1 0 1.591 0L12 1.784ZM9 1.784l-.796.795a1.125 1.125 0 1 0 1.591 0L9 1.784ZM9.75 7.547c.498-.021.998-.035 1.5-.042V6.75a.75.75 0 0 1 1.5 0v.755c.502.007 1.002.021 1.5.042V6.75a.75.75 0 0 1 1.5 0v.88l.307.022c1.55.117 2.693 1.427 2.693 2.946v1.018a62.182 62.182 0 0 0-13.5 0v-1.018c0-1.519 1.143-2.829 2.693-2.946l.307-.022v-.88a.75.75 0 0 1 1.5 0v.797ZM12 12.75c-2.472 0-4.9.184-7.274.54-1.454.217-2.476 1.482-2.476 2.916v.384a4.104 4.104 0 0 1 2.585.364 2.605 2.605 0 0 0 2.33 0 4.104 4.104 0 0 1 3.67 0 2.605 2.605 0 0 0 2.33 0 4.104 4.104 0 0 1 3.67 0 2.605 2.605 0 0 0 2.33 0 4.104 4.104 0 0 1 2.585-.364v-.384c0-1.434-1.022-2.7-2.476-2.917A49.138 49.138 0 0 0 12 12.75ZM21.75 18.131a2.604 2.604 0 0 0-1.915.165 4.104 4.104 0 0 1-3.67 0 2.605 2.605 0 0 0-2.33 0 4.104 4.104 0 0 1-3.67 0 2.605 2.605 0 0 0-2.33 0 4.104 4.104 0 0 1-3.67 0 2.604 2.604 0 0 0-1.915-.165v2.494c0 1.035.84 1.875 1.875 1.875h15.75c1.035 0 1.875-.84 1.875-1.875v-2.494Z" /></svg>
+              </span>
+              <span class="dancing-script">Doce Sensações</span>
+            </i>
+
+            <ul id="nav_list">
+                <li class="nav-item active">
+                    <a href="#home">Início</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#menu">Cardápio</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#testimonials">Avaliações</a>
+                </li>
+            </ul>
+
+            <a href="login.html" class="btn-default">
+  Peça aqui
+</a>
+
+            <button id="mobile_btn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </nav>
+
+        <div id="mobile_menu">
+            <ul id="mobile_nav_list">
+                <li class="nav-item">
+                    <a href="#home">Início</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#menu">Cardápio</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#testimonials">Avaliações</a>
+                </li>
+            </ul>
+
+            <a href="login.html" class="btn-default">Peça aqui</a>
+        </div>
+    </header>
+
+    <main id="main" id="content">
+        <section id="home">
+  <div class="shape"></div>
+
+  <div class="content">
+    <div id="cta">
+      <h1 class="title">
+        O sabor que vai até <span>você</span>
+      </h1>
+
+      <p class="description">
+        Na Doce Sensações, cada doce é preparado com carinho, criatividade e ingredientes selecionados para transformar momentos simples em lembranças inesquecíveis.
+      </p>
+
+      <div id="cta_buttons">
+        <a href="#" class="btn-default">Ver cardápio</a>
+
+        <a href="tel:+5562986483753" id="phone_button">
+          <button class="btn-default">
+            <i class="fa-solid fa-phone"></i>
+          </button>
+          (62) 98648-3753
+        </a>
+      </div>
+
+      <div class="social-media-buttons">
+        <a href="https://wa.me/5562986483753">
+          <i class="fa-brands fa-whatsapp"></i>
+        </a>
+        <a href="https://www.instagram.com/docesensacoes2020?igsh=NGw1bThhY3MwMDQz">
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+        <a href="https://www.tiktok.com/@ligiasthephany?_t=ZM-8xeCm26QApp&_r=1">
+          <i class="fa-brands fa-tiktok"></i>
+        </a>
+      </div>
+    </div>
+
+    <div id="banner">
+      <img src="assets/images/hero.png" alt="Imagem Confeitaria" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<style>
+  #home {
+    position: relative;
+    padding: 40px 20px;
+    background-color: #FFF0F5;
+  }
+
+  .content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+  }
+
+  #cta {
+    flex: 1;
+    min-width: 280px;
+  }
+
+  #banner {
+    flex: 1;
+    min-width: 280px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #banner img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .title {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+
+  .description {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+
+  #cta_buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .btn-default {
+    background-color: #EB2E7D;
+    color: #fff;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.3s;
+  }
+
+  .btn-default:hover {
+    background-color: #FF69B4;
+  }
+
+  #phone_button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .social-media-buttons {
+    display: flex;
+    gap: 15px;
+    font-size: 1.5rem;
+  }
+
+  .social-media-buttons a {
+    color: #333;
+    transition: color 0.3s;
+  }
+
+  .social-media-buttons a:hover {
+    color: #EB2E7D;
+  }
+
+  @media (max-width: 768px) {
+    .content {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    #banner {
+      margin-top: 20px;
+    }
+
+    .title {
+      font-size: 2rem;
+    }
+
+    .description {
+      font-size: 1rem;
+    }
+  }
+
+  .dancing-script {
+    font-family: 'Dancing Script', cursive;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+  }
+   
+  #mobile_btn {
+    color: #1D1D1D; /* Cor corrigida */
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  #mobile_menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 20px;
+    z-index: 1000;
+  }
+
+  #mobile_menu.active {
+    display: block;
+  }
+
+  #mobile_nav_list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+  }
+
+  #mobile_nav_list li {
+    margin-bottom: 10px;
+  }
+
+  #mobile_nav_list a {
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  #mobile_nav_list a:hover {
+    color: #EB2E7D;
+  }
+</style>
+
+        <section id="menu">
+            <h2>Nossos Doces</h2>
+            <div id="dishes_container">
+                <!-- Produtos carregados dinamicamente -->
+                <div class="loading">Carregando produtos...</div>
+            </div>
+        </section>
+
+        <section id="testimonials">
+            <img src="assets/images/chef.png" id="testimonial_chef" alt="Chef" loading="lazy">
+
+            <div id="testimonials_content">
+                <h2>O que nossos clientes dizem</h2>
+
+                <div id="feedbacks">
+                    <div class="feedback">
+                        <img src="assets/images/avatar.png" class="feedback-avatar" alt="Cliente" loading="lazy">
+
+                        <div class="feedback-content">
+                            <h3>Maria Silva</h3>
+                            <p>"Os doces da Doce Sensações são simplesmente incríveis! Cada mordida é uma experiência única. Recomendo muito!"</p>
+                            <div class="stars">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feedback">
+                        <img src="assets/images/avatar.png" class="feedback-avatar" alt="Cliente" loading="lazy">
+
+                        <div class="feedback-content">
+                            <h3>João Santos</h3>
+                            <p>"Qualidade excepcional e atendimento perfeito. Os brigadeiros são os melhores que já provei!"</p>
+                            <div class="stars">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Doce Sensações</h3>
+                <p>Confeitaria artesanal com os melhores doces caseiros</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Contato</h4>
+                <p><i class="fa-solid fa-phone"></i> (62) 98648-3753</p>
+                <p><i class="fa-solid fa-envelope"></i> contato@docesensacoes.com</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Redes Sociais</h4>
+                <div class="social-links">
+                    <a href="https://wa.me/5562986483753" aria-label="WhatsApp">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </a>
+                    <a href="https://www.instagram.com/docesensacoes2020" aria-label="Instagram">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="https://www.tiktok.com/@ligiasthephany" aria-label="TikTok">
+                        <i class="fa-brands fa-tiktok"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 Doce Sensações. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts não críticos carregados de forma assíncrona -->
+    <script src="assets/js/connectivity-manager.js" defer></script>
+    <script src="assets/js/compatibility-manager.js" defer></script>
+    <script src="assets/js/api-integration.js" defer></script>
+    <script src="assets/js/performance-manager.js" defer></script>
+    <script src="assets/js/app.js" defer></script>
+    
+    <!-- Scripts específicos da página -->
+    <script src="assets/js/script.js" defer></script>
+    <script src="assets/js/api-connection.js" defer></script>
+    
+    <!-- Service Worker para PWA -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('✅ Service Worker registrado:', registration);
+                    })
+                    .catch(error => {
+                        console.warn('⚠️ Erro ao registrar Service Worker:', error);
+                    });
+            });
+        }
+    </script>
+
+    <!-- Structured Data para SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Restaurant",
+        "name": "Doce Sensações",
+        "description": "Confeitaria artesanal com os melhores doces caseiros",
+        "url": "https://docesensacoes.com",
+        "telephone": "+5562986483753",
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "BR"
+        },
+        "servesCuisine": "Confeitaria",
+        "priceRange": "$$",
+        "sameAs": [
+            "https://www.instagram.com/docesensacoes2020",
+            "https://www.tiktok.com/@ligiasthephany"
+        ]
+    }
+    </script>
+</body>
+</html>

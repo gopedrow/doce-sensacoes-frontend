@@ -1,0 +1,707 @@
+/**
+ * 📱 OTIMIZAÇÃO MOBILE COMPLETA - DOCE SENSACOES
+ * Garante 100% de funcionalidade e otimização em dispositivos móveis
+ */
+
+/* =====================================================
+   CONFIGURAÇÕES MOBILE GLOBAIS
+   ===================================================== */
+
+/* Viewport e meta tags otimizadas */
+@media screen and (max-width: 768px) {
+    html {
+        font-size: 14px; /* Reduz tamanho base da fonte */
+    }
+    
+    body {
+        -webkit-text-size-adjust: 100%; /* Previne zoom automático no iOS */
+        -webkit-tap-highlight-color: transparent; /* Remove highlight de toque */
+        touch-action: manipulation; /* Otimiza gestos de toque */
+    }
+}
+
+/* =====================================================
+   HEADER MOBILE OTIMIZADO
+   ===================================================== */
+
+@media screen and (max-width: 768px) {
+    header {
+        padding: 16px 4%;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    #navbar {
+        gap: 16px;
+    }
+
+    #nav_logo {
+        font-size: 20px;
+        flex-shrink: 0;
+    }
+
+    #nav_logo .dancing-script {
+        font-size: 18px;
+    }
+
+    #nav_logo svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    #mobile_btn {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        border: none;
+        background: transparent;
+        font-size: 20px;
+        color: var(--color-primary-6);
+        cursor: pointer;
+        border-radius: 8px;
+        transition: background-color 0.3s ease;
+    }
+
+    #mobile_btn:hover,
+    #mobile_btn:focus {
+        background-color: rgba(235, 46, 125, 0.1);
+    }
+
+    #mobile_btn:active {
+        transform: scale(0.95);
+    }
+
+    #mobile_menu {
+        position: fixed;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        padding: 24px 20px;
+        z-index: 1000;
+        transform: translateY(-100%);
+        transition: transform 0.3s ease;
+        border-radius: 0 0 16px 16px;
+    }
+
+    #mobile_menu.active {
+        transform: translateY(0);
+        display: block !important;
+    }
+
+    #mobile_nav_list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 20px 0;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    #mobile_nav_list li {
+        margin: 0;
+    }
+
+    #mobile_nav_list a {
+        display: block;
+        padding: 12px 16px;
+        color: var(--color-neutral-1);
+        text-decoration: none;
+        font-weight: 500;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+
+    #mobile_nav_list a:hover,
+    #mobile_nav_list a:focus {
+        background-color: var(--color-primary-1);
+        color: var(--color-primary-6);
+    }
+
+    #mobile_nav_list .nav-item.active a {
+        background-color: var(--color-primary-6);
+        color: white;
+        border-bottom: none;
+    }
+
+    #mobile_menu .btn-default {
+        width: 100%;
+        padding: 14px;
+        font-size: 16px;
+        border-radius: 12px;
+    }
+}
+
+/* =====================================================
+   HOME MOBILE OTIMIZADO
+   ===================================================== */
+
+@media screen and (max-width: 768px) {
+    #home {
+        min-height: auto;
+        padding: 40px 20px;
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    #cta {
+        width: 100%;
+        text-align: center;
+        align-items: center;
+        gap: 24px;
+        margin-top: 0;
+    }
+
+    #cta .title {
+        font-size: 2.5rem;
+        line-height: 1.2;
+        margin-bottom: 16px;
+    }
+
+    #cta .description {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 24px;
+    }
+
+    #cta_buttons {
+        flex-direction: column;
+        gap: 16px;
+        width: 100%;
+        max-width: 300px;
+    }
+
+    #cta_buttons .btn-default {
+        width: 100%;
+        padding: 14px 20px;
+        font-size: 16px;
+        border-radius: 12px;
+    }
+
+    #phone_button {
+        width: 100%;
+        justify-content: center;
+        padding: 14px 20px;
+        border-radius: 12px;
+        font-size: 16px;
+    }
+
+    #phone_button button {
+        display: none; /* Remove botão do telefone no mobile */
+    }
+
+    .social-media-buttons {
+        gap: 16px;
+        justify-content: center;
+    }
+
+    .social-media-buttons a {
+        width: 50px;
+        height: 45px;
+        font-size: 1.4rem;
+    }
+
+    #banner {
+        width: 100%;
+        justify-content: center;
+        order: -1; /* Move banner para cima no mobile */
+    }
+
+    #banner img {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        border-radius: 16px;
+    }
+
+    .shape {
+        display: none; /* Remove shape no mobile */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    #cta .title {
+        font-size: 2rem;
+    }
+
+    #cta .description {
+        font-size: 1rem;
+    }
+
+    #banner img {
+        max-width: 250px;
+    }
+
+    .social-media-buttons a {
+        width: 45px;
+        height: 40px;
+        font-size: 1.3rem;
+    }
+}
+
+/* =====================================================
+   MENU MOBILE OTIMIZADO
+   ===================================================== */
+
+@media screen and (max-width: 768px) {
+    #menu {
+        min-height: auto;
+        padding: 40px 20px;
+    }
+
+    #menu h2 {
+        font-size: 2rem;
+        margin-bottom: 24px;
+        text-align: center;
+    }
+
+    #dishes_container {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        margin-top: 24px;
+    }
+
+    .dish {
+        width: 100%;
+        padding: 24px 20px;
+        border-radius: 16px;
+        gap: 16px;
+    }
+
+    .dish-image {
+        width: 100%;
+        max-width: 200px;
+        height: auto;
+        border-radius: 12px;
+    }
+
+    .dish-title {
+        font-size: 1.3rem;
+        text-align: center;
+    }
+
+    .dish-description {
+        font-size: 0.95rem;
+        line-height: 1.5;
+        text-align: center;
+    }
+
+    .dish-rate {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.9rem;
+    }
+
+    .dish-price {
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .dish-price h4 {
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+
+    .dish-price .btn-default {
+        padding: 12px 16px;
+        font-size: 14px;
+        border-radius: 10px;
+    }
+
+    .loading {
+        text-align: center;
+        padding: 40px;
+        font-size: 16px;
+        color: #666;
+    }
+
+    .error-message {
+        text-align: center;
+        padding: 40px 20px;
+        color: #dc3545;
+    }
+
+    .error-message p {
+        margin-bottom: 16px;
+    }
+
+    .error-message .btn-default {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+}
+
+/* =====================================================
+   TESTIMONIALS MOBILE OTIMIZADO
+   ===================================================== */
+
+@media screen and (max-width: 768px) {
+    #testimonials {
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+    #testimonial_chef {
+        width: 120px;
+        height: auto;
+        margin-bottom: 24px;
+    }
+
+    #testimonials_content h2 {
+        font-size: 2rem;
+        margin-bottom: 32px;
+    }
+
+    #feedbacks {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .feedback {
+        background: white;
+        padding: 24px 20px;
+        border-radius: 16px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+
+    .feedback-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        margin: 0 auto 16px;
+        display: block;
+    }
+
+    .feedback-content h3 {
+        font-size: 1.2rem;
+        margin-bottom: 12px;
+        color: var(--color-primary-6);
+    }
+
+    .feedback-content p {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 16px;
+        color: #666;
+    }
+
+    .stars {
+        display: flex;
+        justify-content: center;
+        gap: 4px;
+        font-size: 1.1rem;
+        color: var(--color-primary-6);
+    }
+}
+
+/* =====================================================
+   FOOTER MOBILE OTIMIZADO
+   ===================================================== */
+
+@media screen and (max-width: 768px) {
+    footer {
+        padding: 40px 20px 20px;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        gap: 32px;
+        text-align: center;
+    }
+
+    .footer-section {
+        width: 100%;
+    }
+
+    .footer-section h3 {
+        font-size: 1.5rem;
+        margin-bottom: 16px;
+    }
+
+    .footer-section h4 {
+        font-size: 1.2rem;
+        margin-bottom: 12px;
+    }
+
+    .footer-section p {
+        font-size: 0.95rem;
+        margin-bottom: 8px;
+    }
+
+    .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+    }
+
+    .social-links a {
+        width: 45px;
+        height: 45px;
+        font-size: 1.3rem;
+    }
+
+    .footer-bottom {
+        margin-top: 24px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+        text-align: center;
+    }
+
+    .footer-bottom p {
+        font-size: 0.9rem;
+        color: #666;
+    }
+}
+
+/* =====================================================
+   COMPONENTES MOBILE OTIMIZADOS
+   ===================================================== */
+
+@media screen and (max-width: 768px) {
+    /* Botões */
+    .btn-default {
+        min-height: 44px; /* Altura mínima para toque */
+        font-size: 16px;
+        padding: 12px 20px;
+        border-radius: 12px;
+    }
+
+    /* Links */
+    a {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Inputs */
+    input, textarea, select {
+        font-size: 16px; /* Previne zoom no iOS */
+        padding: 12px 16px;
+        border-radius: 8px;
+        min-height: 44px;
+    }
+
+    /* Cards */
+    .card {
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 16px;
+    }
+
+    /* Modais */
+    .modal {
+        padding: 20px;
+        border-radius: 16px;
+        margin: 20px;
+    }
+
+    /* Notificações */
+    .notification {
+        margin: 10px;
+        padding: 12px 16px;
+        border-radius: 12px;
+        font-size: 14px;
+    }
+}
+
+/* =====================================================
+   GESTOS E INTERAÇÕES MOBILE
+   ===================================================== */
+
+@media screen and (max-width: 768px) {
+    /* Swipe gestures */
+    .swipeable {
+        touch-action: pan-y;
+    }
+
+    /* Pull to refresh */
+    .pull-refresh {
+        touch-action: pan-y;
+    }
+
+    /* Long press */
+    .long-press {
+        touch-action: none;
+    }
+
+    /* Double tap zoom */
+    .no-zoom {
+        touch-action: manipulation;
+    }
+}
+
+/* =====================================================
+   PERFORMANCE MOBILE
+   ===================================================== */
+
+@media screen and (max-width: 768px) {
+    /* Otimizações de performance */
+    * {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+    }
+
+    /* Reduz animações em dispositivos com preferência por movimento reduzido */
+    @media (prefers-reduced-motion: reduce) {
+        * {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
+
+    /* Otimiza scroll */
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* Melhora performance de scroll */
+    body {
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* =====================================================
+   ACESSIBILIDADE MOBILE
+   ===================================================== */
+
+@media screen and (max-width: 768px) {
+    /* Skip links */
+    .skip-link {
+        position: absolute;
+        top: -40px;
+        left: 6px;
+        background: var(--color-primary-6);
+        color: white;
+        padding: 8px 12px;
+        text-decoration: none;
+        border-radius: 6px;
+        z-index: 10000;
+        font-size: 14px;
+    }
+
+    .skip-link:focus {
+        top: 6px;
+    }
+
+    /* Foco visível */
+    *:focus {
+        outline: 3px solid var(--color-primary-6);
+        outline-offset: 2px;
+    }
+
+    /* Contraste alto */
+    @media (prefers-contrast: high) {
+        .btn-default {
+            border: 2px solid var(--color-primary-6);
+        }
+    }
+}
+
+/* =====================================================
+   ORIENTAÇÃO E TELA CHEIA
+   ===================================================== */
+
+/* Landscape em mobile */
+@media screen and (max-width: 768px) and (orientation: landscape) {
+    #home {
+        min-height: 100vh;
+        flex-direction: row;
+        gap: 20px;
+    }
+
+    #cta {
+        width: 50%;
+        text-align: left;
+        align-items: flex-start;
+    }
+
+    #banner {
+        width: 50%;
+        order: 0;
+    }
+
+    #banner img {
+        max-width: 200px;
+    }
+}
+
+/* Tela cheia (PWA) */
+@media screen and (display-mode: standalone) {
+    header {
+        padding-top: env(safe-area-inset-top);
+    }
+
+    footer {
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+}
+
+/* =====================================================
+   UTILITÁRIOS MOBILE
+   ===================================================== */
+
+/* Esconde elementos em mobile */
+.mobile-hidden {
+    display: none !important;
+}
+
+/* Mostra apenas em mobile */
+.mobile-only {
+    display: block !important;
+}
+
+@media screen and (min-width: 769px) {
+    .mobile-only {
+        display: none !important;
+    }
+    
+    .mobile-hidden {
+        display: block !important;
+    }
+}
+
+/* Espaçamento seguro para notch */
+.safe-area-top {
+    padding-top: env(safe-area-inset-top);
+}
+
+.safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Loading mobile */
+.mobile-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.mobile-loading::after {
+    content: '';
+    width: 30px;
+    height: 30px;
+    border: 3px solid var(--color-primary-3);
+    border-top: 3px solid var(--color-primary-6);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 12px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+} 

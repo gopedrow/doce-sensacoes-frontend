@@ -1,168 +1,160 @@
-# 🍰 Doce Sensações
+# Doce Sensações
 
-Site de confeitaria artesanal com sistema de pedidos online.
+Sistema completo de confeitaria artesanal com frontend PWA e backend integrado ao Google Sheets.
 
-## 🌟 **Características**
+## 🍰 Sobre o Projeto
 
-- ✅ **Design responsivo** e moderno
-- ✅ **Sistema de pedidos** online
-- ✅ **Banco de dados** Google Sheets
-- ✅ **APIs RESTful** completas
-- ✅ **Autenticação** segura
-- ✅ **Deploy automático** no Netlify
+O Doce Sensações é uma plataforma completa para confeitaria artesanal, oferecendo:
 
-## 🚀 **Tecnologias**
+- **Frontend PWA**: Interface moderna e responsiva
+- **Sistema de Login**: Autenticação JWT com Google Sheets
+- **Carrinho de Compras**: Sistema completo de pedidos
+- **Dashboard**: Área do cliente com funcionalidades avançadas
+- **Integração Google Sheets**: Banco de dados em planilha
 
-### **Frontend**
-- HTML5
-- CSS3 (com animações)
-- JavaScript (ES6+)
-- jQuery
-- ScrollReveal
+## 📁 Estrutura do Projeto
 
-### **Backend**
+```
+DOCE-SENSACOES/
+├── frontend/              # Frontend PWA
+│   ├── index.html        # Página inicial
+│   ├── login.html        # Login
+│   ├── cadastro.html     # Cadastro
+│   ├── perfil.html       # Dashboard
+│   ├── manifest.json     # PWA manifest
+│   ├── sw.js            # Service Worker
+│   ├── assets/          # Recursos estáticos
+│   │   ├── css/         # Estilos
+│   │   ├── js/          # JavaScript
+│   │   └── images/      # Imagens
+│   └── components/      # Componentes
+├── backend/             # Backend Node.js
+│   ├── src/            # Código fonte
+│   │   ├── config/     # Configurações
+│   │   ├── controllers/ # Controladores
+│   │   ├── middleware/  # Middlewares
+│   │   └── routes/     # Rotas
+│   └── scripts/        # Scripts utilitários
+└── docs/               # Documentação
+```
+
+## 🚀 Funcionalidades
+
+### Frontend
+- ✅ PWA (Progressive Web App)
+- ✅ Design responsivo
+- ✅ Tema rosa personalizado
+- ✅ Sistema de carrinho flutuante
+- ✅ Sidebar colapsável
+- ✅ Autenticação social
+- ✅ Dashboard completo
+
+### Backend
+- ✅ API RESTful
+- ✅ Autenticação JWT
+- ✅ Integração Google Sheets
+- ✅ Hashing de senhas
+- ✅ Proteção de rotas
+- ✅ Validação de dados
+
+## 🛠️ Tecnologias
+
+### Frontend
+- HTML5, CSS3, JavaScript ES6+
+- Font Awesome (ícones)
+- Google Fonts
+- PWA (Service Worker + Manifest)
+
+### Backend
 - Node.js
 - Express.js
+- JWT (jsonwebtoken)
+- bcrypt
 - Google Sheets API
-- JWT Authentication
-- CORS
+- CORS, Helmet
 
-### **Banco de Dados**
-- Google Sheets (como banco de dados)
+## 📦 Instalação
 
-## 📁 **Estrutura do Projeto**
+### Pré-requisitos
+- Node.js 16+
+- Conta Google Cloud
+- Google Sheets configurado
 
-```
-doce-sensacoes/
-├── index.html              # Página principal
-├── src/
-│   ├── images/             # Imagens do site
-│   ├── styles/             # Arquivos CSS
-│   ├── javascript/         # Scripts JavaScript
-│   ├── login.html          # Página de login
-│   └── perfil.html         # Página do perfil
-├── backend/                # Servidor Node.js
-│   ├── src/
-│   ├── package.json
-│   └── google-credentials.json
-├── _redirects              # Configuração Netlify
-├── netlify.toml           # Configuração Netlify
-└── README.md
-```
-
-## 🛠️ **Instalação Local**
-
-### **1. Clonar o repositório**
+### Frontend
 ```bash
-git clone https://github.com/seu-usuario/doce-sensacoes.git
-cd doce-sensacoes
+# Navegar para o frontend
+cd frontend
+
+# Abrir em servidor local
+python -m http.server 8000
+# ou
+npx serve .
 ```
 
-### **2. Configurar Backend**
+### Backend
 ```bash
+# Navegar para o backend
 cd backend
+
+# Instalar dependências
 npm install
+
+# Configurar variáveis de ambiente
+cp .env.example .env
+# Editar .env com suas credenciais
+
+# Executar
+npm start
 ```
 
-### **3. Configurar Google Sheets**
-- Siga o guia em `backend/GUIA-GOOGLE-SHEETS.md`
-- Configure as variáveis de ambiente
+## 🔧 Configuração
 
-### **4. Iniciar Servidor**
-```bash
-npm run dev
-```
+### Google Sheets
+1. Criar projeto no Google Cloud Console
+2. Ativar Google Sheets API
+3. Criar Service Account
+4. Baixar credentials.json
+5. Compartilhar planilha com email do service account
 
-### **5. Abrir Frontend**
-Abra `index.html` no navegador
-
-## 🌐 **Deploy**
-
-### **Frontend (Netlify)**
-1. Conecte o repositório ao Netlify
-2. Configure o build:
-   - Build command: (vazio)
-   - Publish directory: `.`
-
-### **Backend (Render/Railway)**
-1. Conecte o repositório
-2. Configure as variáveis de ambiente
-3. Deploy automático
-
-## 📊 **APIs Disponíveis**
-
-### **Produtos**
-- `GET /api/products` - Listar produtos
-- `GET /api/products/featured` - Produtos em destaque
-- `GET /api/products/categories` - Categorias
-
-### **Autenticação**
-- `POST /api/auth/login` - Login
-- `POST /api/auth/register` - Registro
-- `GET /api/auth/profile` - Perfil
-
-### **Pedidos**
-- `GET /api/orders` - Listar pedidos
-- `POST /api/orders` - Criar pedido
-- `PUT /api/orders/:id/status` - Atualizar status
-
-## 🗄️ **Estrutura do Banco de Dados**
-
-### **Aba `users`**
-| id | name | email | password_hash | user_type | is_active | created_at |
-
-### **Aba `products`**
-| id | name | description | price | category_id | image_url | is_featured | is_active | created_at |
-
-### **Aba `categories`**
-| id | name | description | is_active | created_at |
-
-### **Aba `orders`**
-| id | user_id | total_amount | status | created_at |
-
-### **Aba `order_items`**
-| id | order_id | product_id | quantity | price |
-
-## 🔧 **Configuração**
-
-### **Variáveis de Ambiente**
+### Variáveis de Ambiente
 ```env
-PORT=3001
-NODE_ENV=development
-GOOGLE_CREDENTIALS_FILE=google-credentials.json
-GOOGLE_SHEETS_ID=sua_planilha_id
-JWT_SECRET=seu_jwt_secret
-JWT_EXPIRES_IN=7d
-CORS_ORIGIN=http://localhost:5000
+PORT=3000
+JWT_SECRET=sua_chave_secreta
+GOOGLE_SHEETS_ID=id_da_sua_planilha
 ```
 
-## 📱 **Funcionalidades**
+## 📱 Deploy
 
-- **Página inicial** com apresentação
-- **Cardápio** dinâmico
-- **Sistema de login** e registro
-- **Carrinho de compras**
-- **Perfil do usuário**
-- **Avaliações** de clientes
-- **Responsivo** para mobile
+### Frontend (Netlify)
+- Conectar repositório
+- Build command: vazio
+- Publish directory: `frontend`
 
-## 🎨 **Design**
+### Backend (Render)
+- Conectar repositório
+- Build command: `npm install`
+- Start command: `npm start`
 
-- **Cores:** Tons de amarelo e marrom
-- **Fontes:** Dancing Script + Montserrat
-- **Estilo:** Moderno e elegante
-- **Animações:** ScrollReveal
+## 🎨 Design
 
-## 📞 **Suporte**
+### Paleta de Cores
+```css
+--color-primary-1: #FFF0F5  /* Rosa claro */
+--color-primary-2: #FFE4E1  /* Rosa suave */
+--color-primary-3: #FFB6C1  /* Rosa médio */
+--color-primary-4: #FF69B4  /* Rosa quente */
+--color-primary-5: #FF1493  /* Rosa intenso */
+--color-primary-6: #EB2E7D  /* Rosa principal */
+```
 
-Para dúvidas ou problemas:
-- Abra uma issue no GitHub
-- Consulte os guias na pasta `backend/`
+## 📄 Licença
 
-## 📄 **Licença**
+Este projeto é privado e desenvolvido para a Doce Sensações.
 
-Este projeto é de uso pessoal/comercial.
+## 👥 Desenvolvimento
 
----
-
-**Desenvolvido com ❤️ para Doce Sensações** 
+Projeto desenvolvido com foco em:
+- Performance otimizada
+- Código limpo e organizado
+- Experiência do usuário
+- Facilidade de manutenção 

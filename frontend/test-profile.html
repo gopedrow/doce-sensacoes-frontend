@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste do Perfil - Doce Sensações</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .test-item {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+        .success { border-color: #28a745; background: #d4edda; }
+        .error { border-color: #dc3545; background: #f8d7da; }
+        .info { border-color: #17a2b8; background: #d1ecf1; }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #0056b3; }
+        .user-info {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Teste da Funcionalidade do Perfil</h1>
+        
+        <div class="test-item info">
+            <h3>📋 Instruções de Teste</h3>
+            <p>1. Acesse a página principal: <a href="perfil.html" target="_blank">perfil.html</a></p>
+            <p>2. Faça login com suas credenciais</p>
+            <p>3. Clique no <strong>nome do usuário</strong> na sidebar (não no ícone)</p>
+            <p>4. Verifique se o perfil completo aparece</p>
+            <p>5. Teste as funcionalidades de edição e foto</p>
+        </div>
+
+        <div class="test-item">
+            <h3>🔍 Verificar Status dos Servidores</h3>
+            <button onclick="testBackend()">Testar Backend (Porta 3000)</button>
+            <button onclick="testFrontend()">Testar Frontend (Porta 8080)</button>
+            <div id="server-status"></div>
+        </div>
+
+        <div class="test-item">
+            <h3>👤 Verificar Dados do Usuário</h3>
+            <button onclick="checkUserData()">Verificar Dados Salvos</button>
+            <div id="user-data"></div>
+        </div>
+
+        <div class="test-item">
+            <h3>🧹 Limpar Dados de Teste</h3>
+            <button onclick="clearTestData()">Limpar localStorage</button>
+            <div id="clear-status"></div>
+        </div>
+
+        <div class="test-item success">
+            <h3>✅ Funcionalidades Implementadas</h3>
+            <ul>
+                <li>✅ Clique no nome do usuário ativa o perfil</li>
+                <li>✅ Foto do perfil sincronizada com sidebar</li>
+                <li>✅ Dados persistentes no localStorage</li>
+                <li>✅ Histórico de atividades</li>
+                <li>✅ Formulário de edição</li>
+                <li>✅ Notificações visuais</li>
+                <li>✅ Hover effects e animações</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        async function testBackend() {
+            const statusDiv = document.getElementById('server-status');
+            try {
+                const response = await fetch('http://localhost:3000/api/products');
+                if (response.ok) {
+                    statusDiv.innerHTML = '<div class="success">✅ Backend funcionando na porta 3000</div>';
+                } else {
+                    statusDiv.innerHTML = '<div class="error">❌ Backend respondeu com erro</div>';
+                }
+            } catch (error) {
+                statusDiv.innerHTML = '<div class="error">❌ Backend não está acessível</div>';
+            }
+        }
+
+        async function testFrontend() {
+            const statusDiv = document.getElementById('server-status');
+            try {
+                const response = await fetch('http://localhost:8080');
+                if (response.ok) {
+                    statusDiv.innerHTML += '<div class="success">✅ Frontend funcionando na porta 8080</div>';
+                } else {
+                    statusDiv.innerHTML += '<div class="error">❌ Frontend respondeu com erro</div>';
+                }
+            } catch (error) {
+                statusDiv.innerHTML += '<div class="error">❌ Frontend não está acessível</div>';
+            }
+        }
+
+        function checkUserData() {
+            const userDataDiv = document.getElementById('user-data');
+            const sessionData = localStorage.getItem('doce_sensacoes_user');
+            const userProfile = getUserProfileData();
+            
+            let html = '<div class="user-info">';
+            
+            if (sessionData) {
+                const session = JSON.parse(sessionData);
+                html += '<h4>📊 Dados da Sessão:</h4>';
+                html += `<p><strong>Nome:</strong> ${session.user?.name || 'N/A'}</p>`;
+                html += `<p><strong>Email:</strong> ${session.user?.email || 'N/A'}</p>`;
+                html += `<p><strong>Tipo:</strong> ${session.user?.user_type || 'N/A'}</p>`;
+            } else {
+                html += '<p>❌ Nenhuma sessão encontrada</p>';
+            }
+            
+            if (userProfile && Object.keys(userProfile).length > 0) {
+                html += '<h4>💾 Dados do Perfil:</h4>';
+                html += `<p><strong>Nome:</strong> ${userProfile.name || 'N/A'}</p>`;
+                html += `<p><strong>Email:</strong> ${userProfile.email || 'N/A'}</p>`;
+                html += `<p><strong>Telefone:</strong> ${userProfile.phone || 'N/A'}</p>`;
+                html += `<p><strong>Atividades:</strong> ${userProfile.activities?.length || 0} registradas</p>`;
+                html += `<p><strong>Última atualização:</strong> ${userProfile.last_updated ? new Date(userProfile.last_updated).toLocaleString('pt-BR') : 'N/A'}</p>`;
+            } else {
+                html += '<p>❌ Nenhum perfil encontrado</p>';
+            }
+            
+            html += '</div>';
+            userDataDiv.innerHTML = html;
+        }
+
+        function getUserProfileData() {
+            try {
+                const sessionData = localStorage.getItem('doce_sensacoes_user');
+                if (!sessionData) return {};
+                
+                const session = JSON.parse(sessionData);
+                const profileKey = `user_profile_${session.user?.id}`;
+                const profileData = localStorage.getItem(profileKey);
+                
+                return profileData ? JSON.parse(profileData) : {};
+            } catch (error) {
+                console.error('Erro ao obter dados do perfil:', error);
+                return {};
+            }
+        }
+
+        function clearTestData() {
+            const clearStatusDiv = document.getElementById('clear-status');
+            
+            // Limpar dados de teste (manter apenas dados essenciais)
+            const keysToRemove = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('user_profile_')) {
+                    keysToRemove.push(key);
+                }
+            }
+            
+            keysToRemove.forEach(key => localStorage.removeItem(key));
+            
+            clearStatusDiv.innerHTML = '<div class="success">✅ Dados de teste limpos com sucesso!</div>';
+        }
+
+        // Auto-test ao carregar a página
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                testBackend();
+                testFrontend();
+                checkUserData();
+            }, 1000);
+        });
+    </script>
+</body>
+</html> 

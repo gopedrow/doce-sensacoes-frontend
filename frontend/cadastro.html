@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Doce Sensações - Cadastro</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(to bottom right, #EB2E7D, #FF69B4);
+      font-family: 'Poppins', sans-serif;
+    }
+    .cadastro-container {
+      opacity: 0;
+      transform: translateX(-60px);
+      animation: slideInCadastro 0.7s forwards;
+      animation-delay: 0.1s;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+      padding: 48px 36px 40px 36px;
+      max-width: 400px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-sizing: border-box;
+    }
+    @keyframes slideInCadastro {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    .cadastro-container h2 {
+      color: #EB2E7D;
+      font-size: 2rem;
+      margin-bottom: 24px;
+      font-weight: 700;
+      text-align: center;
+      width: 100%;
+    }
+    .cadastro-container form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      align-items: center;
+    }
+    .cadastro-container input {
+      width: 100%;
+      padding: 14px 18px;
+      border: 1px solid #ccc;
+      border-radius: 24px;
+      font-size: 1rem;
+      outline: none;
+      box-sizing: border-box;
+      margin: 0;
+    }
+    .cadastro-container button {
+      width: 100%;
+      padding: 14px;
+      background-color: #EB2E7D;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 24px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 12px;
+      transition: background 0.3s;
+    }
+    .cadastro-container button:hover {
+      background-color: #FF69B4;
+      color: #fff;
+    }
+    .cadastro-container .login-link {
+      margin-top: 22px;
+      text-align: center;
+      font-size: 1rem;
+      width: 100%;
+    }
+    .cadastro-container .login-link a {
+      color: #EB2E7D;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    
+    /* Divider */
+    .divider {
+      position: relative;
+      text-align: center;
+      margin: 20px 0;
+      width: 100%;
+    }
+    
+    .divider::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: #ddd;
+      transform: translateY(-50%);
+    }
+    
+    .divider span {
+      background: #fff;
+      padding: 0 16px;
+      color: #666;
+      font-size: 0.9rem;
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* Social Media Buttons - mesmo estilo do rodapé */
+    .social-media-buttons {
+      display: flex;
+      gap: 18px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .social-media-buttons button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 45px;
+      height: 40px;
+      background-color: #fff;
+      font-size: 1.25rem;
+      border-radius: 10px;
+      text-decoration: none;
+      color: #1d1d1d;
+      box-shadow: 0px 0px 12px 4px rgba(0, 0, 0, 0.1);
+      transition: box-shadow .3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .social-media-buttons button:hover {
+      box-shadow: 0px 0px 12px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .google-btn:hover {
+      color: #FF69B4;
+    }
+
+    .facebook-btn:hover {
+      color: #FF1493;
+    }
+
+    .whatsapp-btn:hover {
+      color: #25d366;
+    }
+
+    @media (max-width: 768px) {
+      .social-media-buttons {
+        gap: 15px;
+      }
+      .social-media-buttons button {
+        width: 40px;
+        height: 35px;
+        font-size: 1.1rem;
+      }
+    }
+    
+    @media (max-width: 500px) {
+      .cadastro-container {
+        padding: 24px 8px;
+        max-width: 98vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="cadastro-container">
+    <h2>Crie sua conta</h2>
+    <form id="cadastroForm">
+      <input type="text" name="nome" placeholder="Nome completo" required />
+      <input type="email" name="email" placeholder="E-mail" required />
+      <input type="password" name="senha" placeholder="Senha" required minlength="6" />
+      <input type="password" name="confirmarSenha" placeholder="Confirme a senha" required minlength="6" />
+      <button type="submit">Cadastrar</button>
+    </form>
+    
+    <div class="divider">
+      <span>Ou</span>
+    </div>
+    
+    <div class="social-media-buttons">
+      <button type="button" class="social-btn google-btn" id="googleSignup" title="Cadastrar com Google">
+        <i class="fa-brands fa-google"></i>
+      </button>
+      <button type="button" class="social-btn facebook-btn" id="facebookSignup" title="Cadastrar com Facebook">
+        <i class="fa-brands fa-facebook-f"></i>
+      </button>
+      <button type="button" class="social-btn whatsapp-btn" id="whatsappSignup" title="Cadastrar com WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+      </button>
+    </div>
+    
+    <div class="login-link">
+      Já tem uma conta? <a href="login.html">Entrar</a>
+    </div>
+  </div>
+  <script src="assets/js/cadastro.js"></script>
+</body>
+</html>  

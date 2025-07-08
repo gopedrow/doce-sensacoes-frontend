@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Debug - Página de Perfil</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 20px;
+      background-color: #f5f5f5;
+    }
+    .debug-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .debug-section {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    .debug-section h3 {
+      margin-top: 0;
+      color: #333;
+    }
+    .status {
+      padding: 5px 10px;
+      border-radius: 3px;
+      font-weight: bold;
+    }
+    .status.success { background-color: #d4edda; color: #155724; }
+    .status.error { background-color: #f8d7da; color: #721c24; }
+    .status.warning { background-color: #fff3cd; color: #856404; }
+    .log {
+      background-color: #f8f9fa;
+      padding: 10px;
+      border-radius: 3px;
+      font-family: monospace;
+      font-size: 12px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="debug-container">
+    <h1>🔍 Debug - Página de Perfil</h1>
+    
+    <div class="debug-section">
+      <h3>1. Status do Servidor Backend</h3>
+      <div id="server-status">Verificando...</div>
+      <button onclick="checkServerStatus()">Verificar Servidor</button>
+    </div>
+    
+    <div class="debug-section">
+      <h3>2. Status da Autenticação</h3>
+      <div id="auth-status">Verificando...</div>
+      <button onclick="checkAuthStatus()">Verificar Autenticação</button>
+    </div>
+    
+    <div class="debug-section">
+      <h3>3. Configuração da API</h3>
+      <div id="api-config">Verificando...</div>
+    </div>
+    
+    <div class="debug-section">
+      <h3>4. Scripts Carregados</h3>
+      <div id="scripts-status">Verificando...</div>
+    </div>
+    
+    <div class="debug-section">
+      <h3>5. LocalStorage</h3>
+      <div id="localstorage-status">Verificando...</div>
+      <button onclick="clearLocalStorage()">Limpar LocalStorage</button>
+    </div>
+    
+    <div class="debug-section">
+      <h3>6. Logs de Erro</h3>
+      <div id="error-logs" class="log">Aguardando erros...</div>
+    </div>
+    
+    <div class="debug-section">
+      <h3>7. Teste de Conexão com API</h3>
+      <div id="api-test">Aguardando teste...</div>
+      <button onclick="testAPIConnection()">Testar Conexão</button>
+    </div>
+    
+    <div class="debug-section">
+      <h3>8. Ações</h3>
+      <button onclick="simulateLogin()">Simular Login</button>
+      <button onclick="redirectToPerfil()">Ir para Perfil</button>
+      <button onclick="runAllTests()">Executar Todos os Testes</button>
+    </div>
+  </div>
+
+  <script>
+    // Capturar erros do console
+    const originalError = console.error;
+    const originalLog = console.log;
+    const errorLogs = [];
+    
+    console.error = function(...args) {
+      errorLogs.push({ type: 'error', message: args.join(' '), timestamp: new Date().toISOString() });
+      originalError.apply(console, args);
+      updateErrorLogs();
+    };
+    
+    console.log = function(...args) {
+      errorLogs.push({ type: 'log', message: args.join(' '), timestamp: new Date().toISOString() });
+      originalLog.apply(console, args);
+      updateErrorLogs();
+    };
+    
+    function updateErrorLogs() {
+      const logElement = document.getElementById('error-logs');
+      logElement.innerHTML = errorLogs.map(log => 
+        `<div>[${log.timestamp}] ${log.type.toUpperCase()}: ${log.message}</div>`
+      ).join('');
+    }
+    
+    // Verificar status do servidor
+    async function checkServerStatus() {
+      const statusElement = document.getElementById('server-status');
+      statusElement.innerHTML = 'Verificando...';
+      
+      try {
+        const response = await fetch('http://localhost:3000/health');
+        const data = await response.json();
+        
+        if (data.success) {
+          statusElement.innerHTML = `<span class="status success">✅ Servidor Online</span><br>
+            Database: ${data.database}<br>
+            Uptime: ${Math.round(data.uptime)}s`;
+        } else {
+          statusElement.innerHTML = `<span class="status error">❌ Servidor com Problemas</span><br>
+            ${data.message}`;
+        }
+      } catch (error) {
+        statusElement.innerHTML = `<span class="status error">❌ Servidor Offline</span><br>
+          Erro: ${error.message}`;
+      }
+    }
+    
+    // Verificar status da autenticação
+    function checkAuthStatus() {
+      const statusElement = document.getElementById('auth-status');
+      const sessionData = localStorage.getItem('doce_sensacoes_user');
+      const token = localStorage.getItem('auth_token');
+      
+      if (sessionData && token) {
+        try {
+          const session = JSON.parse(sessionData);
+          const isExpired = Date.now() > session.expires;
+          
+          if (isExpired) {
+            statusElement.innerHTML = `<span class="status error">❌ Sessão Expirada</span><br>
+              Usuário: ${session.user?.name || 'N/A'}<br>
+              Expirou em: ${new Date(session.expires).toLocaleString()}`;
+          } else {
+            statusElement.innerHTML = `<span class="status success">✅ Usuário Autenticado</span><br>
+              Nome: ${session.user?.name || 'N/A'}<br>
+              Email: ${session.user?.email || 'N/A'}<br>
+              Tipo: ${session.user?.user_type || 'N/A'}<br>
+              Expira em: ${new Date(session.expires).toLocaleString()}`;
+          }
+        } catch (error) {
+          statusElement.innerHTML = `<span class="status error">❌ Dados de Sessão Inválidos</span><br>
+            Erro: ${error.message}`;
+        }
+      } else {
+        statusElement.innerHTML = `<span class="status warning">⚠️ Usuário Não Autenticado</span><br>
+          Sessão: ${sessionData ? 'Presente' : 'Ausente'}<br>
+          Token: ${token ? 'Presente' : 'Ausente'}`;
+      }
+    }
+    
+    // Verificar configuração da API
+    function checkAPIConfig() {
+      const configElement = document.getElementById('api-config');
+      
+      // Verificar se os scripts estão carregados
+      const authGuard = typeof window.AuthGuard !== 'undefined';
+      const roleManager = typeof window.RoleManager !== 'undefined';
+      
+      configElement.innerHTML = `
+        <span class="status ${authGuard ? 'success' : 'error'}">${authGuard ? '✅' : '❌'} AuthGuard: ${authGuard ? 'Carregado' : 'Não Carregado'}</span><br>
+        <span class="status ${roleManager ? 'success' : 'error'}">${roleManager ? '✅' : '❌'} RoleManager: ${roleManager ? 'Carregado' : 'Não Carregado'}</span><br>
+        API Base URL: ${authGuard ? window.AuthGuard.API_BASE_URL : 'N/A'}
+      `;
+    }
+    
+    // Verificar scripts carregados
+    function checkScriptsStatus() {
+      const scriptsElement = document.getElementById('scripts-status');
+      const scripts = [
+        'assets/js/auth-guard.js',
+        'assets/js/role-manager.js',
+        'assets/js/role-test.js'
+      ];
+      
+      let status = '';
+      scripts.forEach(script => {
+        const scriptElement = document.querySelector(`script[src="${script}"]`);
+        if (scriptElement) {
+          status += `<span class="status success">✅ ${script}</span><br>`;
+        } else {
+          status += `<span class="status error">❌ ${script}</span><br>`;
+        }
+      });
+      
+      scriptsElement.innerHTML = status;
+    }
+    
+    // Verificar localStorage
+    function checkLocalStorage() {
+      const storageElement = document.getElementById('localstorage-status');
+      const sessionData = localStorage.getItem('doce_sensacoes_user');
+      const token = localStorage.getItem('auth_token');
+      
+      storageElement.innerHTML = `
+        <span class="status ${sessionData ? 'success' : 'warning'}">Sessão: ${sessionData ? 'Presente' : 'Ausente'}</span><br>
+        <span class="status ${token ? 'success' : 'warning'}">Token: ${token ? 'Presente' : 'Ausente'}</span><br>
+        <button onclick="showLocalStorageDetails()">Ver Detalhes</button>
+      `;
+    }
+    
+    function showLocalStorageDetails() {
+      const sessionData = localStorage.getItem('doce_sensacoes_user');
+      const token = localStorage.getItem('auth_token');
+      
+      alert(`LocalStorage Details:\n\nSessão:\n${sessionData || 'N/A'}\n\nToken:\n${token || 'N/A'}`);
+    }
+    
+    function clearLocalStorage() {
+      localStorage.removeItem('doce_sensacoes_user');
+      localStorage.removeItem('auth_token');
+      checkLocalStorage();
+      checkAuthStatus();
+    }
+    
+    // Testar conexão com API
+    async function testAPIConnection() {
+      const testElement = document.getElementById('api-test');
+      testElement.innerHTML = 'Testando...';
+      
+      try {
+        const response = await fetch('http://localhost:3000/api/auth/profile', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('auth_token') || 'test-token'}`
+          }
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+          testElement.innerHTML = `<span class="status success">✅ API Funcionando</span><br>
+            Status: ${response.status}<br>
+            Resposta: ${JSON.stringify(data, null, 2)}`;
+        } else {
+          testElement.innerHTML = `<span class="status warning">⚠️ API Respondendo com Erro</span><br>
+            Status: ${response.status}<br>
+            Erro: ${data.message}`;
+        }
+      } catch (error) {
+        testElement.innerHTML = `<span class="status error">❌ Erro de Conexão</span><br>
+          Erro: ${error.message}`;
+      }
+    }
+    
+    // Simular login
+    function simulateLogin() {
+      const testUser = {
+        id: 'test-123',
+        name: 'Usuário Teste',
+        email: 'teste@test.com',
+        user_type: 'client',
+        phone: '(11) 99999-9999',
+        loyalty_points: '100',
+        total_orders: '5',
+        avatar_url: '',
+        is_active: 'TRUE'
+      };
+      
+      const sessionData = {
+        user: testUser,
+        token: 'test-token-123',
+        expires: Date.now() + (24 * 60 * 60 * 1000)
+      };
+      
+      localStorage.setItem('doce_sensacoes_user', JSON.stringify(sessionData));
+      localStorage.setItem('auth_token', 'test-token-123');
+      
+      checkAuthStatus();
+      checkLocalStorage();
+      
+      alert('Login simulado criado! Agora você pode testar a página de perfil.');
+    }
+    
+    // Redirecionar para perfil
+    function redirectToPerfil() {
+      window.location.href = 'perfil.html';
+    }
+    
+    // Executar todos os testes
+    function runAllTests() {
+      checkServerStatus();
+      checkAuthStatus();
+      checkAPIConfig();
+      checkScriptsStatus();
+      checkLocalStorage();
+      testAPIConnection();
+    }
+    
+    // Inicializar quando a página carregar
+    document.addEventListener('DOMContentLoaded', function() {
+      runAllTests();
+    });
+  </script>
+</body>
+</html> 

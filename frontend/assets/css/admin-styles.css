@@ -1,0 +1,350 @@
+/* ========================================
+   ESTILOS ADMINISTRATIVOS - DOCE SENSACOES
+   ======================================== */
+
+/* Seção administrativa no menu */
+.admin-menu-section {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.admin-menu-section > div:first-child {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-primary-6);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Itens administrativos no menu */
+.admin-menu-item a {
+  color: var(--color-primary-6) !important;
+  font-weight: 700 !important;
+}
+
+.admin-menu-item a:hover {
+  background: rgba(235, 46, 125, 0.1) !important;
+  transform: translateX(4px);
+}
+
+.admin-menu-item.active a {
+  background: var(--color-primary-6) !important;
+  color: white !important;
+}
+
+.admin-menu-item.active a:hover {
+  background: var(--color-primary-6) !important;
+  color: white !important;
+}
+
+/* Badge de administrador */
+.admin-badge {
+  background: var(--color-primary-6);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+}
+
+/* Cards administrativos */
+.admin-card {
+  background: linear-gradient(135deg, var(--color-primary-1) 0%, #fff 100%);
+  border: 2px solid var(--color-primary-6);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(235, 46, 125, 0.1);
+  transition: all 0.3s ease;
+}
+
+.admin-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(235, 46, 125, 0.15);
+}
+
+.admin-card h3 {
+  color: var(--color-primary-6);
+  font-weight: 700;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-card h3::before {
+  content: '👑';
+  font-size: 1.2rem;
+}
+
+/* Botões administrativos */
+.admin-btn {
+  background: var(--color-primary-6);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-btn:hover {
+  background: #d41a6b;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(235, 46, 125, 0.3);
+}
+
+.admin-btn-secondary {
+  background: transparent;
+  color: var(--color-primary-6);
+  border: 2px solid var(--color-primary-6);
+}
+
+.admin-btn-secondary:hover {
+  background: var(--color-primary-6);
+  color: white;
+}
+
+/* Tabelas administrativas */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+.admin-table th {
+  background: var(--color-primary-6);
+  color: white;
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  border-radius: 8px 8px 0 0;
+}
+
+.admin-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.admin-table tr:hover {
+  background: rgba(235, 46, 125, 0.05);
+}
+
+/* Formulários administrativos */
+.admin-form {
+  display: grid;
+  gap: 16px;
+}
+
+.admin-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-form-group label {
+  font-weight: 600;
+  color: var(--color-primary-6);
+}
+
+.admin-form-group input,
+.admin-form-group textarea,
+.admin-form-group select {
+  padding: 12px;
+  border: 2px solid #eee;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.admin-form-group input:focus,
+.admin-form-group textarea:focus,
+.admin-form-group select:focus {
+  outline: none;
+  border-color: var(--color-primary-6);
+  box-shadow: 0 0 0 3px rgba(235, 46, 125, 0.1);
+}
+
+/* Estatísticas administrativas */
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.admin-stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  border-left: 4px solid var(--color-primary-6);
+  transition: transform 0.3s ease;
+}
+
+.admin-stat-card:hover {
+  transform: translateY(-2px);
+}
+
+.admin-stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-primary-6);
+  margin-bottom: 8px;
+}
+
+.admin-stat-label {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+}
+
+/* Modal administrativo */
+.admin-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-modal-content {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.admin-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--color-primary-1);
+}
+
+.admin-modal-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary-6);
+}
+
+.admin-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.admin-modal-close:hover {
+  background: #f0f0f0;
+  color: var(--color-primary-6);
+}
+
+/* Responsividade para elementos administrativos */
+@media (max-width: 768px) {
+  .admin-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .admin-modal-content {
+    margin: 20px;
+    padding: 20px;
+  }
+  
+  .admin-table {
+    font-size: 14px;
+  }
+  
+  .admin-table th,
+  .admin-table td {
+    padding: 8px;
+  }
+}
+
+/* Animações para elementos administrativos */
+@keyframes adminSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.admin-card,
+.admin-stat-card {
+  animation: adminSlideIn 0.5s ease;
+}
+
+/* Estados de loading para elementos administrativos */
+.admin-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: var(--color-primary-6);
+}
+
+.admin-loading i {
+  font-size: 2rem;
+  margin-right: 12px;
+}
+
+/* Mensagens de feedback administrativas */
+.admin-message {
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.admin-message.success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.admin-message.error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.admin-message.warning {
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeaa7;
+}
+
+.admin-message.info {
+  background: #d1ecf1;
+  color: #0c5460;
+  border: 1px solid #bee5eb;
+} 

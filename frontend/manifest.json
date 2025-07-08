@@ -1,0 +1,35 @@
+{
+  "name": "Doce Sensações",
+  "short_name": "Doce Sensações",
+  "description": "O sabor que vai até você - Confeitaria artesanal",
+  "start_url": "/doce-sensacoes-frontend/",
+  "display": "standalone",
+  "background_color": "#E8F7F8",
+  "theme_color": "#EB2E7D",
+  "orientation": "portrait",
+  "scope": "/doce-sensacoes-frontend/",
+  "lang": "pt-BR",
+  "categories": ["food", "lifestyle", "shopping"],
+  "icons": [
+    {
+      "src": "images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "images/hero.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ]
+} 

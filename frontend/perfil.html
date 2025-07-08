@@ -1,0 +1,2371 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard | Confeitaria</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/admin-styles.css" />
+  <style>
+    :root {
+      --color-primary-1: #FFF0F5;
+      --color-primary-2: #FFB6C1;
+      --color-primary-3: #FF69B4;
+      --color-primary-4: #FF1493;
+      --color-primary-5: #FF69B4;
+      --color-primary-6: #EB2E7D;
+
+      --color-neutral-0: #fff;
+      --color-neutral-1: #1d1d1d;
+    }
+
+    * {
+      font-family: 'Poppins', sans-serif !important;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--color-primary-1);
+      display: flex;
+      min-height: 100vh;
+      color: var(--color-neutral-1);
+    }
+
+    /* Sidebar Desktop - Design Flutuante */
+    .desktop-sidebar {
+      width: 240px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(15px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+      display: flex;
+      flex-direction: column;
+      padding: 24px 20px;
+      position: fixed;
+      top: 20px; 
+      bottom: 20px; 
+      left: 20px;
+      border-radius: 24px;
+      overflow-y: auto;
+      z-index: 1000;
+      transition: width 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .desktop-sidebar:hover {
+      box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    }
+
+    .desktop-sidebar.collapsed {
+      width: 90px;
+      padding: 28px 16px;
+    }
+
+    /* Navbar Mobile - Design Flutuante */
+    .mobile-navbar {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(15px);
+      z-index: 1000;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .navbar-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 20px;
+      max-width: 100%;
+    }
+
+    .navbar-menu {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .navbar-item a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      text-decoration: none;
+      color: var(--color-neutral-1);
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .navbar-item.active a {
+      color: var(--color-primary-6);
+    }
+
+    .navbar-item a:hover {
+      background: rgba(0,0,0,0.05);
+      transform: translateY(-2px);
+    }
+
+    .navbar-item.active a:hover {
+      background: rgba(0,0,0,0.05);
+      color: var(--color-primary-6);
+    }
+
+    .navbar-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 24px;
+      height: 4px;
+      background: var(--color-primary-6);
+      border-radius: 2px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .desktop-sidebar {
+        display: none !important;
+      }
+      
+      .mobile-navbar {
+        display: block !important;
+      }
+      
+      main.main {
+        margin-left: 0 !important;
+        padding: 100px 4vw 24px 4vw;
+      }
+    }
+
+    @media (min-width: 769px) {
+      .mobile-navbar {
+        display: none !important;
+      }
+    }
+
+    #sidebar_content {
+      flex-grow: 1;
+    }
+
+    #user {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 30px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      padding: 10px;
+      border-radius: 12px;
+    }
+    
+    #user:hover {
+      background: rgba(255, 105, 180, 0.1);
+      transform: translateY(-2px);
+    }
+
+    #sidebar.collapsed #user {
+      opacity: 1;
+      pointer-events: auto;
+      height: auto;
+      margin-bottom: 20px;
+      justify-content: center;
+    }
+
+    #sidebar.collapsed #user_avatar {
+      width: 40px;
+      height: 40px;
+      margin: 0;
+    }
+
+    #sidebar.collapsed #user_avatar svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    #sidebar.collapsed #user_infos {
+      display: none;
+    }
+
+    #user_avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: #e0e0e0;
+      border: 2px solid var(--color-primary-6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #757575;
+    }
+
+    #user_avatar svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    #user_infos {
+      display: flex;
+      flex-direction: column;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--color-primary-6);
+    }
+
+    .vip-badge {
+      font-size: 0.7rem;
+      font-weight: 500;
+      opacity: 0.8;
+      margin-bottom: 2px;
+    }
+
+    .user-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    /* Menus Desktop e Mobile */
+    .side-items {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    /* Desktop menu - com texto */
+    .desktop-menu {
+      display: block;
+    }
+
+    /* Mobile menu - só ícones */
+    .mobile-menu {
+      display: none;
+      gap: 12px;
+    }
+
+    /* Itens do menu */
+    .side-item {
+      margin-bottom: 14px;
+      position: relative;
+    }
+
+    .side-item a {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      text-decoration: none;
+      padding: 18px 20px;
+      border-radius: 16px;
+      color: var(--color-neutral-1);
+      font-weight: 600;
+      transition: all 0.3s ease;
+      user-select: none;
+      white-space: nowrap;
+      background: none;
+    }
+
+    .side-item a:hover {
+      background: none;
+      transform: none;
+    }
+
+    .side-item.active a {
+      color: var(--color-primary-6);
+    }
+
+    .side-item.active a:hover {
+      background: none;
+      color: var(--color-primary-6);
+    }
+
+    /* Ícones do menu mobile só centralizados */
+    .mobile-menu .side-item a {
+      justify-content: center;
+      padding: 8px;
+      width: 44px;
+      height: 44px;
+      font-size: 1.3rem;
+    }
+
+
+
+    /* Espaço para o indicador ativo na sidebar desktop */
+    .desktop-menu .side-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      bottom: 8px;
+      width: 6px;
+      border-radius: 6px;
+      background: var(--color-primary-6);
+      transition: top 0.3s, bottom 0.3s;
+      /* Espaço extra entre barra e ícone */
+      margin-right: 8px;
+    }
+    .desktop-menu .side-item {
+      position: relative;
+    }
+
+
+    .side-item a i {
+      color: inherit;
+      font-size: 1.5rem;
+      min-width: 32px;
+      min-height: 32px;
+      max-width: 32px;
+      max-height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.3s;
+    }
+
+    .side-item a svg {
+      width: 28px;
+      height: 28px;
+      min-width: 28px;
+      min-height: 28px;
+      max-width: 28px;
+      max-height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.3s;
+    }
+
+    /* Botão expandir/reduzir sidebar */
+    #open_btn_container {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1001;
+      pointer-events: auto;
+      overflow: visible;
+      visibility: visible !important;
+    }
+
+    #open_btn {
+      background: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: var(--color-primary-6);
+      position: relative;
+      z-index: 1002;
+      pointer-events: auto;
+      overflow: visible;
+      visibility: visible !important;
+    }
+
+    #open_btn:hover {
+      background: var(--color-primary-6);
+      color: white;
+      transform: scale(1.05);
+    }
+
+    #open_btn svg {
+      width: 20px;
+      height: 20px;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    #open_btn:hover svg {
+      transform: scale(1.1);
+    }
+
+    /* Main content */
+    main.main {
+      margin-left: 280px;
+      padding: 30px;
+      flex: 1;
+      overflow-y: auto;
+      min-height: 100vh;
+      background: var(--color-primary-1);
+      color: var(--color-neutral-1);
+      transition: margin-left 0.3s ease;
+    }
+
+    main.main.collapsed {
+      margin-left: 130px;
+    }
+
+    main.main h1 {
+      color: var(--color-primary-6);
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: var(--color-neutral-0);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+      margin-bottom: 20px;
+      color: var(--color-neutral-1);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      font-weight: 700;
+      color: var(--color-primary-6);
+    }
+
+    /* Avaliação estrelas */
+    button.star {
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 2rem;
+      color: #ddd;
+      transition: color 0.2s;
+      user-select: none;
+    }
+    button.star.selected,
+    button.star:hover,
+    button.star:hover ~ button.star {
+      color: gold;
+    }
+
+    /* Responsivo */
+    @media (max-width: 768px) {
+      #sidebar {
+        width: 100vw;
+        height: auto;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        padding: 16px 24px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        border-radius: 0 0 16px 16px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        margin: 0;
+        transition: none;
+      }
+      #sidebar_content {
+        flex-direction: row !important;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+      }
+      .desktop-menu {
+        display: none !important;
+      }
+      .mobile-menu {
+        display: flex !important;
+        flex-direction: row;
+        gap: 24px;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+        margin: 0;
+      }
+      .side-item {
+        margin-bottom: 0;
+        position: relative;
+      }
+      .side-item a {
+        padding: 14px 10px;
+        border-radius: 10px;
+        justify-content: center;
+      }
+      .side-item a svg, .side-item a i {
+        width: 28px;
+        height: 28px;
+        min-width: 28px;
+        min-height: 28px;
+        max-width: 28px;
+        max-height: 28px;
+      }
+      .mobile-menu .side-item.active::after {
+        content: '';
+        position: absolute;
+        left: 16px;
+        right: 16px;
+        bottom: 2px;
+        height: 4px;
+        border-radius: 2px;
+        background: var(--color-primary-6);
+        transition: left 0.3s, right 0.3s;
+        margin-top: 6px;
+      }
+      main.main {
+        margin-left: 0 !important;
+        padding: 80px 4vw 24px 4vw;
+      }
+      #open_btn_container, #open_btn {
+        display: none !important;
+      }
+    }
+
+    #sidebar.collapsed .desktop-menu .side-item a {
+      justify-content: center;
+      gap: 0;
+    }
+    #sidebar.collapsed .desktop-menu .side-item a .item-description {
+        display: none;
+      }
+
+    #sidebar.collapsed #open_btn_container {
+      border-top: 1px solid #ddd;
+      margin-top: auto;
+        display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px 0;
+      z-index: 1001;
+      pointer-events: auto;
+      overflow: visible;
+    }
+    
+    #sidebar.collapsed #open_btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      background: white;
+      color: var(--color-primary-6);
+      border: none;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 1002;
+      pointer-events: auto;
+      overflow: visible;
+    }
+
+    #sidebar.collapsed #open_btn:hover {
+      background: var(--color-primary-6);
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .product-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      width: 240px;
+      min-width: 200px;
+      max-width: 100%;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: box-shadow 0.2s;
+      aspect-ratio: 5/4;
+    }
+    @media (max-width: 768px) {
+      .product-card {
+        width: 100%;
+        max-width: 340px;
+        aspect-ratio: 1/1;
+        min-width: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav id="sidebar" class="desktop-sidebar">
+    <div id="sidebar_content">
+      <div id="user">
+        <div id="user_avatar">
+          <img id="sidebar-user-avatar" src="assets/images/avatar.png" alt="Foto do Usuário" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--color-primary-6); background: #fff; display: none;" />
+          <svg id="sidebar-user-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div id="user_infos" title="Clique para ver seu perfil completo">
+          <div style="font-size: 12px; color: #666; margin-bottom: 2px;">Cliente VIP</div>
+          <div style="font-weight: 600; color: var(--color-primary-6); display: flex; align-items: center; gap: 6px;">
+            ${clienteNome}
+            <i class="fa-solid fa-chevron-right" style="font-size: 10px; opacity: 0.7; transition: transform 0.2s ease;"></i>
+          </div>
+        </div>
+      </div>
+
+      <nav id="sidebar_nav">
+        <ul>
+          <li class="sidebar-item active" data-section="home">
+            <a href="#">
+              <i class="fa-solid fa-home"></i>
+              <span>Início</span>
+            </a>
+          </li>
+          <li class="sidebar-item" data-section="carrinho">
+            <a href="#">
+              <i class="fa-solid fa-shopping-cart"></i>
+              <span>Carrinho</span>
+              <span class="cart-badge-sidebar" id="cart-badge-sidebar" style="position: absolute; top: 8px; right: 8px; background: var(--color-primary-6); color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; display: none;">0</span>
+            </a>
+          </li>
+          <li class="sidebar-item" data-section="meus-pedidos">
+            <a href="#">
+              <i class="fa-solid fa-list"></i>
+              <span>Meus Pedidos</span>
+            </a>
+          </li>
+          <li class="sidebar-item" data-section="novo-pedido">
+            <a href="#">
+              <i class="fa-solid fa-plus"></i>
+              <span>Novo Pedido</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <div id="open_btn_container">
+      <button id="open_btn" title="Toggle Sidebar" aria-label="Toggle sidebar">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path fill-rule="evenodd" d="M7.72 12.53a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 1 1 1.06 1.06L9.31 12l6.97 6.97a.75.75 0 1 1-1.06 1.06l-7.5-7.5Z" clip-rule="evenodd" /></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Navbar Mobile -->
+  <nav id="navbar-mobile" class="mobile-navbar">
+    <div class="navbar-container">
+      <ul class="navbar-menu">
+        <li class="navbar-item active" data-section="home">
+          <a href="#" title="Início">
+            <i class="fa-solid fa-home"></i>
+          </a>
+        </li>
+        <li class="navbar-item" data-section="carrinho">
+          <a href="#" title="Carrinho">
+            <i class="fa-solid fa-shopping-cart"></i>
+            <span class="cart-badge" id="cart-badge" style="position: absolute; top: -5px; right: -5px; background: var(--color-primary-6); color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; display: none;">0</span>
+          </a>
+        </li>
+        <li class="navbar-item" data-section="meus-pedidos">
+          <a href="#" title="Meus Pedidos">
+            <i class="fa-solid fa-list"></i>
+          </a>
+        </li>
+        <li class="navbar-item" data-section="novo-pedido">
+          <a href="#" title="Novo Pedido">
+            <i class="fa-solid fa-plus"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+
+
+  <main class="main" id="main-content">
+    <!-- Conteúdo dinâmico carregado aqui -->
+  </main>
+
+  <script>
+    const mainContent = document.getElementById('main-content');
+    const sidebar = document.getElementById('sidebar');
+    const openBtn = document.getElementById('open_btn');
+    
+    // Elementos da navbar mobile
+    const mobileNavbar = document.getElementById('navbar-mobile');
+
+    const sidebarItemsDesktop = document.querySelectorAll('#side_items_desktop .side-item');
+    const sidebarItemsMobile = document.querySelectorAll('.navbar-item');
+    
+    // Verifica se o sistema de roles está disponível
+    let roleManagerAvailable = false;
+    if (window.RoleManager) {
+      roleManagerAvailable = true;
+    }
+
+    // Dados simulados para exibir no dashboard (poderia vir de API)
+    let clienteNome = "Fulano de Tal";
+    
+    // Função para atualizar nome do usuário na sidebar
+    function updateUserInfoInSidebar() {
+      const currentUser = getCurrentUserFromSession();
+      const userProfile = getUserProfileData();
+      
+      if (currentUser) {
+        clienteNome = userProfile.name || currentUser.name;
+        
+        // Atualizar nome na sidebar
+        const userInfoElement = document.querySelector('#user_infos div:last-child');
+        if (userInfoElement) {
+          userInfoElement.textContent = clienteNome;
+        }
+        
+        // Atualizar tipo de usuário
+        const userTypeElement = document.querySelector('#user_infos div:first-child');
+        if (userTypeElement) {
+          userTypeElement.textContent = currentUser.user_type === 'admin' ? 'Administrador' : 'Cliente VIP';
+        }
+        
+        // Atualizar foto na sidebar
+        updateSidebarAvatar(userProfile.avatar_url);
+      }
+    }
+    const fidelidadePedidos = 7;
+    const fidelidadeParaMimo = 3;
+    const ultimoPedido = {
+      status: "Em preparo",
+      itens: "1 Bolo de Chocolate, 6 Brigadeiros Gourmet",
+      total: "R$ 58,00"
+    };
+    const cupomAtivo = "20%OFF";
+    const destaqueSemana = {
+      titulo: "Bolo Red Velvet",
+      descricao: "com 20% de desconto até sexta-feira!"
+    };
+
+    // Produtos de exemplo
+    const cartProducts = [
+      {
+        id: 1,
+        name: 'Bolo de Chocolate',
+        desc: 'Massa fofinha, recheio cremoso e cobertura de chocolate belga.',
+        price: 45.00,
+        img: 'assets/images/dish.png',
+        qty: 1
+      },
+      {
+        id: 2,
+        name: 'Torta de Limão',
+        desc: 'Base crocante, creme de limão e merengue maçaricado.',
+        price: 38.00,
+        img: 'assets/images/dish2.png',
+        qty: 1
+      },
+      {
+        id: 3,
+        name: 'Brigadeiro Gourmet',
+        desc: 'Caixa com 6 unidades de brigadeiro feito com chocolate premium.',
+        price: 18.00,
+        img: 'assets/images/dish3.png',
+        qty: 1
+      },
+      {
+        id: 4,
+        name: 'Cheesecake de Frutas Vermelhas',
+        desc: 'Cremoso, com calda artesanal de frutas vermelhas.',
+        price: 42.00,
+        img: 'assets/images/dish4.png',
+        qty: 1
+      }
+    ];
+    let cart = JSON.parse(JSON.stringify(cartProducts));
+    let discountValue = 0;
+    const deliveryFee = 10.00;
+
+    // Função para mostrar perfil do usuário
+    function showUserProfile() {
+      // Ocultar sidebar
+      sidebar.style.display = 'none';
+      
+      // Ajustar main content para ocupar toda a largura
+      mainContent.style.marginLeft = '0';
+      mainContent.style.padding = '20px';
+      
+      // Renderizar conteúdo do perfil
+      renderUserProfileContent();
+    }
+    
+    // Função para voltar ao layout normal
+    function backToNormalLayout() {
+      // Mostrar sidebar novamente
+      sidebar.style.display = 'flex';
+      
+      // Restaurar margin do main content
+      mainContent.style.marginLeft = '280px';
+      mainContent.style.padding = '30px';
+      
+      // Voltar para a seção home
+      showSection('home');
+    }
+    
+    // Função para renderizar conteúdo do perfil do usuário
+    function renderUserProfileContent() {
+      const currentUser = getCurrentUserFromSession();
+      const userProfile = getUserProfileData();
+      
+      mainContent.innerHTML = `
+        <div style="max-width: 900px; margin: 0 auto; padding: 20px;">
+          <!-- Botão voltar -->
+          <button onclick="backToNormalLayout()" style="background: var(--color-primary-6); color: white; border: none; border-radius: 8px; padding: 10px 20px; cursor: pointer; margin-bottom: 30px; display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-arrow-left"></i>
+            Voltar ao Dashboard
+          </button>
+          
+          <!-- Cabeçalho do perfil -->
+          <div style="text-align: center; margin-bottom: 40px;">
+            <h1 style="color: var(--color-primary-6); margin-bottom: 10px;">👤 Meu Perfil</h1>
+            <p style="color: #666; font-size: 1.1rem;">Gerencie suas informações pessoais e histórico</p>
+          </div>
+          
+          <!-- Informações do usuário -->
+          <div style="background: white; border-radius: 16px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 30px;">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 20px; margin-bottom: 30px;">
+              <!-- Foto do perfil -->
+              <div style="position: relative;">
+                <img id="profile-pic-large" src="${userProfile.avatar_url || 'assets/images/avatar.png'}" alt="Foto do Usuário" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid var(--color-primary-6); background: #fff;" />
+                <button onclick="document.getElementById('profile-pic-input-large').click()" style="position: absolute; bottom: 5px; right: 5px; background: var(--color-primary-6); color: white; border: none; border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+                  <i class="fa-solid fa-camera"></i>
+                </button>
+                <input type="file" id="profile-pic-input-large" accept="image/*" style="display: none;" onchange="handleProfilePicChange(this)" />
+              </div>
+              
+              <!-- Nome do usuário -->
+              <div style="text-align: center;">
+                <h2 id="user-name-display" style="color: var(--color-primary-6); margin-bottom: 5px;">${userProfile.name || currentUser?.name || 'Usuário'}</h2>
+                <p id="user-email-display" style="color: #666; font-size: 1rem;">${userProfile.email || currentUser?.email || 'email@exemplo.com'}</p>
+                <span style="background: var(--color-primary-2); color: var(--color-primary-6); padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; margin-top: 8px; display: inline-block;">
+                  ${currentUser?.user_type === 'admin' ? '👑 Administrador' : '👤 Cliente'}
+                </span>
+              </div>
+            </div>
+            
+            <!-- Informações detalhadas -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
+              <div style="background: #f8f9fa; padding: 20px; border-radius: 12px;">
+                <h4 style="color: var(--color-primary-6); margin-bottom: 15px; font-size: 1.1rem;">📋 Informações Pessoais</h4>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                  <div>
+                    <strong style="color: #333;">Nome:</strong>
+                    <span id="display-name" style="margin-left: 8px; color: #666;">${userProfile.name || currentUser?.name || 'Não informado'}</span>
+                  </div>
+                  <div>
+                    <strong style="color: #333;">E-mail:</strong>
+                    <span id="display-email" style="margin-left: 8px; color: #666;">${userProfile.email || currentUser?.email || 'Não informado'}</span>
+                  </div>
+                  <div>
+                    <strong style="color: #333;">Telefone:</strong>
+                    <span id="display-phone" style="margin-left: 8px; color: #666;">${userProfile.phone || currentUser?.phone || 'Não informado'}</span>
+                  </div>
+                  <div>
+                    <strong style="color: #333;">Data de Cadastro:</strong>
+                    <span style="margin-left: 8px; color: #666;">${currentUser?.created_at ? new Date(currentUser.created_at).toLocaleDateString('pt-BR') : 'N/A'}</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div style="background: #f8f9fa; padding: 20px; border-radius: 12px;">
+                <h4 style="color: var(--color-primary-6); margin-bottom: 15px; font-size: 1.1rem;">📊 Estatísticas</h4>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                  <div>
+                    <strong style="color: #333;">Total de Pedidos:</strong>
+                    <span style="margin-left: 8px; color: #666;">${currentUser?.total_orders || 0}</span>
+                  </div>
+                  <div>
+                    <strong style="color: #333;">Pontos de Fidelidade:</strong>
+                    <span style="margin-left: 8px; color: #666;">${currentUser?.loyalty_points || 0}</span>
+                  </div>
+                  <div>
+                    <strong style="color: #333;">Última Atualização:</strong>
+                    <span style="margin-left: 8px; color: #666;">${userProfile.last_updated ? new Date(userProfile.last_updated).toLocaleDateString('pt-BR') : 'N/A'}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Formulário de edição -->
+            <form id="user-profile-form" style="display: none;">
+              <h4 style="color: var(--color-primary-6); margin-bottom: 20px; font-size: 1.2rem;">✏️ Editar Informações</h4>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                <div>
+                  <label style="display: block; font-weight: 600; color: var(--color-primary-6); margin-bottom: 8px;">Nome Completo</label>
+                  <input type="text" id="edit-name" value="${userProfile.name || currentUser?.name || ''}" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;" required />
+                </div>
+                <div>
+                  <label style="display: block; font-weight: 600; color: var(--color-primary-6); margin-bottom: 8px;">E-mail</label>
+                  <input type="email" id="edit-email" value="${userProfile.email || currentUser?.email || ''}" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;" required />
+                </div>
+              </div>
+              
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                <div>
+                  <label style="display: block; font-weight: 600; color: var(--color-primary-6); margin-bottom: 8px;">Telefone</label>
+                  <input type="tel" id="edit-phone" value="${userProfile.phone || currentUser?.phone || ''}" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;" />
+                </div>
+                <div>
+                  <label style="display: block; font-weight: 600; color: var(--color-primary-6); margin-bottom: 8px;">Nova Senha (opcional)</label>
+                  <input type="password" id="edit-password" placeholder="Deixe em branco para manter a atual" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;" />
+                </div>
+              </div>
+              
+              <div style="display: flex; gap: 15px; justify-content: center; margin-top: 30px;">
+                <button type="submit" style="background: var(--color-primary-6); color: white; border: none; border-radius: 8px; padding: 12px 30px; font-weight: 600; cursor: pointer; font-size: 1rem;">
+                  <i class="fa-solid fa-save"></i> Salvar Alterações
+                </button>
+                <button type="button" onclick="cancelEdit()" style="background: #6c757d; color: white; border: none; border-radius: 8px; padding: 12px 30px; font-weight: 600; cursor: pointer; font-size: 1rem;">
+                  <i class="fa-solid fa-times"></i> Cancelar
+                </button>
+              </div>
+            </form>
+            
+            <!-- Botões de ação -->
+            <div id="profile-actions" style="text-align: center; margin-top: 30px;">
+              <button onclick="toggleEditMode()" style="background: var(--color-primary-6); color: white; border: none; border-radius: 8px; padding: 12px 25px; font-weight: 600; cursor: pointer; margin-right: 15px;">
+                <i class="fa-solid fa-edit"></i> Editar Perfil
+              </button>
+              <button onclick="logoutUser()" style="background: #dc3545; color: white; border: none; border-radius: 8px; padding: 12px 25px; font-weight: 600; cursor: pointer;">
+                <i class="fa-solid fa-sign-out-alt"></i> Sair
+              </button>
+            </div>
+          </div>
+          
+          <!-- Histórico de Atividades -->
+          <div style="background: white; border-radius: 16px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 30px;">
+            <h3 style="color: var(--color-primary-6); margin-bottom: 20px; font-size: 1.3rem;">📈 Histórico de Atividades</h3>
+            <div id="activity-history" style="max-height: 300px; overflow-y: auto;">
+              ${generateActivityHistory(userProfile)}
+            </div>
+          </div>
+          
+          <!-- Estatísticas do usuário -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
+            <div style="background: white; border-radius: 16px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-align: center; border-left: 4px solid var(--color-primary-3);">
+              <i class="fa-solid fa-shopping-bag" style="font-size: 2rem; color: var(--color-primary-6); margin-bottom: 15px;"></i>
+              <h3 style="color: var(--color-primary-6); margin-bottom: 10px;">Total de Pedidos</h3>
+              <p style="font-size: 2rem; font-weight: bold; color: var(--color-primary-6);">${currentUser?.total_orders || 0}</p>
+            </div>
+            
+            <div style="background: white; border-radius: 16px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-align: center; border-left: 4px solid var(--color-primary-4);">
+              <i class="fa-solid fa-star" style="font-size: 2rem; color: var(--color-primary-6); margin-bottom: 15px;"></i>
+              <h3 style="color: var(--color-primary-6); margin-bottom: 10px;">Pontos de Fidelidade</h3>
+              <p style="font-size: 2rem; font-weight: bold; color: var(--color-primary-6);">${currentUser?.loyalty_points || 0}</p>
+            </div>
+            
+            <div style="background: white; border-radius: 16px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-align: center; border-left: 4px solid var(--color-primary-5);">
+              <i class="fa-solid fa-calendar-check" style="font-size: 2rem; color: var(--color-primary-6); margin-bottom: 15px;"></i>
+              <h3 style="color: var(--color-primary-6); margin-bottom: 10px;">Membro Desde</h3>
+              <p style="font-size: 1.2rem; font-weight: bold; color: var(--color-primary-6);">${currentUser?.created_at ? new Date(currentUser.created_at).toLocaleDateString('pt-BR') : 'N/A'}</p>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      // Configurar eventos do formulário
+      setupProfileFormEvents();
+    }
+    
+    // Função para obter usuário atual da sessão
+    function getCurrentUserFromSession() {
+      try {
+        const sessionData = localStorage.getItem('doce_sensacoes_user');
+        if (sessionData) {
+          const session = JSON.parse(sessionData);
+          return session.user || null;
+        }
+      } catch (error) {
+        console.error('Erro ao obter usuário da sessão:', error);
+      }
+      return null;
+    }
+    
+    // Função para obter dados do perfil do usuário (persistente)
+    function getUserProfileData() {
+      try {
+        const currentUser = getCurrentUserFromSession();
+        if (!currentUser) return {};
+        
+        const profileKey = `user_profile_${currentUser.id}`;
+        const profileData = localStorage.getItem(profileKey);
+        
+        if (profileData) {
+          return JSON.parse(profileData);
+        } else {
+          // Criar perfil inicial com dados da sessão
+          const initialProfile = {
+            name: currentUser.name,
+            email: currentUser.email,
+            phone: currentUser.phone || '',
+            avatar_url: currentUser.avatar_url || '',
+            last_updated: new Date().toISOString(),
+            activities: []
+          };
+          
+          localStorage.setItem(profileKey, JSON.stringify(initialProfile));
+          return initialProfile;
+        }
+      } catch (error) {
+        console.error('Erro ao obter dados do perfil:', error);
+        return {};
+      }
+    }
+    
+    // Função para salvar dados do perfil do usuário
+    function saveUserProfileData(profileData) {
+      try {
+        const currentUser = getCurrentUserFromSession();
+        if (!currentUser) return false;
+        
+        const profileKey = `user_profile_${currentUser.id}`;
+        profileData.last_updated = new Date().toISOString();
+        
+        localStorage.setItem(profileKey, JSON.stringify(profileData));
+        return true;
+      } catch (error) {
+        console.error('Erro ao salvar dados do perfil:', error);
+        return false;
+      }
+    }
+    
+    // Função para adicionar atividade ao histórico
+    function addActivityToHistory(activity) {
+      try {
+        const currentUser = getCurrentUserFromSession();
+        if (!currentUser) return;
+        
+        const profileData = getUserProfileData();
+        const newActivity = {
+          ...activity,
+          timestamp: new Date().toISOString()
+        };
+        
+        profileData.activities = profileData.activities || [];
+        profileData.activities.unshift(newActivity); // Adiciona no início
+        
+        // Manter apenas as últimas 20 atividades
+        if (profileData.activities.length > 20) {
+          profileData.activities = profileData.activities.slice(0, 20);
+        }
+        
+        saveUserProfileData(profileData);
+      } catch (error) {
+        console.error('Erro ao adicionar atividade:', error);
+      }
+    }
+    
+    // Função para gerar histórico de atividades
+    function generateActivityHistory(userProfile) {
+      const activities = userProfile.activities || [];
+      
+      if (activities.length === 0) {
+        return `
+          <div style="text-align: center; padding: 40px; color: #666;">
+            <i class="fa-solid fa-history" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
+            <p>Nenhuma atividade registrada ainda.</p>
+            <p style="font-size: 0.9rem; margin-top: 10px;">Suas atividades aparecerão aqui conforme você usar o sistema.</p>
+          </div>
+        `;
+      }
+      
+      return activities.map(activity => `
+        <div style="display: flex; align-items: center; gap: 15px; padding: 15px; border-bottom: 1px solid #eee; transition: background 0.2s;">
+          <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--color-primary-2); display: flex; align-items: center; justify-content: center; color: var(--color-primary-6);">
+            <i class="fa-solid ${getActivityIcon(activity.type)}"></i>
+          </div>
+          <div style="flex: 1;">
+            <div style="font-weight: 600; color: #333; margin-bottom: 4px;">${activity.title}</div>
+            <div style="font-size: 0.9rem; color: #666;">${activity.description}</div>
+          </div>
+          <div style="font-size: 0.8rem; color: #999; text-align: right;">
+            ${formatActivityDate(activity.timestamp)}
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    // Função para obter ícone da atividade
+    function getActivityIcon(activityType) {
+      const icons = {
+        'profile_update': 'fa-user-edit',
+        'photo_change': 'fa-camera',
+        'login': 'fa-sign-in-alt',
+        'logout': 'fa-sign-out-alt',
+        'order': 'fa-shopping-cart',
+        'default': 'fa-circle'
+      };
+      return icons[activityType] || icons.default;
+    }
+    
+    // Função para formatar data da atividade
+    function formatActivityDate(timestamp) {
+      const date = new Date(timestamp);
+      const now = new Date();
+      const diffInHours = (now - date) / (1000 * 60 * 60);
+      
+      if (diffInHours < 1) {
+        return 'Agora mesmo';
+      } else if (diffInHours < 24) {
+        return `${Math.floor(diffInHours)}h atrás`;
+      } else if (diffInHours < 48) {
+        return 'Ontem';
+      } else {
+        return date.toLocaleDateString('pt-BR');
+      }
+    }
+    
+    // Função para mostrar notificação
+    function showNotification(message, type = 'info') {
+      // Remover notificação anterior se existir
+      const existingNotification = document.querySelector('.notification');
+      if (existingNotification) {
+        existingNotification.remove();
+      }
+      
+      // Criar nova notificação
+      const notification = document.createElement('div');
+      notification.className = `notification notification-${type}`;
+      
+      const bgColor = type === 'success' ? '#28a745' : 
+                     type === 'error' ? '#dc3545' : 
+                     type === 'warning' ? '#ffc107' : '#17a2b8';
+      
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${bgColor};
+        color: white;
+        padding: 15px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 10000;
+        font-weight: 500;
+        max-width: 300px;
+        transform: translateX(100%);
+        transition: transform 0.3s ease-out;
+      `;
+      
+      const icon = type === 'success' ? 'fa-check-circle' : 
+                  type === 'error' ? 'fa-exclamation-circle' : 
+                  type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle';
+      
+      notification.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <i class="fa-solid ${icon}"></i>
+          <span>${message}</span>
+        </div>
+      `;
+      
+      document.body.appendChild(notification);
+      
+      // Anima entrada
+      setTimeout(() => {
+        notification.style.transform = 'translateX(0)';
+      }, 100);
+      
+      // Remove após 3 segundos
+      setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.remove();
+          }
+        }, 300);
+      }, 3000);
+    }
+    
+    // Função para alternar modo de edição
+    function toggleEditMode() {
+      const form = document.getElementById('user-profile-form');
+      const actions = document.getElementById('profile-actions');
+      
+      if (form.style.display === 'none') {
+        form.style.display = 'block';
+        actions.style.display = 'none';
+      } else {
+        form.style.display = 'none';
+        actions.style.display = 'block';
+      }
+    }
+    
+    // Função para cancelar edição
+    function cancelEdit() {
+      toggleEditMode();
+      showNotification('Edição cancelada', 'info');
+    }
+    
+    // Função para configurar eventos do formulário
+    function setupProfileFormEvents() {
+      const form = document.getElementById('user-profile-form');
+      if (form) {
+        form.addEventListener('submit', handleProfileUpdate);
+      }
+    }
+    
+    // Função para lidar com atualização do perfil
+    async function handleProfileUpdate(event) {
+      event.preventDefault();
+      
+      const formData = {
+        name: document.getElementById('edit-name').value,
+        email: document.getElementById('edit-email').value,
+        phone: document.getElementById('edit-phone').value,
+        password: document.getElementById('edit-password').value
+      };
+      
+      try {
+        // Aqui você faria a chamada para a API para atualizar o perfil
+        console.log('Atualizando perfil:', formData);
+        
+        // Atualizar dados do perfil persistente
+        const profileData = getUserProfileData();
+        const updatedProfile = {
+          ...profileData,
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone
+        };
+        
+        saveUserProfileData(updatedProfile);
+        
+        // Atualizar dados na sessão
+        const currentUser = getCurrentUserFromSession();
+        if (currentUser) {
+          currentUser.name = formData.name;
+          currentUser.email = formData.email;
+          currentUser.phone = formData.phone;
+          
+          const sessionData = {
+            user: currentUser,
+            token: localStorage.getItem('auth_token'),
+            expires: Date.now() + (24 * 60 * 60 * 1000)
+          };
+          
+          localStorage.setItem('doce_sensacoes_user', JSON.stringify(sessionData));
+        }
+        
+        // Adicionar atividade ao histórico
+        addActivityToHistory({
+          type: 'profile_update',
+          title: 'Perfil Atualizado',
+          description: 'Informações pessoais foram modificadas'
+        });
+        
+        // Atualizar sidebar
+        updateUserInfoInSidebar();
+        
+        // Simular sucesso
+        alert('Perfil atualizado com sucesso!');
+        toggleEditMode();
+        
+        // Recarregar conteúdo do perfil
+        renderUserProfileContent();
+        
+      } catch (error) {
+        console.error('Erro ao atualizar perfil:', error);
+        alert('Erro ao atualizar perfil. Tente novamente.');
+      }
+    }
+    
+    // Função para lidar com mudança de foto
+    function handleProfilePicChange(input) {
+      const file = input.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const imageData = e.target.result;
+          
+          // Atualizar foto no perfil
+          const profilePic = document.getElementById('profile-pic-large');
+          if (profilePic) {
+            profilePic.src = imageData;
+          }
+          
+          // Salvar foto no perfil persistente
+          const profileData = getUserProfileData();
+          profileData.avatar_url = imageData;
+          saveUserProfileData(profileData);
+          
+          // Atualizar foto na sidebar
+          updateSidebarAvatar(imageData);
+          
+          // Adicionar atividade ao histórico
+          addActivityToHistory({
+            type: 'photo_change',
+            title: 'Foto de Perfil Alterada',
+            description: 'Nova foto de perfil foi definida'
+          });
+          
+          // Mostrar notificação
+          showNotification('Foto de perfil atualizada com sucesso!', 'success');
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+    
+    // Função para atualizar avatar na sidebar
+    function updateSidebarAvatar(imageData) {
+      const sidebarAvatar = document.getElementById('sidebar-user-avatar');
+      const sidebarIcon = document.getElementById('sidebar-user-icon');
+      
+      if (sidebarAvatar && sidebarIcon) {
+        if (imageData && imageData !== 'assets/images/avatar.png') {
+          sidebarAvatar.src = imageData;
+          sidebarAvatar.style.display = 'block';
+          sidebarIcon.style.display = 'none';
+        } else {
+          sidebarAvatar.style.display = 'none';
+          sidebarIcon.style.display = 'block';
+        }
+      }
+    }
+    
+    // Função para logout
+    function logoutUser() {
+      if (confirm('Tem certeza que deseja sair?')) {
+        // Adicionar atividade de logout ao histórico antes de limpar
+        const currentUser = getCurrentUserFromSession();
+        if (currentUser) {
+          addActivityToHistory({
+            type: 'logout',
+            title: 'Logout Realizado',
+            description: 'Sessão encerrada com sucesso'
+          });
+        }
+        
+        // Limpar dados da sessão (mas manter dados do perfil)
+        localStorage.removeItem('doce_sensacoes_user');
+        localStorage.removeItem('auth_token');
+        
+        // Redirecionar para página de login
+        window.location.href = 'login.html';
+      }
+    }
+    
+    // Função para renderizar conteúdo dinâmico baseado na seção selecionada
+    function renderContent(section) {
+      // Verifica se é uma seção administrativa e renderiza conteúdo específico
+      if (roleManagerAvailable && window.RoleManager.isAdmin()) {
+        const adminContent = window.RoleManager.renderAdminContent(section);
+        if (adminContent) {
+          mainContent.innerHTML = adminContent;
+          return;
+        }
+      }
+      
+      // Atualiza o título da página baseado na seção
+      updatePageTitle(section);
+      
+      switch (section) {
+        case 'home':
+          mainContent.innerHTML = `
+            <div style="margin-top: 80px;"></div>
+            <h1>Olá, ${clienteNome}! Que bom ter você aqui! 🎂</h1>
+            
+            <!-- Cupom de Desconto Reduzido -->
+            <div class="card" style="background: var(--color-primary-1); border: 2px dashed var(--color-primary-6); border-radius: 16px; padding: 10px; box-shadow: 0 3px 8px rgba(0, 0, 0, 0.03); font-size: 12px; text-align: center; position: relative; line-height: 1.4;">
+              <strong style="color: var(--color-primary-6); font-weight: 600;">${destaqueSemana.titulo}</strong><br>
+              com <strong style="color: var(--color-primary-6); font-weight: 600;">20% de desconto</strong><br>
+              <small>${destaqueSemana.descricao}</small>
+            </div>
+            
+            <!-- Avaliação com botão -->
+            <div class="card" style="background-color: var(--color-primary-1); border-left: 5px solid var(--color-primary-3); border-radius: 16px; padding: 20px; box-shadow: 0 3px 10px rgba(0,0,0,0.03); display: flex; flex-direction: column; gap: 12px;">
+              <h3 style="font-size: 16px; color: var(--color-primary-6); margin-bottom: 6px;">Avalie seu último pedido</h3>
+              <p>Como foi sua experiência com a entrega e os doces?</p>
+              <div id="stars-container" style="font-size: 22px; color: gold; user-select:none;">
+                <button class="star" data-value="1">★</button>
+                <button class="star" data-value="2">★</button>
+                <button class="star" data-value="3">★</button>
+                <button class="star" data-value="4">★</button>
+                <button class="star" data-value="5">★</button>
+              </div>
+              <p id="rating-msg" style="color: var(--color-primary-6); font-weight: 600; margin-top: 8px;"></p>
+              <button class="btn-avaliar" style="align-self: start; padding: 8px 16px; background-color: var(--color-primary-6); color: #fff; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; transition: background 0.2s ease;">Avaliar agora</button>
+            </div>
+            
+            <!-- Cupom ativo -->
+            <div class="card" style="background-color: var(--color-primary-2); border-left: 5px solid var(--color-primary-5); border-radius: 16px; padding: 20px; box-shadow: 0 3px 10px rgba(0,0,0,0.03);">
+              <h3 style="font-size: 16px; color: var(--color-primary-6); margin-bottom: 6px;">Cupom Ativo 🎁</h3>
+              <p>Use o código abaixo para um desconto especial em sua próxima compra:</p>
+              <span style="display: inline-block; background-color: var(--color-primary-6); color: white; font-weight: bold; padding: 6px 12px; border-radius: 6px; margin-top: 8px;">${cupomAtivo}</span>
+            </div>
+            
+            <!-- Resumo de Fidelidade e Último Pedido lado a lado -->
+            <div class="card" style="display: flex; justify-content: space-between; gap: 16px; background: transparent; box-shadow: none; padding: 0;">
+              <!-- Resumo de Fidelidade -->
+              <div class="card-mini" style="flex: 1; background-color: var(--color-neutral-0); border-radius: 16px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04); padding: 16px; display: flex; flex-direction: column; gap: 6px; border-left: 4px solid var(--color-primary-3);">
+                <div class="titulo" style="font-size: 14px; font-weight: 600; color: var(--color-primary-6);">Resumo de Fidelidade</div>
+                <div class="subtitulo" style="font-size: 13px; color: #555;">Você já pediu <strong>${fidelidadePedidos}</strong> vezes.</div>
+                <div class="subtitulo" style="font-size: 13px; color: #555;">Faltam <strong>${fidelidadeParaMimo}</strong> pedidos para um mimo</div>
+              </div>
+
+              <!-- Último Pedido -->
+              <div class="card-mini" style="flex: 1; background-color: var(--color-neutral-0); border-radius: 16px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04); padding: 16px; display: flex; flex-direction: column; gap: 6px; border-left: 4px solid var(--color-primary-5);">
+                <div class="titulo" style="font-size: 14px; font-weight: 600; color: var(--color-primary-6);">Último Pedido</div>
+                <div class="subtitulo" style="font-size: 13px; color: #555;">Status:<span class="tag-status" style="background-color: var(--color-primary-1); color: var(--color-primary-6); font-size: 12px; padding: 3px 8px; border-radius: 12px; font-weight: 500; margin-left: 6px;">${ultimoPedido.status}</span></div>
+                <div class="subtitulo" style="font-size: 13px; color: #555;">${ultimoPedido.itens}</div>
+                <div class="subtitulo" style="font-size: 13px; color: #555;"><strong>Total:</strong> ${ultimoPedido.total}</div>
+              </div>
+            </div>
+            
+            <!-- Seção de Produtos Disponíveis -->
+            <div class="card">
+              <h3>Produtos Disponíveis</h3>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 20px;">
+                ${cartProducts.map(prod => `
+                  <div class="product-card" style="background: #fff; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); padding: 20px; display: flex; flex-direction: column; align-items: center; transition: box-shadow 0.2s;">
+                    <img src="${prod.img}" alt="${prod.name}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 12px; margin-bottom: 16px;">
+                    <h4 style="font-weight: 600; margin-bottom: 8px; text-align: center;">${prod.name}</h4>
+                    <p style="color: #666; font-size: 0.9rem; text-align: center; margin-bottom: 12px; line-height: 1.4;">${prod.desc}</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 16px;">
+                      <span style="font-weight: 600; color: var(--color-primary-6); font-size: 1.1rem;">R$ ${prod.price.toFixed(2)}</span>
+                      <div style="display: flex; align-items: center; gap: 8px;">
+                        <button onclick="updateCartQty(${prod.id}, -1)" style="background: var(--color-primary-5); border: none; border-radius: 50%; width: 32px; height: 32px; color: white; font-weight: bold; cursor: pointer;">-</button>
+                        <span style="min-width: 20px; text-align: center; font-weight: 600;">${cart.find(item => item.id === prod.id)?.qty || 0}</span>
+                        <button onclick="updateCartQty(${prod.id}, 1)" style="background: var(--color-primary-6); border: none; border-radius: 50%; width: 32px; height: 32px; color: white; font-weight: bold; cursor: pointer;">+</button>
+                      </div>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+            
+            <!-- Seção de Perfil do Usuário -->
+            <div class="card">
+              <h3>Meu Perfil</h3>
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 16px; margin-bottom: 24px;">
+                <div id="profile-pic-wrapper" style="position: relative; width: 110px; height: 110px; display: flex; align-items: center; justify-content: center;">
+                  <img id="profile-pic" src="assets/images/avatar.png" alt="Foto do Usuário" style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 3px solid var(--color-primary-6); background: #fff; display: block; margin: 0 auto 20px;" />
+                  <input type="file" id="profile-pic-input" accept="image/*" style="display: none;" />
+                  <button id="remove-pic-btn" title="Remover foto" style="position: absolute; top: 0; right: 0; background: #ff5959; color: #fff; border: none; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.10);">
+                    <i class="fa-solid fa-xmark"></i>
+                  </button>
+                </div>
+                <span id="edit-photo-text" style="font-weight: 600; color: var(--color-primary-6); cursor: pointer;">Editar foto do perfil</span>
+              </div>
+              <div id="profile-card" style="text-align: center; max-width: 400px; margin: 0 auto;">
+                <div id="profile-view-mode">
+                  <div style='text-align: left; margin-bottom: 12px;'><strong>Nome:</strong> <span id="view-name">Fulano de Tal</span></div>
+                  <div style='text-align: left; margin-bottom: 12px;'><strong>E-mail:</strong> <span id="view-email">fulano@email.com</span></div>
+                  <div style='text-align: left; margin-bottom: 12px;'><strong>Telefone:</strong> <span id="view-phone">(00) 00000-0000</span></div>
+                  <button id="edit-profile-btn" title="Editar dados" style="background: none; border: none; color: var(--color-primary-6); font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; gap: 6px; margin: 0 auto;">
+                    <i class="fa-solid fa-pen-to-square"></i> Editar
+                  </button>
+                </div>
+                <form id="profile-form" style="display: none; flex-direction: column; gap: 16px; align-items: center; margin-top: 12px;">
+                  <div style='width: 100%; text-align: left;'>
+                    <label for="profile-name" style="font-weight: 500; color: var(--color-primary-6);">Nome</label>
+                    <input id="profile-name" name="name" type="text" value="Fulano de Tal" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; margin-top: 4px;" required />
+                  </div>
+                  <div style='width: 100%; text-align: left;'>
+                    <label for="profile-email" style="font-weight: 500; color: var(--color-primary-6);">E-mail</label>
+                    <input id="profile-email" name="email" type="email" value="fulano@email.com" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; margin-top: 4px;" required />
+                  </div>
+                  <div style='width: 100%; text-align: left;'>
+                    <label for="profile-phone" style="font-weight: 500; color: var(--color-primary-6);">Telefone</label>
+                    <input id="profile-phone" name="phone" type="tel" value="(00) 00000-0000" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; margin-top: 4px;" required />
+                  </div>
+                  <div style='width: 100%; text-align: left;'>
+                    <label for="profile-password" style="font-weight: 500; color: var(--color-primary-6);">Senha</label>
+                    <input id="profile-password" name="password" type="password" value="" placeholder="Digite uma nova senha" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; margin-top: 4px;" />
+                  </div>
+                  <button type="submit" style="background: var(--color-primary-6); color: #fff; border: none; border-radius: 8px; padding: 10px 24px; font-weight: 600; cursor: pointer; margin-top: 8px;">Salvar Alterações</button>
+                </form>
+              </div>
+            </div>
+          `;
+          setupStarRating();
+          renderCartItems();
+          setupCartEvents();
+          setupProfilePicEdit();
+          setupProfileEditToggle();
+          break;
+
+        case 'meus-pedidos':
+          mainContent.innerHTML = `
+            <div style="margin-top: 80px;"></div>
+            <h1>📋 Meus Pedidos</h1>
+            <p style="color: #666; margin-bottom: 30px;">Acompanhe todos os seus pedidos e seu histórico</p>
+            
+            <div class="card">
+              <h3>🔄 Último Pedido</h3>
+              <div style="background: var(--color-primary-1); border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                  <span style="font-weight: 600; color: var(--color-primary-6);">Status:</span>
+                  <span class="tag-status" style="background-color: var(--color-primary-6); color: white; font-size: 12px; padding: 6px 12px; border-radius: 20px; font-weight: 500;">${ultimoPedido.status}</span>
+                </div>
+                <div style="margin-bottom: 10px;">
+                  <strong>Itens:</strong> ${ultimoPedido.itens}
+                </div>
+                <div style="font-weight: 600; color: var(--color-primary-6);">
+                  <strong>Total:</strong> ${ultimoPedido.total}
+                </div>
+              </div>
+            </div>
+            
+            <div class="card">
+              <h3>📚 Pedidos Anteriores</h3>
+              <div style="text-align: center; padding: 40px; color: #666;">
+                <i class="fa-solid fa-history" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
+                <p>Ainda não há pedidos anteriores cadastrados.</p>
+                <p style="font-size: 0.9rem; margin-top: 10px;">Seus pedidos anteriores aparecerão aqui.</p>
+              </div>
+            </div>
+          `;
+          break;
+
+        case 'novo-pedido':
+          mainContent.innerHTML = `
+            <div style="margin-top: 80px;"></div>
+            <h1>🍰 Cardápio - Faça seu Pedido</h1>
+            <p style="color: #666; margin-bottom: 30px;">Selecione os produtos que deseja adicionar ao carrinho</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 24px; margin-top: 20px;">
+              ${cartProducts.map(prod => `
+                <div class="product-card-expandable" style="width: 360px; background-color: #d1d5db; border-radius: 18px; position: relative; overflow: hidden; transition: max-height 0.4s ease, padding-bottom 0.4s ease; max-height: 440px; padding-bottom: 40px;">
+                  <div class="trip-card" style="background-color: #ffffff; border-radius: 18px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); padding: 20px; display: flex; flex-direction: column; gap: 16px;">
+                    <!-- Header -->
+                    <div class="trip-header" style="display: flex; justify-content: space-between; align-items: center;">
+                      <div>
+                        <span class="client-label" style="font-family: 'Quicksand', sans-serif; font-size: 12px; color: #6b7280;">Produto</span><br/>
+                        <span class="client-name" style="font-weight: 600; font-size: 16px; color: #111827;">${prod.name}</span>
+                      </div>
+                      <button class="accept-btn" onclick="addToCart(${prod.id})" style="background-color: var(--color-primary-6); color: white; border: none; padding: 8px 16px; font-family: 'Quicksand', sans-serif; font-size: 14px; border-radius: 8px; cursor: pointer;">Adicionar</button>
+                    </div>
+
+                    <!-- Imagem do Produto -->
+                    <div class="trip-segment" style="background-color: #f9fafb; border-radius: 12px; padding: 14px 16px; border: 1px solid #e5e7eb; display: flex; justify-content: center; align-items: center;">
+                      <img src="${prod.img}" alt="${prod.name}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 12px;">
+                    </div>
+
+                    <!-- Descrição -->
+                    <div class="trip-segment no-distance" style="background-color: #f9fafb; border-radius: 12px; padding: 14px 16px; border: 1px solid #e5e7eb; justify-content: flex-start;">
+                      <div>
+                        <p class="trip-title" style="font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: 11px; color: #374151;">Descrição</p>
+                        <p class="trip-location" style="font-family: 'Montserrat', sans-serif; font-size: 14px; color: #111827; line-height: 1.4;">${prod.desc}</p>
+                      </div>
+                    </div>
+
+                    <!-- Preço -->
+                    <div class="trip-segment" style="background-color: #f9fafb; border-radius: 12px; padding: 14px 16px; border: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center;">
+                      <div>
+                        <p class="trip-title" style="font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: 11px; color: #374151;">Preço</p>
+                        <p class="trip-location" style="font-family: 'Montserrat', sans-serif; font-size: 14px; color: #111827; line-height: 1.4;">R$ ${prod.price.toFixed(2)}</p>
+                      </div>
+                      <div class="distance-badge" style="background-color: var(--color-primary-1); color: var(--color-primary-6); font-weight: 600; font-size: 13px; padding: 6px 14px; border-radius: 18px;">
+                        ${prod.category || 'Doce'}
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Informações adicionais -->
+                  <div class="hidden-info" style="display: none; font-size: 13px; color: #111827; padding: 10px 20px 0 20px;">
+                    <div class="purchase-info-top" style="text-align: center; font-weight: bold; margin-bottom: 10px;">Detalhes do Produto</div>
+                    <div class="purchase-info-bottom" style="margin-top: 4px;">
+                      <p style="margin-bottom: 10px;">
+                        <span class="section-label" style="font-size: 11px; font-weight: 600; color: #374151; margin-bottom: 2px;">Ingredientes</span><br>
+                        ${prod.ingredients || 'Ingredientes não informados'}
+                      </p>
+                      <p style="margin-bottom: 10px;">
+                        <span class="section-label" style="font-size: 11px; font-weight: 600; color: #374151; margin-bottom: 2px;">Tempo de Preparo</span><br>
+                        ${prod.prepTime || '30 minutos'}
+                      </p>
+                      <p style="margin-bottom: 10px;">
+                        <span class="section-label" style="font-size: 11px; font-weight: 600; color: #374151; margin-bottom: 2px;">Quantidade Disponível</span><br>
+                        ${prod.stock || 'Disponível'}
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Ícone de expandir -->
+                  <div class="arrow-down-icon" onclick="toggleProductCard(this)" style="position: absolute; bottom: 10px; right: 10px; width: 24px; height: 24px; cursor: pointer; transition: transform 0.3s ease;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" style="width: 100%; height: 100%; display: block; color: white;">
+                      <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+
+            <!-- Carrinho Flutuante -->
+            <div id="floating-cart" style="position: fixed; bottom: 20px; right: 20px; background: var(--color-primary-6); color: white; border-radius: 50px; padding: 16px 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); cursor: pointer; z-index: 1000; display: flex; align-items: center; gap: 12px;">
+              <i class="fa-solid fa-shopping-cart" style="font-size: 20px;"></i>
+              <span style="font-weight: 600;">Ver Carrinho (${cart.reduce((total, item) => total + item.qty, 0)})</span>
+              <span style="font-weight: 600;">R$ ${cart.reduce((total, item) => total + (item.price * item.qty), 0).toFixed(2)}</span>
+            </div>
+          `;
+          break;
+
+        case 'carrinho':
+          mainContent.innerHTML = `
+            <div style="margin-top: 80px;"></div>
+            <h1>🛒 Seu Carrinho</h1>
+            <p style="color: #666; margin-bottom: 30px;">Revise seus itens e finalize seu pedido</p>
+            
+            <div style="display: grid; grid-template-columns: 1fr 350px; gap: 30px; align-items: start;">
+              <!-- Lista de Produtos no Carrinho -->
+              <div>
+                <h3 style="margin-bottom: 20px; color: var(--color-primary-6);">Itens Selecionados</h3>
+                <div id="cart-items-container">
+                  ${cart.length > 0 ? cart.map(item => `
+                    <div style="background: #fff; border-radius: 16px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); display: flex; align-items: center; gap: 16px;">
+                      <img src="${item.img}" alt="${item.name}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 12px;">
+                      <div style="flex: 1;">
+                        <h4 style="font-weight: 600; margin-bottom: 8px;">${item.name}</h4>
+                        <p style="color: #666; font-size: 0.9rem; margin-bottom: 12px;">${item.desc}</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                          <span style="font-weight: 600; color: var(--color-primary-6); font-size: 1.1rem;">R$ ${item.price.toFixed(2)}</span>
+                          <div style="display: flex; align-items: center; gap: 8px;">
+                            <button onclick="updateCartQty(${item.id}, -1)" style="background: var(--color-primary-5); border: none; border-radius: 50%; width: 32px; height: 32px; color: white; font-weight: bold; cursor: pointer;">-</button>
+                            <span style="min-width: 20px; text-align: center; font-weight: 600;">${item.qty}</span>
+                            <button onclick="updateCartQty(${item.id}, 1)" style="background: var(--color-primary-6); border: none; border-radius: 50%; width: 32px; height: 32px; color: white; font-weight: bold; cursor: pointer;">+</button>
+                          </div>
+                        </div>
+                      </div>
+                      <button onclick="removeCartItem(${item.id})" style="background: #dc3545; border: none; border-radius: 50%; width: 32px; height: 32px; color: white; font-weight: bold; cursor: pointer;">
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                    </div>
+                  `).join('') : `
+                    <div style="text-align: center; padding: 40px; color: #666;">
+                      <i class="fa-solid fa-shopping-cart" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
+                      <p>Seu carrinho está vazio</p>
+                      <p style="font-size: 0.9rem; margin-top: 10px;">Adicione produtos do cardápio para continuar</p>
+                    </div>
+                  `}
+                </div>
+              </div>
+
+              <!-- Resumo do Pedido -->
+              <div style="background: #fff; border-radius: 16px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); position: sticky; top: 20px;">
+                <h3 style="margin-bottom: 20px; color: var(--color-primary-6);">Resumo do Pedido</h3>
+                
+                <!-- Cupom de desconto -->
+                <div style="margin-bottom: 20px; padding: 16px; background: #f8f9fa; border-radius: 8px;">
+                  <div style="display: flex; gap: 8px;">
+                    <input type="text" id="discount-code" placeholder="Código de desconto" style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.9rem;">
+                    <button id="apply-discount" style="background: var(--color-primary-6); color: white; border: none; border-radius: 4px; padding: 8px 12px; font-size: 0.9rem; cursor: pointer;">Aplicar</button>
+                  </div>
+                  <small style="color: #666; margin-top: 4px; display: block;">Use "DOCE10" para 10% de desconto</small>
+                </div>
+
+                <!-- Resumo -->
+                <div style="border-top: 1px solid #eee; padding-top: 16px;">
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">R$ ${cart.reduce((sum, item) => sum + item.price * item.qty, 0).toFixed(2)}</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #28a745;">
+                    <span>Desconto:</span>
+                    <span id="discount">- R$ ${discountValue.toFixed(2)}</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
+                    <span>Entrega:</span>
+                    <span id="delivery">R$ ${deliveryFee.toFixed(2)}</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 1.1rem; border-top: 1px solid #eee; padding-top: 12px;">
+                    <span>Total:</span>
+                    <span id="total">R$ ${(cart.reduce((sum, item) => sum + item.price * item.qty, 0) - discountValue + deliveryFee).toFixed(2)}</span>
+                  </div>
+                </div>
+
+                <button style="width: 100%; background: var(--color-primary-6); color: white; border: none; border-radius: 8px; padding: 16px; font-weight: 600; font-size: 1.1rem; cursor: pointer; margin-top: 20px;" onclick="finalizarPedido()">Finalizar Pedido</button>
+              </div>
+            </div>
+          `;
+          setupCartEvents();
+          break;
+
+        case 'acompanhar-entrega':
+          mainContent.innerHTML = `
+            <h1>Acompanhar Entrega</h1>
+            <div class="delivery-status-block" style="max-width: 350px; margin: 32px auto 100px auto; background: #fff; border-radius: 24px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); padding: 32px 24px; text-align: center;">
+              <h2 style="font-size: 2rem; font-weight: 700; color: #23272f; margin-bottom: 6px;">On the way</h2>
+              <p style="color: #5a6170; font-size: 1.1rem; margin-bottom: 28px;">Your cargo is on delivery.</p>
+              <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 28px;">
+                <div style="background: #23272f; border-radius: 40px; height: 80px; width: 100%; max-width: 340px; display: flex; align-items: center; padding: 0 12px;">
+                  <div style="position: relative; z-index: 2; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
+                    <div style="background: #eaff2a; border-radius: 50%; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center;">
+                      <i class="fa-solid fa-box" style="font-size: 1.7rem; color: #23272f;"></i>
+                    </div>
+                  </div>
+                  <div style="flex: 1; height: 12px; background: #eaff2a; margin: 0 0 -2px 0; position: relative; z-index: 1;"></div>
+                  <div style="position: relative; z-index: 2; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
+                    <div style="background: #eaff2a; border-radius: 50%; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center;">
+                      <i class="fa-solid fa-truck" style="font-size: 1.7rem; color: #23272f;"></i>
+                    </div>
+                  </div>
+                  <div style="flex: 1; height: 12px; background: #bfc2b7; margin: 0 0 -2px 0; position: relative; z-index: 1;"></div>
+                  <div style="position: relative; z-index: 2; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; opacity: 0.5;">
+                    <div style="background: #bfc2b7; border-radius: 50%; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center;">
+                      <i class="fa-solid fa-house" style="font-size: 1.7rem; color: #23272f;"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div style="color: #5a6170; font-size: 1.1rem; margin-bottom: 8px;">Estimated delivery time</div>
+              <div style="font-size: 2.5rem; font-weight: 700; color: #23272f; letter-spacing: 2px;">09 : 20</div>
+            </div>
+          `;
+          break;
+
+        case 'meu-perfil':
+          mainContent.innerHTML = `
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 16px; margin-bottom: 24px;">
+              <div id="profile-pic-wrapper" style="position: relative; width: 110px; height: 110px; display: flex; align-items: center; justify-content: center;">
+                <img id="profile-pic" src="assets/images/avatar.png" alt="Foto do Usuário" style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 3px solid var(--color-primary-6); background: #fff; display: block; margin: 0 auto 20px;" />
+                <input type="file" id="profile-pic-input" accept="image/*" style="display: none;" />
+                <button id="remove-pic-btn" title="Remover foto" style="position: absolute; top: 0; right: 0; background: #ff5959; color: #fff; border: none; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.10);">
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
+              </div>
+              <span id="edit-photo-text" style="font-weight: 600; color: var(--color-primary-6); cursor: pointer;">Editar foto do perfil</span>
+            </div>
+            <div class="card" id="profile-card" style="text-align: center; max-width: 400px; margin: 0 auto;">
+              <div id="profile-view-mode">
+                <div style='text-align: left; margin-bottom: 12px;'><strong>Nome:</strong> <span id="view-name">Fulano de Tal</span></div>
+                <div style='text-align: left; margin-bottom: 12px;'><strong>E-mail:</strong> <span id="view-email">fulano@email.com</span></div>
+                <div style='text-align: left; margin-bottom: 12px;'><strong>Telefone:</strong> <span id="view-phone">(00) 00000-0000</span></div>
+                <button id="edit-profile-btn" title="Editar dados" style="background: none; border: none; color: var(--color-primary-6); font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; gap: 6px; margin: 0 auto;">
+                  <i class="fa-solid fa-pen-to-square"></i> Editar
+                </button>
+              </div>
+              <form id="profile-form" style="display: none; flex-direction: column; gap: 16px; align-items: center; margin-top: 12px;">
+                <div style='width: 100%; text-align: left;'>
+                  <label for="profile-name" style="font-weight: 500; color: var(--color-primary-6);">Nome</label>
+                  <input id="profile-name" name="name" type="text" value="Fulano de Tal" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; margin-top: 4px;" required />
+                </div>
+                <div style='width: 100%; text-align: left;'>
+                  <label for="profile-email" style="font-weight: 500; color: var(--color-primary-6);">E-mail</label>
+                  <input id="profile-email" name="email" type="email" value="fulano@email.com" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; margin-top: 4px;" required />
+                </div>
+                <div style='width: 100%; text-align: left;'>
+                  <label for="profile-phone" style="font-weight: 500; color: var(--color-primary-6);">Telefone</label>
+                  <input id="profile-phone" name="phone" type="tel" value="(00) 00000-0000" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; margin-top: 4px;" required />
+                </div>
+                <div style='width: 100%; text-align: left;'>
+                  <label for="profile-password" style="font-weight: 500; color: var(--color-primary-6);">Senha</label>
+                  <input id="profile-password" name="password" type="password" value="" placeholder="Digite uma nova senha" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; margin-top: 4px;" />
+                </div>
+                <button type="submit" style="background: var(--color-primary-6); color: #fff; border: none; border-radius: 8px; padding: 10px 24px; font-weight: 600; cursor: pointer; margin-top: 8px;">Salvar Alterações</button>
+              </form>
+            </div>
+          `;
+          setupProfilePicEdit();
+          setupProfileEditToggle();
+          break;
+
+        case 'fale-conosco':
+          mainContent.innerHTML = `
+            <h1>Fale Conosco</h1>
+            <div class="card">
+              <p>Estamos aqui para ajudar! Entre em contato conosco (funcionalidade futura).</p>
+            </div>
+          `;
+          break;
+
+        case 'sair':
+          mainContent.innerHTML = `<h1>Você saiu da sua conta.</h1><p>Até logo!</p>`;
+          break;
+
+        default:
+          mainContent.innerHTML = `<h1>Seja bem-vindo(a)!</h1>`;
+      }
+    }
+
+    // Inicializa conteúdo na home
+    renderContent('home');
+
+    // Garante que as funções sejam executadas após o DOM estar pronto
+    setTimeout(() => {
+      setupStarRating();
+    }, 100);
+
+    // Ativa/desativa botão sidebar desktop
+    openBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('collapsed');
+      mainContent.classList.toggle('collapsed');
+
+      // Alterna ícone do botão
+      if (sidebar.classList.contains('collapsed')) {
+        openBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 0 1 0-1.06l-7.5 7.5a.75.75 0 1 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 1 1 1.06-1.06l7.5 7.5Z" clip-rule="evenodd" /></svg>';
+      } else {
+        openBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path fill-rule="evenodd" d="M7.72 12.53a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 1 1 1.06 1.06L9.31 12l6.97 6.97a.75.75 0 1 1-1.06 1.06l-7.5-7.5Z" clip-rule="evenodd" /></svg>';
+      }
+    });
+
+
+
+    // Sincroniza clique e troca ativo nos menus desktop e mobile
+    function setActiveSection(section) {
+      sidebarItemsDesktop.forEach(item => {
+        if (item.dataset.section === section) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+      sidebarItemsMobile.forEach(item => {
+        if (item.dataset.section === section) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+      renderContent(section);
+
+
+    }
+
+    sidebarItemsDesktop.forEach(item => {
+      item.addEventListener('click', e => {
+        e.preventDefault();
+        setActiveSection(item.dataset.section);
+      });
+    });
+
+    sidebarItemsMobile.forEach(item => {
+      item.addEventListener('click', e => {
+        e.preventDefault();
+        setActiveSection(item.dataset.section);
+      });
+    });
+
+
+
+    // Sistema de avaliação com estrelas
+    function setupStarRating() {
+      const stars = document.querySelectorAll('#stars-container .star');
+      const ratingMsg = document.getElementById('rating-msg');
+      
+      if (!stars.length || !ratingMsg) return;
+      
+      let rating = 0;
+
+      stars.forEach(star => {
+        star.classList.remove('selected');
+        star.addEventListener('click', () => {
+          rating = parseInt(star.dataset.value);
+          stars.forEach(s => {
+            s.classList.toggle('selected', parseInt(s.dataset.value) <= rating);
+          });
+          ratingMsg.textContent = `Você avaliou ${rating} estrela${rating > 1 ? 's' : ''}. Obrigado!`;
+        });
+      });
+    }
+
+    // Função para editar/remover foto do perfil
+    function setupProfilePicEdit() {
+      const picInput = document.getElementById('profile-pic-input');
+      const editText = document.getElementById('edit-photo-text');
+      const removeBtn = document.getElementById('remove-pic-btn');
+      const picImg = document.getElementById('profile-pic');
+      
+      if (!picInput || !editText || !removeBtn || !picImg) return;
+      
+      const defaultPic = 'assets/images/avatar.png';
+
+      editText.addEventListener('click', (e) => {
+        e.preventDefault();
+        picInput.click();
+      });
+
+      picInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(ev) {
+            picImg.src = ev.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      removeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        picImg.src = defaultPic;
+        picInput.value = '';
+      });
+    }
+
+    // Função para alternar visualização/edição do perfil
+    function setupProfileEditToggle() {
+      const viewMode = document.getElementById('profile-view-mode');
+      const form = document.getElementById('profile-form');
+      const editBtn = document.getElementById('edit-profile-btn');
+      const nameSpan = document.getElementById('view-name');
+      const emailSpan = document.getElementById('view-email');
+      const phoneSpan = document.getElementById('view-phone');
+      const nameInput = document.getElementById('profile-name');
+      const emailInput = document.getElementById('profile-email');
+      const phoneInput = document.getElementById('profile-phone');
+      const passwordInput = document.getElementById('profile-password');
+
+      if (!viewMode || !form || !editBtn) return;
+
+      editBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        viewMode.style.display = 'none';
+        form.style.display = 'flex';
+      });
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (nameSpan && nameInput) nameSpan.textContent = nameInput.value;
+        if (emailSpan && emailInput) emailSpan.textContent = emailInput.value;
+        if (phoneSpan && phoneInput) phoneSpan.textContent = phoneInput.value;
+        if (passwordInput) passwordInput.value = '';
+        form.style.display = 'none';
+        viewMode.style.display = 'block';
+      });
+    }
+
+    function renderCartItems() {
+      const tbody = document.getElementById('cart-items');
+      if (!tbody) return;
+      
+      tbody.innerHTML = '';
+      cart.forEach((item, idx) => {
+        tbody.innerHTML += `
+          <tr style="background: #fff; border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+            <td>
+              <div class="cart-product-info">
+                <img src="${item.img}" class="cart-product-img" alt="${item.name}" />
+                <div>
+                  <div class="cart-product-title">${item.name}</div>
+                  <div class="cart-product-desc">${item.desc}</div>
+                </div>
+              </div>
+            </td>
+            <td style="text-align: center;">
+              <div class="cart-qty-controls">
+                <button class="cart-qty-btn" onclick="window.updateCartQty(${item.id}, -1)">-</button>
+                <span>${item.qty}</span>
+                <button class="cart-qty-btn" onclick="window.updateCartQty(${item.id}, 1)">+</button>
+              </div>
+            </td>
+            <td style="text-align: right; font-weight: 600; color: #23272f;">R$ ${(item.price * item.qty).toFixed(2)}</td>
+            <td style="text-align: center;">
+              <button class="cart-remove-btn" onclick="window.removeCartItem(${item.id})">🗑️</button>
+            </td>
+          </tr>
+        `;
+      });
+      updateCartSummary();
+    }
+
+    window.updateCartQty = function(id, delta) {
+      cart = cart.map(item => {
+        if (item.id === id) {
+          const newQty = Math.max(0, item.qty + delta);
+          return { ...item, qty: newQty };
+        }
+        return item;
+      });
+      
+      // Remove itens com quantidade 0
+      cart = cart.filter(item => item.qty > 0);
+      
+      // Salva no localStorage
+      localStorage.setItem('cart', JSON.stringify(cart));
+      
+      // Atualiza badges
+      updateCartBadges();
+      
+      // Re-renderiza o conteúdo se estiver na seção de carrinho
+      const currentSection = document.querySelector('.navbar-item.active, .sidebar-item.active');
+      if (currentSection && currentSection.dataset.section === 'carrinho') {
+        renderContent('carrinho');
+      }
+      
+      // Atualiza carrinho flutuante se existir
+      const floatingCart = document.getElementById('floating-cart');
+      if (floatingCart) {
+        const totalItems = cart.reduce((total, item) => total + item.qty, 0);
+        const totalPrice = cart.reduce((total, item) => total + (item.price * item.qty), 0);
+        
+        floatingCart.innerHTML = `
+          <i class="fa-solid fa-shopping-cart" style="font-size: 20px;"></i>
+          <span style="font-weight: 600;">Ver Carrinho (${totalItems})</span>
+          <span style="font-weight: 600;">R$ ${totalPrice.toFixed(2)}</span>
+        `;
+      }
+    }
+
+    window.removeCartItem = function(id) {
+      cart = cart.filter(item => item.id !== id);
+      
+      // Salva no localStorage
+      localStorage.setItem('cart', JSON.stringify(cart));
+      
+      // Atualiza badges
+      updateCartBadges();
+      
+      // Re-renderiza o conteúdo se estiver na seção de carrinho
+      const currentSection = document.querySelector('.navbar-item.active, .sidebar-item.active');
+      if (currentSection && currentSection.dataset.section === 'carrinho') {
+        renderContent('carrinho');
+      }
+      
+      showNotification('Item removido do carrinho', 'info');
+    }
+
+    function updateCartSummary() {
+      const subtotalEl = document.getElementById('subtotal');
+      const discountEl = document.getElementById('discount');
+      const deliveryEl = document.getElementById('delivery');
+      const totalEl = document.getElementById('total');
+      
+      if (!subtotalEl || !discountEl || !deliveryEl || !totalEl) return;
+      
+      const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+      const discount = discountValue;
+      const total = subtotal - discount + deliveryFee;
+      
+      subtotalEl.textContent = `R$ ${subtotal.toFixed(2)}`;
+      discountEl.textContent = `- R$ ${discount.toFixed(2)}`;
+      deliveryEl.textContent = `R$ ${deliveryFee.toFixed(2)}`;
+      totalEl.textContent = `R$ ${total.toFixed(2)}`;
+    }
+
+    function setupCartEvents() {
+      const discountBtn = document.getElementById('apply-discount');
+      if (discountBtn) {
+        discountBtn.onclick = function() {
+          const codeInput = document.getElementById('discount-code');
+          if (!codeInput) return;
+          
+          const code = codeInput.value.trim();
+          if (code === 'DOCE10') {
+            discountValue = cart.reduce((sum, item) => sum + item.price * item.qty, 0) * 0.1;
+            showNotification('Cupom aplicado com sucesso! 10% de desconto', 'success');
+          } else if (code === '') {
+            discountValue = 0;
+            showNotification('Digite um código de desconto', 'warning');
+          } else {
+            discountValue = 0;
+            showNotification('Código de desconto inválido', 'error');
+          }
+          
+          // Atualiza o resumo do carrinho
+          updateCartSummary();
+        }
+      }
+    }
+
+    // Função para finalizar pedido
+    function finalizarPedido() {
+      if (cart.length === 0) {
+        showNotification('Adicione produtos ao carrinho antes de finalizar o pedido', 'error');
+        return;
+      }
+      
+      const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0) - discountValue + deliveryFee;
+      
+      if (confirm(`Confirmar pedido no valor de R$ ${total.toFixed(2)}?`)) {
+        // Simular envio do pedido
+        showNotification('Pedido enviado com sucesso! Em breve você receberá a confirmação.', 'success');
+        
+        // Limpar carrinho
+        cart = [];
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartBadges();
+        
+        // Redirecionar para seção de pedidos
+        setTimeout(() => {
+          showSection('meus-pedidos');
+        }, 2000);
+      }
+    }
+
+    // Função para mostrar conteúdo da seção
+    function showContent(sectionName) {
+      renderContent(sectionName);
+    }
+
+    // Função para alternar seção
+    function showSection(sectionName) {
+      // Verifica acesso se o sistema de roles estiver disponível
+      if (roleManagerAvailable && !window.RoleManager.checkSectionAccess(sectionName)) {
+        return;
+      }
+      
+      // Remove active de todos os itens
+      document.querySelectorAll('.navbar-item, .sidebar-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      
+      // Adiciona active ao item clicado
+      document.querySelectorAll(`[data-section="${sectionName}"]`).forEach(item => {
+        item.classList.add('active');
+      });
+      
+      // Mostra o conteúdo da seção
+      showContent(sectionName);
+    }
+
+    // Função para adicionar ao carrinho
+    function addToCart(productId) {
+      const product = cartProducts.find(p => p.id === productId);
+      if (!product) return;
+      
+      const existingItem = cart.find(item => item.id === productId);
+      if (existingItem) {
+        existingItem.qty += 1;
+      } else {
+        cart.push({
+          id: productId,
+          name: product.name,
+          price: product.price,
+          img: product.img,
+          desc: product.desc,
+          qty: 1
+        });
+      }
+      
+      // Salva no localStorage
+      localStorage.setItem('cart', JSON.stringify(cart));
+      
+      // Atualiza badges
+      updateCartBadges();
+      
+      // Atualiza carrinho flutuante se existir
+      const floatingCart = document.getElementById('floating-cart');
+      if (floatingCart) {
+        const totalItems = cart.reduce((total, item) => total + item.qty, 0);
+        const totalPrice = cart.reduce((total, item) => total + (item.price * item.qty), 0);
+        
+        floatingCart.innerHTML = `
+          <i class="fa-solid fa-shopping-cart" style="font-size: 20px;"></i>
+          <span style="font-weight: 600;">Ver Carrinho (${totalItems})</span>
+          <span style="font-weight: 600;">R$ ${totalPrice.toFixed(2)}</span>
+        `;
+      }
+      
+      // Mostra notificação
+      showNotification('Produto adicionado ao carrinho!', 'success');
+    }
+
+    // Função para atualizar badges do carrinho
+    function updateCartBadges() {
+      const totalItems = cart.reduce((total, item) => total + item.qty, 0);
+      const badges = document.querySelectorAll('#cart-badge, #cart-badge-sidebar');
+      
+      badges.forEach(badge => {
+        if (totalItems > 0) {
+          badge.textContent = totalItems;
+          badge.style.display = 'flex';
+        } else {
+          badge.style.display = 'none';
+        }
+      });
+    }
+
+    // Função para expandir/colapsar cards de produtos
+    function toggleProductCard(arrowElement) {
+      const card = arrowElement.closest('.product-card-expandable');
+      const hiddenInfo = card.querySelector('.hidden-info');
+      
+      card.classList.toggle('expanded');
+      
+      if (card.classList.contains('expanded')) {
+        card.style.maxHeight = '700px';
+        card.style.paddingBottom = '60px';
+        hiddenInfo.style.display = 'block';
+        arrowElement.style.transform = 'rotate(180deg)';
+      } else {
+        card.style.maxHeight = '440px';
+        card.style.paddingBottom = '40px';
+        hiddenInfo.style.display = 'none';
+        arrowElement.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    // Função para carregar produtos da API
+    async function loadProductsFromAPI() {
+      try {
+        const response = await fetch('https://seu-backend.onrender.com/api/products');
+        if (response.ok) {
+          const products = await response.json();
+          cartProducts.length = 0; // Limpa array atual
+          cartProducts.push(...products); // Adiciona produtos da API
+        }
+      } catch (error) {
+        console.log('Erro ao carregar produtos da API:', error);
+        // Mantém produtos padrão se a API falhar
+      }
+    }
+
+    // Função para atualizar carrinho flutuante
+    function updateFloatingCart() {
+      const floatingCart = document.getElementById('floating-cart');
+      if (floatingCart) {
+        const totalItems = cart.reduce((total, item) => total + item.qty, 0);
+        const totalPrice = cart.reduce((total, item) => total + (item.price * item.qty), 0);
+        
+        floatingCart.innerHTML = `
+          <i class="fa-solid fa-shopping-cart" style="font-size: 20px;"></i>
+          <span style="font-weight: 600;">Ver Carrinho (${totalItems})</span>
+          <span style="font-weight: 600;">R$ ${totalPrice.toFixed(2)}</span>
+        `;
+      }
+    }
+
+    // Inicialização
+    document.addEventListener('DOMContentLoaded', function() {
+      // Carrega carrinho do localStorage
+      const savedCart = localStorage.getItem('cart');
+      if (savedCart) {
+        cart = JSON.parse(savedCart);
+      }
+      
+      // Carrega produtos da API
+      loadProductsFromAPI();
+      
+      // Atualiza badges do carrinho
+      updateCartBadges();
+      
+      // Atualiza carrinho flutuante
+      updateFloatingCart();
+      
+      // Inicializa sistema de roles se disponível
+      if (roleManagerAvailable) {
+        window.RoleManager.initRoleManager();
+      }
+      
+      // Atualiza informações do usuário na sidebar
+      updateUserInfoInSidebar();
+      
+      // Adicionar atividade de login ao histórico
+      const currentUser = getCurrentUserFromSession();
+      if (currentUser) {
+        addActivityToHistory({
+          type: 'login',
+          title: 'Login Realizado',
+          description: 'Acesso ao sistema realizado com sucesso'
+        });
+        
+        // Carregar dados do perfil persistente
+        const userProfile = getUserProfileData();
+        console.log('Dados do perfil carregados:', userProfile);
+      }
+      
+      // Mostra seção inicial
+      showContent('home');
+      
+      // Event listeners para navegação
+      document.querySelectorAll('.navbar-item, .sidebar-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          const section = this.getAttribute('data-section');
+          showSection(section);
+        });
+      });
+      
+      // Event listener para carrinho flutuante
+      document.addEventListener('click', function(e) {
+        if (e.target.closest('#floating-cart')) {
+          showSection('carrinho');
+        }
+      });
+      
+      // Event listener para toggle da sidebar
+      const toggleBtn = document.getElementById('toggle-sidebar');
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', function() {
+          const sidebar = document.getElementById('sidebar');
+          sidebar.classList.toggle('collapsed');
+        });
+      }
+      
+      // Event listener para o nome do usuário na sidebar
+      const userInfoElement = document.querySelector('#user_infos');
+      if (userInfoElement) {
+        userInfoElement.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          showNotification('Carregando seu perfil...', 'info');
+          showUserProfile();
+        });
+        
+        // Adicionar cursor pointer para indicar que é clicável
+        userInfoElement.style.cursor = 'pointer';
+        userInfoElement.style.transition = 'all 0.2s ease';
+        userInfoElement.style.borderRadius = '8px';
+        userInfoElement.style.padding = '4px 8px';
+        userInfoElement.style.margin = '-4px -8px';
+        
+        // Adicionar hover effect
+        userInfoElement.addEventListener('mouseenter', function() {
+          this.style.opacity = '0.9';
+          this.style.background = 'rgba(255, 255, 255, 0.1)';
+          const chevron = this.querySelector('.fa-chevron-right');
+          if (chevron) {
+            chevron.style.transform = 'translateX(3px)';
+          }
+        });
+        
+        userInfoElement.addEventListener('mouseleave', function() {
+          this.style.opacity = '1';
+          this.style.background = 'transparent';
+          const chevron = this.querySelector('.fa-chevron-right');
+          if (chevron) {
+            chevron.style.transform = 'translateX(0)';
+          }
+        });
+      }
+      
+      // Manter o evento no ícone de perfil também como alternativa
+      const userAvatar = document.getElementById('user');
+      if (userAvatar) {
+        userAvatar.addEventListener('click', function() {
+          showUserProfile();
+        });
+      }
+    });
+
+    // Função para atualizar o título da página baseado na seção
+    function updatePageTitle(section) {
+      const titles = {
+        'home': 'Dashboard | Confeitaria',
+        'carrinho': 'Carrinho | Confeitaria', 
+        'meus-pedidos': 'Meus Pedidos | Confeitaria',
+        'novo-pedido': 'Cardápio | Confeitaria',
+        'acompanhar-entrega': 'Acompanhar Entrega | Confeitaria',
+        'meu-perfil': 'Meu Perfil | Confeitaria',
+        'fale-conosco': 'Fale Conosco | Confeitaria'
+      };
+      
+      document.title = titles[section] || 'Dashboard | Confeitaria';
+    }
+  </script>
+      <script src="assets/js/auth-guard.js"></script>
+      <script src="assets/js/role-manager.js"></script>
+      <script src="assets/js/role-test.js"></script>
+      <script>
+        // Inicialização explícita do auth-guard para a página de perfil
+        document.addEventListener('DOMContentLoaded', function() {
+          console.log('🔒 Inicializando proteção de rotas para perfil...');
+          if (window.AuthGuard) {
+            window.AuthGuard.requireAuth().then(session => {
+              if (session) {
+                console.log('✅ Usuário autenticado:', session.user.name);
+                window.AuthGuard.updateUserInterface();
+              }
+            }).catch(error => {
+              console.error('❌ Erro na autenticação:', error);
+            });
+          } else {
+            console.error('❌ AuthGuard não encontrado');
+          }
+        });
+      </script>
+</body>
+</html>

@@ -1,15 +1,68 @@
-const { readSheet, appendRow, updateRow, deleteRow, findByField, generateId } = require('../config/googleSheets');
+// const { readSheet, appendRow, updateRow, deleteRow, findByField, generateId } = require('../config/googleSheets');
+
+// Dados mock para teste
+const mockProducts = [
+  {
+    id: '1',
+    name: 'Bolo de Chocolate',
+    description: 'Massa fofinha, recheio cremoso e cobertura de chocolate belga.',
+    price: '45.00',
+    img: 'assets/images/dish.png',
+    category_id: '1',
+    category_name: 'Bolos',
+    stock_quantity: '10',
+    is_featured: 'TRUE',
+    is_active: 'TRUE',
+    created_at: new Date().toISOString()
+  },
+  {
+    id: '2',
+    name: 'Torta de Limão',
+    description: 'Base crocante, creme de limão e merengue maçaricado.',
+    price: '38.00',
+    img: 'assets/images/dish2.png',
+    category_id: '2',
+    category_name: 'Tortas',
+    stock_quantity: '8',
+    is_featured: 'TRUE',
+    is_active: 'TRUE',
+    created_at: new Date().toISOString()
+  },
+  {
+    id: '3',
+    name: 'Brigadeiro Gourmet',
+    description: 'Caixa com 6 unidades de brigadeiro feito com chocolate premium.',
+    price: '18.00',
+    img: 'assets/images/dish3.png',
+    category_id: '3',
+    category_name: 'Doces',
+    stock_quantity: '20',
+    is_featured: 'TRUE',
+    is_active: 'TRUE',
+    created_at: new Date().toISOString()
+  },
+  {
+    id: '4',
+    name: 'Cheesecake de Frutas Vermelhas',
+    description: 'Cremoso, com calda artesanal de frutas vermelhas.',
+    price: '42.00',
+    img: 'assets/images/dish4.png',
+    category_id: '4',
+    category_name: 'Cheesecakes',
+    stock_quantity: '6',
+    is_featured: 'TRUE',
+    is_active: 'TRUE',
+    created_at: new Date().toISOString()
+  }
+];
 
 // Buscar todos os produtos
 const getAllProducts = async (req, res) => {
   try {
     const { category, featured, search, limit = 50, offset = 0 } = req.query;
 
-    // Buscar todos os produtos
-    let products = await readSheet('products');
-
-    // Filtrar produtos ativos
-    products = products.filter(product => product.is_active === 'TRUE');
+    // Usar dados mock para teste
+    let products = [...mockProducts];
 
     // Aplicar filtros
     if (category) {
@@ -28,19 +81,6 @@ const getAllProducts = async (req, res) => {
       );
     }
 
-    // Buscar categorias para incluir nomes
-    const categories = await readSheet('categories');
-    const categoriesMap = {};
-    categories.forEach(cat => {
-      categoriesMap[cat.id] = cat.name;
-    });
-
-    // Adicionar nome da categoria aos produtos
-    products = products.map(product => ({
-      ...product,
-      category_name: categoriesMap[product.category_id] || 'Sem categoria'
-    }));
-
     // Ordenar (destaque primeiro, depois por data de criação)
     products.sort((a, b) => {
       if (a.is_featured === 'TRUE' && b.is_featured !== 'TRUE') return -1;
@@ -54,7 +94,7 @@ const getAllProducts = async (req, res) => {
 
     res.json({
       success: true,
-      products: paginatedProducts,
+      data: paginatedProducts,
       pagination: {
         total,
         limit: parseInt(limit),
@@ -77,31 +117,18 @@ const getFeaturedProducts = async (req, res) => {
   try {
     const { limit = 6 } = req.query;
 
-    // Buscar produtos em destaque
-    let products = await readSheet('products');
-    products = products.filter(product => 
-      product.is_active === 'TRUE' && product.is_featured === 'TRUE'
-    );
+    // Usar dados mock para teste
+    let products = mockProducts.filter(product => product.is_featured === 'TRUE');
 
-    // Buscar categorias
-    const categories = await readSheet('categories');
-    const categoriesMap = {};
-    categories.forEach(cat => {
-      categoriesMap[cat.id] = cat.name;
-    });
-
-    // Adicionar nome da categoria e ordenar por data
-    products = products.map(product => ({
-      ...product,
-      category_name: categoriesMap[product.category_id] || 'Sem categoria'
-    })).sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    // Ordenar por data
+    products = products.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
     // Limitar quantidade
     products = products.slice(0, parseInt(limit));
 
     res.json({
       success: true,
-      products
+      data: products
     });
 
   } catch (error) {
@@ -118,54 +145,19 @@ const getProductById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Buscar produto
-    const products = await findByField('products', 'id', id);
+    // Buscar produto nos dados mock
+    const product = mockProducts.find(p => p.id === id);
 
-    if (products.length === 0) {
+    if (!product) {
       return res.status(404).json({
         success: false,
         message: 'Produto não encontrado'
       });
     }
-
-    const product = products[0];
-
-    // Verificar se produto está ativo
-    if (product.is_active !== 'TRUE') {
-      return res.status(404).json({
-        success: false,
-        message: 'Produto não encontrado'
-      });
-    }
-
-    // Buscar categoria
-    const categories = await findByField('categories', 'id', product.category_id);
-    if (categories.length > 0) {
-      product.category_name = categories[0].name;
-    }
-
-    // Buscar avaliações do produto
-    const reviews = await findByField('reviews', 'product_id', id);
-    const publicReviews = reviews.filter(review => review.is_public === 'TRUE');
-
-    // Buscar dados dos usuários que fizeram as avaliações
-    const users = await readSheet('users');
-    const usersMap = {};
-    users.forEach(user => {
-      usersMap[user.id] = user.name;
-    });
-
-    // Adicionar nomes dos usuários às avaliações
-    const reviewsWithUsers = publicReviews.map(review => ({
-      ...review,
-      user_name: usersMap[review.user_id] || 'Usuário anônimo'
-    })).sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-
-    product.reviews = reviewsWithUsers.slice(0, 10); // Limitar a 10 avaliações
 
     res.json({
       success: true,
-      product
+      data: product
     });
 
   } catch (error) {
@@ -180,12 +172,16 @@ const getProductById = async (req, res) => {
 // Buscar categorias
 const getCategories = async (req, res) => {
   try {
-    const categories = await readSheet('categories');
-    const activeCategories = categories.filter(cat => cat.is_active === 'TRUE');
+    const mockCategories = [
+      { id: '1', name: 'Bolos', is_active: 'TRUE' },
+      { id: '2', name: 'Tortas', is_active: 'TRUE' },
+      { id: '3', name: 'Doces', is_active: 'TRUE' },
+      { id: '4', name: 'Cheesecakes', is_active: 'TRUE' }
+    ];
 
     res.json({
       success: true,
-      categories: activeCategories
+      data: mockCategories
     });
 
   } catch (error) {
@@ -228,7 +224,7 @@ const createProduct = async (req, res) => {
     }
 
     // Verificar se categoria existe
-    const categories = await findByField('categories', 'id', category_id);
+    const categories = mockProducts.filter(p => p.id === category_id); // Assuming category_id is an ID from mockProducts
     if (categories.length === 0) {
       return res.status(400).json({
         success: false,
@@ -237,7 +233,7 @@ const createProduct = async (req, res) => {
     }
 
     // Gerar ID único
-    const productId = generateId();
+    const productId = 'mock_' + Date.now(); // Simple mock ID generation
 
     // Preparar dados do produto
     const productData = {
@@ -256,8 +252,8 @@ const createProduct = async (req, res) => {
       updated_at: new Date().toISOString()
     };
 
-    // Adicionar produto à planilha
-    await appendRow('products', productData);
+    // Adicionar produto à planilha (mock)
+    mockProducts.push(productData);
 
     // Buscar categoria para incluir na resposta
     const category = categories[0];
@@ -295,16 +291,16 @@ const updateProduct = async (req, res) => {
       is_active
     } = req.body;
 
-    // Verificar se produto existe
-    const existingProducts = await findByField('products', 'id', id);
-    if (existingProducts.length === 0) {
+    // Verificar se produto existe nos dados mock
+    const existingProductIndex = mockProducts.findIndex(p => p.id === id);
+    if (existingProductIndex === -1) {
       return res.status(404).json({
         success: false,
         message: 'Produto não encontrado'
       });
     }
 
-    const currentProduct = existingProducts[0];
+    const currentProduct = mockProducts[existingProductIndex];
 
     // Validações
     if (name && name.trim() === '') {
@@ -323,7 +319,7 @@ const updateProduct = async (req, res) => {
 
     // Se categoria foi fornecida, verificar se existe
     if (category_id) {
-      const categories = await findByField('categories', 'id', category_id);
+      const categories = mockProducts.filter(p => p.id === category_id); // Assuming category_id is an ID from mockProducts
       if (categories.length === 0) {
         return res.status(400).json({
           success: false,
@@ -348,15 +344,11 @@ const updateProduct = async (req, res) => {
       updated_at: new Date().toISOString()
     };
 
-    // Encontrar índice da linha na planilha
-    const allProducts = await readSheet('products');
-    const rowIndex = allProducts.findIndex(product => product.id === id) + 2; // +2 porque planilha começa em 1 e tem header
-
-    // Atualizar produto na planilha
-    await updateRow('products', rowIndex, updateData);
+    // Atualizar produto nos dados mock
+    mockProducts[existingProductIndex] = updateData;
 
     // Buscar categoria para incluir na resposta
-    const categories = await findByField('categories', 'id', updateData.category_id);
+    const categories = mockProducts.filter(p => p.id === updateData.category_id); // Assuming category_id is an ID from mockProducts
     if (categories.length > 0) {
       updateData.category_name = categories[0].name;
     }
@@ -381,28 +373,17 @@ const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Verificar se produto existe
-    const existingProducts = await findByField('products', 'id', id);
-    if (existingProducts.length === 0) {
+    // Verificar se produto existe nos dados mock
+    const existingProductIndex = mockProducts.findIndex(p => p.id === id);
+    if (existingProductIndex === -1) {
       return res.status(404).json({
         success: false,
         message: 'Produto não encontrado'
       });
     }
 
-    // Encontrar índice da linha na planilha
-    const allProducts = await readSheet('products');
-    const rowIndex = allProducts.findIndex(product => product.id === id) + 2;
-
-    // Soft delete - apenas desativar
-    const currentProduct = existingProducts[0];
-    const updateData = {
-      ...currentProduct,
-      is_active: 'FALSE',
-      updated_at: new Date().toISOString()
-    };
-
-    await updateRow('products', rowIndex, updateData);
+    // Remover produto dos dados mock
+    mockProducts.splice(existingProductIndex, 1);
 
     res.json({
       success: true,

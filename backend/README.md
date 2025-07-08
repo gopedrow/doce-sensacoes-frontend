@@ -1,75 +1,106 @@
-# 🍰 Backend - Doce Sensações
+# Doce Sensações - Backend
 
-API Node.js + Express para o site de confeitaria Doce Sensações.
-
-## 🚀 Tecnologias
-
-- **Node.js** - Runtime JavaScript
-- **Express** - Framework web
-- **Google Sheets API** - Banco de dados
-- **JWT** - Autenticação
-- **CORS** - Cross-origin requests
-- **Helmet** - Segurança
-
-## 📁 Estrutura
+## Estrutura do Projeto
 
 ```
 backend/
-├── src/
-│   ├── server.js          # Servidor principal
-│   ├── routes/            # Rotas da API
-│   ├── controllers/       # Controladores
-│   ├── middleware/        # Middlewares
-│   └── config/           # Configurações
-├── package.json          # Dependências
-├── teste-simples.js      # Servidor de teste
-├── config-temp.js        # Configurações temporárias
-└── setup-env.js          # Setup de ambiente
+├── package.json
+├── package-lock.json
+├── server.js              # Servidor principal
+├── .env                   # Variáveis de ambiente
+├── .gitignore
+├── google-credentials.json # Credenciais Google
+├── src/                   # Código fonte
+│   ├── config/           # Configurações
+│   │   ├── database.js   # Configuração do banco
+│   │   └── googleSheets.js # Configuração Google Sheets
+│   ├── controllers/      # Controladores
+│   │   ├── authController.js # Controle de autenticação
+│   │   └── productController.js # Controle de produtos
+│   ├── middleware/       # Middlewares
+│   │   ├── auth.js       # Middleware de autenticação
+│   │   └── validation.js # Validação de dados
+│   └── routes/           # Rotas
+│       ├── auth.js       # Rotas de autenticação
+│       └── products.js   # Rotas de produtos
+└── scripts/              # Scripts utilitários
+    ├── setup.js          # Setup inicial
+    └── google-auth.js    # Autenticação Google
 ```
 
-## 🔧 Instalação
+## Funcionalidades
 
-```bash
-npm install
-```
+### Autenticação
+- Login com email/senha
+- Registro de usuários
+- JWT tokens
+- Hashing de senhas (bcrypt)
+- Proteção de rotas
 
-## 🏃‍♂️ Execução
+### Produtos
+- CRUD de produtos
+- Integração com Google Sheets
+- Busca e filtros
+- Imagens e descrições
 
-### Desenvolvimento
-```bash
-node teste-simples.js
-```
+### Google Sheets
+- Leitura de dados
+- Escrita de dados
+- Autenticação via Service Account
+- Cache de dados
 
-### Produção
-```bash
-node src/server.js
-```
+## Configuração
 
-## 📡 Rotas da API
+1. **Instalar dependências**:
+   ```bash
+   npm install
+   ```
 
-- `GET /` - Health check
-- `GET /api/products` - Listar produtos
+2. **Configurar variáveis de ambiente**:
+   ```bash
+   cp .env.example .env
+   # Editar .env com suas credenciais
+   ```
+
+3. **Configurar Google Sheets**:
+   - Criar projeto no Google Cloud
+   - Ativar Google Sheets API
+   - Criar Service Account
+   - Baixar credentials.json
+   - Compartilhar planilha com o email do service account
+
+4. **Executar**:
+   ```bash
+   npm start
+   ```
+
+## API Endpoints
+
+### Autenticação
+- `POST /api/auth/register` - Registrar usuário
 - `POST /api/auth/login` - Login
-- `POST /api/auth/register` - Cadastro
+- `GET /api/auth/profile` - Perfil do usuário (protegido)
 
-## ⚙️ Variáveis de Ambiente
+### Produtos
+- `GET /api/products` - Listar produtos
+- `GET /api/products/:id` - Buscar produto
+- `POST /api/products` - Criar produto (protegido)
+- `PUT /api/products/:id` - Atualizar produto (protegido)
+- `DELETE /api/products/:id` - Deletar produto (protegido)
 
-Crie um arquivo `.env` com:
+## Deploy
 
-```env
-GOOGLE_SHEETS_ID=sua_planilha_id
-GOOGLE_SERVICE_ACCOUNT_EMAIL=seu_email
-GOOGLE_PRIVATE_KEY=sua_chave_privada
-JWT_SECRET=sua_chave_secreta
-PORT=3000
-```
+O projeto está configurado para deploy no Render:
+- Build Command: `npm install`
+- Start Command: `npm start`
+- Environment Variables: Configurar no painel do Render
 
-## 🚀 Deploy
+## Tecnologias
 
-1. Configure as variáveis de ambiente
-2. Deploy no Render/Railway
-3. Configure o Google Sheets
-4. Teste as rotas
-
----
-**Status:** ✅ Pronto para deploy 
+- Node.js
+- Express.js
+- JWT (jsonwebtoken)
+- bcrypt
+- Google Sheets API
+- CORS
+- Helmet (segurança) 

@@ -11,12 +11,9 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
-# Google Sheets credentials
+# Google credentials
 google-credentials.json
-# Ignore all JSON files except package.json
-*.json
-!package.json
-!package-lock.json
+credentials.json
 
 # Logs
 logs
@@ -57,6 +54,7 @@ jspm_packages/
 .idea/
 *.swp
 *.swo
+*~
 
 # OS generated files
 .DS_Store
@@ -67,13 +65,26 @@ jspm_packages/
 ehthumbs.db
 Thumbs.db
 
-# Build directories
+# Build outputs
 dist/
 build/
+out/
 
 # Temporary files
 tmp/
 temp/
 
-# Backend clean folder (separate repo)
-backend-clean/ 
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Test files
+test-results/
+coverage/
+
+# PWA files
+sw.js.map
+
+# Local development
+.local/ 

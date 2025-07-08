@@ -58,6 +58,12 @@ const updateProfileValidation = [
 // Rotas
 router.post('/register', registerValidation, authController.register);
 router.post('/login', loginValidation, authController.login);
+
+// Rotas de autenticação social
+router.post('/social/google', authController.googleLogin);
+router.post('/social/facebook', authController.facebookLogin);
+
+// Rotas protegidas
 router.get('/profile', authenticateToken, authController.getProfile);
 router.put('/profile', authenticateToken, updateProfileValidation, authController.updateProfile);
 router.post('/logout', authenticateToken, authController.logout);

@@ -6,7 +6,7 @@ const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
 // Importar configurações
-const { testConnection } = require('./config/googleSheets');
+// const { testConnection } = require('./config/googleSheets');
 
 // Importar rotas
 const authRoutes = require('./routes/auth');
@@ -45,7 +45,7 @@ app.use(limiter);
 
 // CORS
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5000',
+  origin: process.env.CORS_ORIGIN || ['http://localhost:5000', 'http://localhost:8080', 'http://localhost:3000', 'http://127.0.0.1:5000', 'http://127.0.0.1:8080', 'http://127.0.0.1:3000'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -65,7 +65,7 @@ app.get('/', (req, res) => {
     success: true,
     message: 'API Doce Sensações funcionando! 🍰',
     version: '1.0.0',
-    database: 'Google Sheets',
+    database: 'Test Mode',
     timestamp: new Date().toISOString()
   });
 });
@@ -73,12 +73,12 @@ app.get('/', (req, res) => {
 // Rota de health check
 app.get('/health', async (req, res) => {
   try {
-    const sheetsConnected = await testConnection();
+    // const sheetsConnected = await testConnection();
     
     res.json({
       success: true,
       status: 'OK',
-      database: sheetsConnected ? 'Google Sheets - Connected' : 'Google Sheets - Disconnected',
+      database: 'Test Mode - No Google Sheets',
       timestamp: new Date().toISOString(),
       uptime: process.uptime()
     });
@@ -122,32 +122,21 @@ const PORT = process.env.PORT || 3000;
 // Iniciar servidor
 const startServer = async () => {
   try {
-    // Testar conexão com Google Sheets
-    console.log('🔍 Testando conexão com Google Sheets...');
-    const sheetsConnected = await testConnection();
+    // Testar conexão com Google Sheets (desabilitado para teste)
+    console.log('🔍 Modo de teste ativado - Google Sheets desabilitado');
     
-    if (!sheetsConnected) {
-      console.error('❌ Não foi possível conectar com o Google Sheets');
-      console.log('💡 Verifique suas configurações no arquivo .env');
-      console.log('📋 Certifique-se de que:');
-      console.log('   - A planilha existe e está compartilhada');
-      console.log('   - As credenciais da Service Account estão corretas');
-      console.log('   - A Google Sheets API está ativada');
-      process.exit(1);
-    }
-
     // Iniciar servidor
     app.listen(PORT, () => {
       console.log('🚀 Servidor iniciado com sucesso!');
       console.log(`📍 URL: http://localhost:${PORT}`);
       console.log(`🌍 Ambiente: ${process.env.NODE_ENV || 'development'}`);
-      console.log(`🗄️  Banco de dados: Google Sheets - Conectado`);
+      console.log(`🗄️  Banco de dados: Test Mode - Sem Google Sheets`);
       console.log('📚 Documentação da API:');
       console.log(`   - POST /api/auth/register - Cadastro de usuário`);
       console.log(`   - POST /api/auth/login - Login de usuário`);
       console.log(`   - GET  /api/products - Listar produtos`);
       console.log(`   - GET  /api/products/featured - Produtos em destaque`);
-      console.log('🍰 Doce Sensações API está pronta!');
+      console.log('🍰 Doce Sensações API está pronta para testes!');
     });
 
   } catch (error) {
